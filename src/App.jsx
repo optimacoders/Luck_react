@@ -7,6 +7,8 @@ import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
+import Info from "./pages/Info";
+import Myorders from "./pages/Myorders";
 
 const App = () => {
   return (
@@ -17,7 +19,12 @@ const App = () => {
         <Route path="/products" element={<Product />} />
         <Route path="/product/:id" element={<SingleProduct />} />
         <Route path="/cart" element={<Cart />} />
-        <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/profile" element={<Profile />} /> */}
+
+        <Route path="/profile" element={<Profile />}>
+          <Route index element={<Info />} />
+          <Route path="/profile/orders" element={<Myorders />} />
+        </Route>
       </Routes>
       <Toaster />
     </BrowserRouter>

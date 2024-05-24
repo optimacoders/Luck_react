@@ -2,33 +2,14 @@ import React, { useState } from "react";
 import { CgProfile } from "react-icons/cg";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { CiDeliveryTruck } from "react-icons/ci";
-import Myaccount from "../components/Myaccount";
-import MyAddress from "../components/MyAddress";
-import Myorders from "../components/Myorders";
 import Mainlayout from "../components/Mainlayout";
+import { Outlet, useNavigate } from "react-router-dom";
 
 const Profile = () => {
   const [account, setAccount] = useState(true);
   const [address, setAddress] = useState(false);
   const [orders, setOrders] = useState(false);
-
-  const handleAccountClick = () => {
-    setAccount(true);
-    setAddress(false);
-    setOrders(false);
-  };
-
-  const handleAddressClick = () => {
-    setAccount(false);
-    setAddress(true);
-    setOrders(false);
-  };
-
-  const handleOrdersClick = () => {
-    setAccount(false);
-    setAddress(false);
-    setOrders(true);
-  };
+  const navigate = useNavigate();
 
   return (
     <Mainlayout isNogap={true}>
@@ -38,9 +19,9 @@ const Profile = () => {
             <p className="text-2xl hidden sm:block font-semibold p-2">
               My Account
             </p>
-            <div className="flex md:flex-col w-[90%] over">
+            <div className="flex overflow-y-auto md:flex-col w-[90%] over">
               <p
-                onClick={handleAccountClick}
+                onClick={() => navigate("/profile")}
                 className={`flex ${
                   account ? "bg-[#e3db94] text-white" : "text-yellow-400"
                 } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
@@ -48,7 +29,7 @@ const Profile = () => {
                 <CgProfile size={20} /> My details
               </p>
               <p
-                onClick={handleAddressClick}
+                onClick={() => navigate("/")}
                 className={`flex ${
                   address ? "bg-[#e3db94] text-white" : "text-[#e3db94]"
                 } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
@@ -56,7 +37,7 @@ const Profile = () => {
                 <MdOutlineLocationOn size={20} /> My address
               </p>
               <p
-                onClick={handleOrdersClick}
+                onClick={() => navigate("/profile/orders")}
                 className={`flex ${
                   orders ? "bg-[#e3db94] text-white" : "text-[#e3db94]"
                 } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
@@ -66,9 +47,7 @@ const Profile = () => {
             </div>
           </div>
           <div className="w-full md:w-[85%] md:p-4 rounded-md bg-white">
-            {account && <Myaccount />}
-            {address && <MyAddress />}
-            {orders && <Myorders />}
+            <Outlet />
           </div>
         </div>
       </div>
