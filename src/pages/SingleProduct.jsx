@@ -77,7 +77,7 @@ const SingleProduct = () => {
             <img
               src={product?.image}
               alt="image"
-              className=" object-fill h-[500px] w-[500px]  "
+              className=" object-fill h-[500px] w-[500px] rounded-xl  "
             />
           </div>
           <div className=" py-4 w-full px-10">
@@ -97,9 +97,8 @@ const SingleProduct = () => {
                       onClick={() => setsize(item)}
                       onDoubleClick={() => setsize(null)}
                       key={index}
-                      className={`px-3 rounded-md py-1 border-2 ${
-                        size == item ? "border-blue-500" : ""
-                      }`}
+                      className={`px-3 rounded-md py-1 border-2 ${size == item ? "border-blue-500" : ""
+                        }`}
                     >
                       {item}
                     </div>
@@ -116,16 +115,15 @@ const SingleProduct = () => {
                     key={index}
                     onClick={() => setcolor(color)}
                     onDoubleClick={() => setcolor(null)}
-                    className={`${
-                      color == color ? "border-blue-500" : ""
-                    }px-2 w-8 h-8  py-2 border-2 rounded-full`}
+                    className={`${color == color ? "border-blue-500" : ""
+                      }px-2 w-8 h-8  py-2 border-2 rounded-full`}
                     style={{ backgroundColor: color }}
                   ></div>
                 ))}
               </div>
             </div>
 
-            <div className="p-2 flex bg-gray-100 rounded-lg m-2 items-center w-fit gap-4 px-4">
+            <div className="p-2 flex bg-gray-100 rounded-3xl my-4 items-center w-fit gap-5 px-4">
               <section className="">
                 <GoPlus onClick={() => add()} size={24} />
               </section>
@@ -140,7 +138,7 @@ const SingleProduct = () => {
                 <div>
                   <button
                     onClick={() => addtoCart("isbuy", product?._id)}
-                    className="px-6 py-2 font-semibold rounded-full text-white bg-yellow-400"
+                    className="px-6 py-2 font-semibold rounded-full text-white bg-gold_medium"
                   >
                     Buy Now
                   </button>
@@ -148,7 +146,7 @@ const SingleProduct = () => {
                 <div>
                   <button
                     onClick={() => addtoCart(product?._id)}
-                    className="px-6 py-2 font-semibold rounded-full text-yellow-400 border"
+                    className="px-6 py-2 font-semibold rounded-full text-gold_medium border"
                   >
                     Add to Cart
                   </button>
