@@ -8,16 +8,17 @@ const Layout = () => {
   return (
     <div className="h-[100vh]">
       <Nav />
-      <div className="h-[90vh] overflow-y-auto">
+      <div className='h-[90vh] overflow-y-auto'>
         <Side />
-        <p className="text-center p-4 font-semibold">
-          Shop by <span className="font-sans text-2xl">Category</span>
-        </p>
-        <Category />
-        <p className="text-center p-4 font-semibold">Shop Our Latest Styles!</p>
+        <p className='p-4 font-bold text-xl my-2'>Shop by Category</p>
+        <div className='w-full overflow-x-auto'>
+          <Category />
+        </div>
+        <p className='p-4 font-bold text-xl my-2'>Shop Our Latest Styles!</p>
         <div>
           <FeedProduct />
         </div>
+        {/* <Footer /> */}
       </div>
     </div>
   );

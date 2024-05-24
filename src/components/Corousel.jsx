@@ -5,12 +5,13 @@ import { Carousel } from "react-responsive-carousel";
 
 const Side = () => {
   const images = [
-    "https://i.pinimg.com/originals/07/08/e8/0708e8c728e6a89bb2aa6e4c2a3f40e0.jpg",
-    "https://www.frontierraas.com/the-voice/wp-content/uploads/2023/07/Blog-Banner-1.jpg",
+    'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/34372c33539333.56af37b23566f.jpg',
+    'https://mir-s3-cdn-cf.behance.net/project_modules/1400/264e3629894817.5609864fcd16d.png',
+    'https://i.pinimg.com/originals/3c/41/ab/3c41ab736bc52789af651115e4f0a980.jpg'
   ];
 
   return (
-    <div>
+    <div className=" border border-black">
       <Carousel
         autoPlay
         infiniteLoop={true}
@@ -24,7 +25,7 @@ const Side = () => {
           <div key={index}>
             <img
               src={img}
-              className="h-[25vh] md:h-[50vh] md:w-[20vh]"
+              className="h-[25vh] md:h-[50vh] w-[100%]"
               alt={`Legend ${index + 1}`}
             />
           </div>
