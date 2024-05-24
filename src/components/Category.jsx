@@ -10,7 +10,7 @@ const Category = () => {
   const getCategories = async () => {
     try {
       const { data } = await axios.get(`${url}/admin/category`);
-      setcategory(data.categories);
+      setcategory(data.response.data);
     } catch (error) {
       console.error("Error fetching :", error);
     }
@@ -22,20 +22,17 @@ const Category = () => {
   const img =
     "https://theindianethnicco.com/cdn/shop/files/NEW_IN_STORE_45e52d13-f247-4e3a-814f-aabeab995a9b.jpg?v=1713504901";
   return (
-    <div className="flex justify-center p-4 w-full">
-      <div className="grid gap-x-7 md:gap-x-14 gap-y-4 grid-cols-3 md:grid-cols-4">
-        {category.map((item, index) => (
-          <div className="  flex flex-col md:justify-center ">
-            <img
-              src={item?.image}
-              className=" h-[10vh] shadow-2xl md:h-[20vh] w-[10vh] md:w-[20vh] border rounded-full "
-            />
-            <p className="flex justify-center items-center font-semibold">
-              {item?.name}
-            </p>
+    <div className="grid grid-cols-2 sm:flex w-full sm:overflow-x-auto gap-2 sm:gap-3 px-1 sm:px-10">
+      {category?.map((item, index) => (
+        <div key={index} className=" relative rounded-md min-w-[200px] ">
+          <div className="aspect-square rounded-md relative overflow-hidden">
+            <img src={item?.image} className="object-cover aspect-square rounded-md" />
           </div>
-        ))}
-      </div>
+          <p className="flex justify-center text-center text-black text-sm font-semibold">
+            {item?.name}
+          </p>
+        </div>
+      ))}
     </div>
   );
 };

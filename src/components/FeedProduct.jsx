@@ -8,11 +8,9 @@ const FeedProduct = () => {
   const [products, setProducts] = useState([]);
 
   const fetchProducts = async () => {
-    console.log("hi outsidee fetch", url);
     try {
       const { data } = await axios.get(`${url}/admin/product`);
       setProducts(data.products.data);
-      console.log("hi i am inside fetach", data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -20,11 +18,10 @@ const FeedProduct = () => {
 
   useEffect(() => {
     fetchProducts();
-    console.log("hi i am in use effect ");
   }, []);
 
   return (
-    <div className="grid  grid-cols-2  p-4 md:grid-cols-4 gap-2">
+    <div className="grid  grid-cols-1 md:grid-cols-4 px-3 md:px-20">
       {products.map((product, index) => (
         <div key={index}>
           <ProductCard data={product} />
