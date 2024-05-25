@@ -3,6 +3,7 @@ import Nav from "../components/Nav";
 import Side from "../components/Corousel";
 import Category from "../components/Category";
 import FeedProduct from "../components/FeedProduct";
+import Footer from "../components/Footer";
 
 const Layout = () => {
   return (
@@ -18,7 +19,7 @@ const Layout = () => {
         <div>
           <FeedProduct />
         </div>
-        {/* <Footer /> */}
+        <Footer />
       </div>
     </div>
   );
