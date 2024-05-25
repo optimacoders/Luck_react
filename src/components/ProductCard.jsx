@@ -3,14 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ data }) => {
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("this is also working", data);
-  }, []);
-
-  const redirect = () => {
-    navigate(`/product/${data?._id}`);
-    window.location.reload();
-  };
 
   return (
     <div
