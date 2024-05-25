@@ -1,12 +1,23 @@
-import React, { useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import loginImage from '../assets/loginImage.jpeg'
 import signupImage from '../assets/signupImage.jpeg'
+import AuthHook from "../context/AuthContext";
 
 const Auth = () => {
+  const { isLogedin } = AuthHook();
   const location = useLocation();
   const isLogin = location.pathname === "/auth/login";
   const imageSrc = isLogin ? loginImage : signupImage;
+
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (isLogedin) {
+      navigate("/")
+    }
+  }, [])
+
 
 
   return (

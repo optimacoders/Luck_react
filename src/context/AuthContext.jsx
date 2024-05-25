@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
     const url = import.meta.env.VITE_BACKEND;
 
     const getUserDetails = async () => {
-        console.log("userDetails");
         if (isLogedin && userDetails === null && token) {
             try {
                 const res = await axios.get(`${url}/auth/getuserdetails`, {
