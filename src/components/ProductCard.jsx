@@ -36,7 +36,7 @@ const ProductCard = ({ data }) => {
             {data?.category?.name}
           </p>
         </section>
-        <button className=" rounded-full px-4 py-[3px] font-semibold text-sm my-1 border-gray-500 hover:bg-gold_dark hover:text-white hover:border-none">
+        <button className=" rounded-full px-4 py-[3px] font-semibold text-sm my-1 border border-gray-500 hover:bg-gold_dark hover:text-white hover:border-none">
           Buy Now
         </button>
       </div>
