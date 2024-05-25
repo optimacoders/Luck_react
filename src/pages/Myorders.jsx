@@ -3,24 +3,24 @@ import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { CiHeart } from "react-icons/ci";
 import { IoMdRemoveCircleOutline } from "react-icons/io";
+import { getRequest } from "../utils/Apihelpers";
 
 const Myorders = () => {
-  const url = import.meta.env.VITE_BACKEND;
-  let id = "662b7dd174655c5c359f478e";
   const [orders, setOrders] = useState([]);
   const navigate = useNavigate();
 
-  const getUserOrders = async () => {
-    try {
-      const { data } = await axios.get(`${url}/order/user/${id}`);
-      setOrders(data.orders);
-    } catch (error) {
-      console.error("Error fetching orders:", error);
-    }
-  };
-
   useEffect(() => {
-    getUserOrders();
+    const fetchUserData = async () => {
+      try {
+        const orders = await getRequest(true, "/order/myorders");
+        setOrders(orders.orders);
+        console.log(orders);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
   }, []);
 
   return (

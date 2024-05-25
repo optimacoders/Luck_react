@@ -4,6 +4,7 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { postRequest } from "../utils/Apihelpers";
 
 const Cartproductcard = ({ data }) => {
   const url = import.meta.env.VITE_BACKEND;
@@ -17,25 +18,22 @@ const Cartproductcard = ({ data }) => {
 
   const removeProduct = async (pid) => {
     try {
-      const { data } = await axios.post(`${url}/cart/${pid}`, {
-        userId: "662b7dd174655c5c359f478e",
-      });
-      if (data.status) {
-        toast.success("product Removed Succesfully");
+      const response = await postRequest(true, `/cart/${pid}`);
+      if (response.status) {
+        toast.success("Product removed successfully");
         window.location.reload();
       }
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error removing product:", error);
     }
   };
 
   const editCart = async (pid, quantity) => {
     try {
-      const { data } = await axios.put(`${url}/cart/${pid}`, {
-        userId: "662b7dd174655c5c359f478e",
+      const response = await postRequest(true, `/cart/${pid}`, {
         quantity: quantity,
       });
-      if (data.status) {
+      if (response.status) {
         toast.success("updated");
         window.location.reload();
       }

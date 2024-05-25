@@ -4,24 +4,26 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Mainlayout from "../components/Mainlayout";
 import Cartproductcard from "../components/Cartproductcard";
+import { getRequest, postRequest } from "../utils/Apihelpers";
+import img from "../assets/logo.png";
 
 const Cart = () => {
-  const url = import.meta.env.VITE_BACKEND;
   const key = import.meta.env.VITE_RAZORPAY_KEY;
   const navigate = useNavigate();
-  let id = "662b7dd174655c5c359f478e";
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(null);
   const [address, setaddress] = useState("");
+  const url = import.meta.env.VITE_BACKEND;
 
   const getUserCart = async () => {
     try {
-      const { data } = await axios.get(`${url}/cart/${id}`);
-      setCart(data.cart);
+      const cart = await getRequest(true, "/cart");
+      setCart(cart.cart);
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error fetching user data:", error);
     }
   };
+
   useEffect(() => {
     const loadRazorpayScript = async () => {
       const script = document.createElement("script");
@@ -34,7 +36,7 @@ const Cart = () => {
     loadRazorpayScript();
 
     getUserCart();
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     calculateTotalPrice();
@@ -52,11 +54,6 @@ const Cart = () => {
     try {
       const { data } = await axios.post(`${url}/payment/checkout`, {
         amount: totalPrice,
-        amount: totalPrice,
-        userId: id,
-        address: "",
-        phoneNo: "390341541",
-        orderValue: "orderValue",
       });
       console.log(data.order);
       const options = {
@@ -65,23 +62,22 @@ const Cart = () => {
         currency: "INR",
         name: "optima",
         description: "Test Transaction",
-        image: "https://example.com/your_logo",
+        image: img,
         order_id: data.order.id,
         handler: async function (response) {
           const { razorpay_order_id, razorpay_payment_id } = response;
           try {
-            const { data } = await axios.post(`${url}/order/create`, {
-              userId: id,
+            const response = await postRequest(true, "/order/create", {
               address: "dd",
               phoneNo: "7894561234",
               orderValue: totalPrice,
               razorpay_order_id,
               razorpay_payment_id,
-              razorpay_payment_id,
               paymentStatus: "done",
             });
-            if (data.status) {
+            if (response.status) {
               toast.success("Order successfully created");
+              getUserCart();
             }
           } catch (error) {
             console.error("Error creating order:", error);
@@ -96,7 +92,7 @@ const Cart = () => {
           address: "Razorpay Corporate Office",
         },
         theme: {
-          color: "#3399cc",
+          color: "#E30B5C",
         },
       };
       const rzp1 = new Razorpay(options);
@@ -142,6 +138,20 @@ const Cart = () => {
               <p className="text-lg">Total</p>
               <p>₹ {totalPrice}</p>
             </section>
+            <div className="py-2">
+              <section className="flex justify-between">
+                <p className=" font-semibold py-1">Address</p>
+                <p
+                  onClick={() => navigate("/profile")}
+                  className=" font-semibold py-1 cursor-pointer text-blue-600"
+                >
+                  Change
+                </p>
+              </section>
+              <section className="p-2 w-full border-2 rounded-md">
+                sdsf ada
+              </section>
+            </div>
             <div>
               <button
                 onClick={checkout}

@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
 import Mainlayout from "../components/Mainlayout";
+import { postRequest } from "../utils/Apihelpers";
 
 const SingleProduct = () => {
   const id = useParams();
@@ -40,20 +41,19 @@ const SingleProduct = () => {
   };
 
   const addtoCart = async (sign, pid) => {
-    console.log(pid);
     try {
-      const { data } = await axios.post(`${url}/cart`, {
-        userId: "662b7dd174655c5c359f478e",
+      const response = await postRequest(true, "/cart", {
         productId: pid,
         quantity: qunatity,
         size: size,
         color: color,
       });
-      if (data.status) {
+      console.log(response);
+      if (response.status) {
         if (sign === "isbuy") {
           navigate("/cart");
         } else {
-          toast.success(data.message);
+          toast.success(response.message);
         }
       }
     } catch (error) {
@@ -97,8 +97,9 @@ const SingleProduct = () => {
                       onClick={() => setsize(item)}
                       onDoubleClick={() => setsize(null)}
                       key={index}
-                      className={`px-3 rounded-md py-1 border-2 ${size == item ? "border-blue-500" : ""
-                        }`}
+                      className={`px-3 rounded-md py-1 border-2 ${
+                        size == item ? "border-blue-500" : ""
+                      }`}
                     >
                       {item}
                     </div>
@@ -115,8 +116,9 @@ const SingleProduct = () => {
                     key={index}
                     onClick={() => setcolor(color)}
                     onDoubleClick={() => setcolor(null)}
-                    className={`${color == color ? "border-blue-500" : ""
-                      }px-2 w-8 h-8  py-2 border-2 rounded-full`}
+                    className={`${
+                      color == color ? "border-blue-500" : ""
+                    }px-2 w-8 h-8  py-2 border-2 rounded-full`}
                     style={{ backgroundColor: color }}
                   ></div>
                 ))}
@@ -165,6 +167,9 @@ const SingleProduct = () => {
               <p></p>
             </div>
           </div>
+        </div>
+        <div>
+          <p className="font-bold text-lg">Similar Products</p>
         </div>
       </Mainlayout>
       <div className=" md:hidden w-full sticky bottom-0 z-5 ">

@@ -10,7 +10,8 @@ const Profile = () => {
   const [address, setAddress] = useState(false);
   const [orders, setOrders] = useState(false);
   const navigate = useNavigate();
-
+  const path = location.pathname;
+  console.log(path);
   return (
     <Mainlayout isNogap={true}>
       <div className="h-full">
@@ -23,23 +24,17 @@ const Profile = () => {
               <p
                 onClick={() => navigate("/profile")}
                 className={`flex ${
-                  account ? "bg-[#e3db94] text-white" : "text-yellow-400"
+                  path === "/profile" ? "border-b-2 border-blue-500" : ""
                 } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
               >
                 <CgProfile size={20} /> My details
               </p>
               <p
-                onClick={() => navigate("/")}
-                className={`flex ${
-                  address ? "bg-[#e3db94] text-white" : "text-[#e3db94]"
-                } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
-              >
-                <MdOutlineLocationOn size={20} /> My address
-              </p>
-              <p
                 onClick={() => navigate("/profile/orders")}
                 className={`flex ${
-                  orders ? "bg-[#e3db94] text-white" : "text-[#e3db94]"
+                  path === "/profile/orders"
+                    ? "border-b-2  border-blue-500"
+                    : ""
                 } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
               >
                 <CiDeliveryTruck size={20} /> My orders

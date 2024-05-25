@@ -11,7 +11,7 @@ const Nav = () => {
   const [men, setMen] = useState(false);
   const [c2, setc2] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handle = () => {
     setNav(!nav);
@@ -51,11 +51,17 @@ const Nav = () => {
         </div>
         <div className=" ">
           <div className="flex gap-x-6">
-            <section className="flex gap-2 font-semibold items-center">
+            <section
+              onClick={() => navigate("/profile")}
+              className="flex gap-2 font-semibold items-center"
+            >
               <FaRegUser size={20} />
               <p className=" font-semibold">Account</p>
             </section>
-            <section onClick={() => navigate("/cart")} className="flex gap-2 font-semibold items-center">
+            <section
+              onClick={() => navigate("/cart")}
+              className="flex gap-2 font-semibold items-center"
+            >
               <AiOutlineShoppingCart size={20} />
               <p className=" font-semibold">Cart</p>
             </section>
@@ -68,8 +74,9 @@ const Nav = () => {
       <div className=" sm:mx-10 border-b"></div>
       <section className="z-10 sm:hidden">
         <ul
-          className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
-            } transition-all ease-linear duration-200`}
+          className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${
+            nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
+          } transition-all ease-linear duration-200`}
         >
           <li className="mx-2 flex justify-between my-1 font-semibold inline">
             MEN
