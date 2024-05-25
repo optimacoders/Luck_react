@@ -8,7 +8,8 @@ import toast from "react-hot-toast";
 import { GoPlus } from "react-icons/go";
 import { FiMinus } from "react-icons/fi";
 import Mainlayout from "../components/Mainlayout";
-import { postRequest } from "../utils/Apihelpers";
+import { getRequest, postRequest } from "../utils/Apihelpers";
+import ProductCard from "../components/ProductCard";
 
 const SingleProduct = () => {
   const id = useParams();
@@ -22,6 +23,8 @@ const SingleProduct = () => {
   const [size, setsize] = useState("");
   const [color, setcolor] = useState("");
   const [qunatity, setquantity] = useState(1);
+  const [Category, setcategory] = useState("");
+  const [semilarproducts, setsemilarproducts] = useState([]);
 
   const add = () => {
     setquantity(qunatity + 1);
@@ -35,8 +38,22 @@ const SingleProduct = () => {
       setProduct(data.products);
       setcolors(data.products.color);
       setsizes(data.products.size);
+      setcategory(data.products.category);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+
+  const similarProducts = async () => {
+    try {
+      const response = await getRequest(
+        true,
+        `/admin/product/getsimilarproducts/${Category}`
+      );
+      console.log(response);
+      setsemilarproducts(response.products);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
   };
 
@@ -69,6 +86,11 @@ const SingleProduct = () => {
   useEffect(() => {
     fetchProduct();
   }, []);
+
+  useEffect(() => {
+    similarProducts();
+  }, [Category]);
+
   return (
     <div>
       <Mainlayout>
@@ -169,7 +191,14 @@ const SingleProduct = () => {
           </div>
         </div>
         <div>
-          <p className="font-bold text-lg">Similar Products</p>
+          <p className="font-bold text-center  text-2xl">Similar Products</p>
+          <div className="grid  grid-cols-1 md:grid-cols-4 px-3 md:px-20">
+            {semilarproducts.map((product, index) => (
+              <div key={index}>
+                <ProductCard data={product} />
+              </div>
+            ))}
+          </div>
         </div>
       </Mainlayout>
       <div className=" md:hidden w-full sticky bottom-0 z-5 ">

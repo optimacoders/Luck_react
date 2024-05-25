@@ -16,6 +16,7 @@ const FeedProduct = () => {
     }
   };
 
+  
   useEffect(() => {
     fetchProducts();
   }, []);
