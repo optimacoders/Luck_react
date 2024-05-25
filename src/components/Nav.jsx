@@ -56,7 +56,7 @@ const Nav = () => {
               className="flex gap-2 font-semibold items-center"
             >
               <FaRegUser size={20} />
-              <p className=" font-semibold">Account</p>
+              <p className=" font-semibold cursor-pointer">Account</p>
             </section>
             <section
               onClick={() => navigate("/cart")}
