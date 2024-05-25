@@ -13,7 +13,6 @@ export const AuthProvider = ({ children }) => {
     const getUserDetails = async () => {
         console.log("userDetails");
         if (isLogedin && userDetails === null && token) {
-            console.log("buygvyu");
             try {
                 const res = await axios.get(`${url}/auth/getuserdetails`, {
                     headers: {

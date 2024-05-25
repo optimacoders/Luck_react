@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 const ProductCard = ({ data }) => {
   const navigate = useNavigate();
-  useEffect(() => {
-    console.log("this is also working");
-  }, []);
 
   return (
     <div
