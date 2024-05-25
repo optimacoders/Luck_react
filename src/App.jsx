@@ -9,6 +9,7 @@ import Auth from "./pages/Auth";
 import Profile from "./pages/Profile";
 import Info from "./pages/Info";
 import Myorders from "./pages/Myorders";
+import Singleorder from "./pages/Singleorder";
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
         <Route path="/profile" element={<Profile />}>
           <Route index element={<Info />} />
           <Route path="/profile/orders" element={<Myorders />} />
+          <Route path="/profile/myorder/:id" element={<Singleorder />} />
         </Route>
       </Routes>
       <Toaster />

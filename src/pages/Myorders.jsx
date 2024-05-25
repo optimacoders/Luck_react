@@ -28,7 +28,11 @@ const Myorders = () => {
       <p className="font-semibold text-xl">Your orders</p>
       <div className="w-full grid grid-cols-1 gap-4 sm:grid-cols-2">
         {orders.map((item, index) => (
-          <div className="w-full grid grid-cols-1 md:grid-cols " key={index}>
+          <div
+            onClick={() => navigate(`/profile/myorder/${item._id}`)}
+            className="w-full grid grid-cols-1 md:grid-cols "
+            key={index}
+          >
             <div
               key={item._id}
               className="border-spacing-1 border border-black md:justify-between my-2 h-fit flex gap-x-3 p-2  rounded-lg"
