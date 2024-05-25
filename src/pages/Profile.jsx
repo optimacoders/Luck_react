@@ -41,7 +41,7 @@ const Profile = () => {
               </p>
             </div>
           </div>
-          <div className="w-full md:w-[85%] md:p-4 rounded-md bg-white">
+          <div className="w-full h-full md:w-[85%] md:p-4 rounded-md bg-white">
             <Outlet />
           </div>
         </div>

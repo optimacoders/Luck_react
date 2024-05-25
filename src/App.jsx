@@ -12,7 +12,12 @@ import Myorders from "./pages/Myorders";
 import Singleorder from "./pages/Singleorder";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import { AuthProvider } from "./context/AuthContext";
+import AuthHook, { AuthProvider } from "./context/AuthContext";
+
+const PrivateRoute = ({ element, ...rest }) => {
+  const { isLogedin } = AuthHook();
+  return isLogedin ? element : <Navigate to="/auth/login" />;
+};
 
 const App = () => {
   return (
@@ -20,7 +25,7 @@ const App = () => {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />} />
-          <Route path="/auth" element={<Auth />} >
+          <Route path="/auth" element={<Auth />}>
             <Route index element={<Login />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
@@ -34,12 +39,9 @@ const App = () => {
             <Route index element={<Info />} />
             <Route path="/profile/orders" element={<Myorders />} />
             <Route path="/profile/myorder/:id" element={<Singleorder />} />
-        </Route>
+          </Route>
         </Routes>
-        <Toaster
-          position="top-right"
-          reverseOrder={true}
-        />
+        <Toaster position="top-right" reverseOrder={true} />
       </BrowserRouter>
     </AuthProvider>
   );
