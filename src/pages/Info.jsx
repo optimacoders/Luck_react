@@ -90,7 +90,7 @@ const Info = () => {
               ></textarea>
             </div>
             <div className="py-2 w-[30%]">
-              <button className="bg-blue-600 w-full px-2 rounded-md py-1 text-white">
+              <button className="bg-gold_dark w-full px-2 rounded-md py-1 text-white">
                 Save
               </button>
             </div>
