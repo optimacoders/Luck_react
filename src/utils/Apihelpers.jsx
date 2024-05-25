@@ -1,8 +1,10 @@
 import axios from "axios";
-let token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY1MTdkN2Y2ODIxMTNlMTlkYTRiNjhkIn0sImlhdCI6MTcxNjYxNjU3NX0.KjZ0g2P_9l16AEdX6fIK7sFPwPw5pNRxW8wwYP5qr4g";
-const url = import.meta.env.VITE_BACKEND;
+import Cookies from "js-cookie";
 
+// let token =
+//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjY1MTdkN2Y2ODIxMTNlMTlkYTRiNjhkIn0sImlhdCI6MTcxNjYxNjU3NX0.KjZ0g2P_9l16AEdX6fIK7sFPwPw5pNRxW8wwYP5qr4g";
+const url = import.meta.env.VITE_BACKEND;
+const token = Cookies.get("token");
 export const getRequest = async (auth, path) => {
   try {
     const response = await axios.get(url + path, {

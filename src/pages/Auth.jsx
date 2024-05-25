@@ -1,55 +1,33 @@
-import React, { useState } from "react";
-import "./FormStyle.css";
-import SignIn from "../components/SignIn";
-import SignUp from "../components/SignUp";
+import React, { useEffect } from "react";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import loginImage from '../assets/loginImage.jpeg'
+import signupImage from '../assets/signupImage.jpeg'
+import AuthHook from "../context/AuthContext";
 
 const Auth = () => {
-  const [formType, setFormType] = useState("signIn");
+  const { isLogedin } = AuthHook();
+  const location = useLocation();
+  const isLogin = location.pathname === "/auth/login";
+  const imageSrc = isLogin ? loginImage : signupImage;
 
-  const handleToggle = (type) => {
-    setFormType(type);
-  };
+  const navigate = useNavigate()
 
-  const containerClass =
-    "container " + (formType === "signUp" ? "right-panel-active" : "");
+  useEffect(() => {
+    if (isLogedin) {
+      navigate("/")
+    }
+  }, [])
+
+
 
   return (
     <>
-      <div className="flex justify-center items-center h-screen">
-        <div className="App">
-          <div className={containerClass} id="container">
-            <SignUp toggleForm={() => handleToggle("signIn")} />
-            <SignIn toggleForm={() => handleToggle("signUp")} />
-            <div className="overlay-container">
-              <div className="overlay">
-                <div className="overlay-panel overlay-left">
-                  <h1>Welcome Back!</h1>
-                  <p>
-                    To keep connected with us please login with your personal
-                    info
-                  </p>
-                  <button
-                    className="ghost"
-                    id="signIn"
-                    onClick={() => handleToggle("signIn")}
-                  >
-                    Sign In
-                  </button>
-                </div>
-                <div className="overlay-panel overlay-right">
-                  <h1>Hello, Friend!</h1>
-                  <p>Enter your personal details and start journey with us</p>
-                  <button
-                    className="ghost "
-                    id="signUp"
-                    onClick={() => handleToggle("signUp")}
-                  >
-                    Sign Up
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className=" flex flex-col sm:flex-row h-[100svh] sm:h-[100vh] w-[100svw]">
+        <div className="w-[100%] sm:w-[50%] bg-gold_secondary h-[20vh] sm:h-[100%]">
+          <img src={imageSrc} className=" w-[100%] h-[100%] object-cover" />
+        </div>
+        <div className="w-[100%] sm:w-[50%] h-[100%]">
+          <Outlet />
         </div>
       </div>
     </>
