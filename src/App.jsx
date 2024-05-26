@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./pages/layout";
+import Layout from "./pages/Layout";
 import { Toaster } from "react-hot-toast";
 import Product from "./pages/Product";
 import SingleProduct from "./pages/SingleProduct";
