@@ -171,7 +171,7 @@ const Singleorder = () => {
             <p className="font-bold my-2">Product</p>
             <div className="flex flex-col md:flex-row gap-4">
               <section className="w-[10vh]">
-                <img src={order?.productId?.image} alt="sss" />
+                <img src={order?.productId?.image?.[0]} alt="sss" />
               </section>
               <section className="flex flex-col gap-2">
                 <p className="font-semibold">{order?.productId?.title}</p>

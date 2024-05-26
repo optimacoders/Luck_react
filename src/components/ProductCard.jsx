@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const ProductCard = ({ data }) => {
+const ProductCard = ({ data, fromsimilar }) => {
   const navigate = useNavigate();
   useEffect(() => {
     console.log("this is also working", data);
@@ -19,7 +19,7 @@ const ProductCard = ({ data }) => {
     >
       <div className="flex justify-center items-center">
         <img
-          src={data?.image ? data?.image : "/placeholder-image.jpg"}
+          src={data?.image ? data?.image[0] : "/placeholder-image.jpg"}
           alt="Product Image"
           className="object-fill aspect-square rounded-lg"
         />

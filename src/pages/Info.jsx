@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getRequest, putRequest } from "../utils/Apihelpers";
 import toast from "react-hot-toast";
+import AuthHook from "../context/AuthContext";
+import { IoMdLogOut } from "react-icons/io";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Info = () => {
   const [userdata, setUserData] = useState([]);
@@ -8,7 +12,15 @@ const Info = () => {
   const [mobileNo, setmobileNo] = useState();
   const [email, setemail] = useState();
   const [address, setaddress] = useState();
-
+  const { setisLogedin, settoken, token, isLogedin } = AuthHook();
+  const navigate = useNavigate("");
+  const handlelogout = () => {
+    console.log("ff");
+    Cookies.remove("token");
+    settoken("");
+    setisLogedin(false);
+    navigate("/");
+  };
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -95,6 +107,15 @@ const Info = () => {
               </button>
             </div>
           </form>
+        </div>
+        <div className="flex justify-center py-2 items-end">
+          <p
+            onClick={() => handlelogout()}
+            className="flex items-center gap-2 font-semibold absolute bottom-2 cursor-pointer select-none"
+          >
+            {" "}
+            <IoMdLogOut size={20} /> Logout
+          </p>
         </div>
       </div>
     </div>

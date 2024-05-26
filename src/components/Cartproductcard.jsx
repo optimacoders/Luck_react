@@ -47,7 +47,7 @@ const Cartproductcard = ({ data }) => {
         className="rounded-lg"
       >
         <img
-          src={data?.product?.image}
+          src={data?.product?.image?.[0]}
           className="rounded-md h-[20vh] w-[15vh]"
         />
       </div>

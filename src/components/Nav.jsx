@@ -6,13 +6,14 @@ import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import AuthHook from "../context/AuthContext";
+import { CiLogin } from "react-icons/ci";
 
 const Nav = () => {
   const [nav, setNav] = useState(false);
   const [men, setMen] = useState(false);
   const [c2, setc2] = useState(false);
 
-  const { getUserDetails, token } = AuthHook();
+  const { getUserDetails, token, isLogedin } = AuthHook();
 
   const navigate = useNavigate();
 
@@ -57,13 +58,25 @@ const Nav = () => {
         </div>
         <div className=" ">
           <div className="flex gap-x-6">
-            <section
-              onClick={() => navigate("/profile")}
-              className="flex gap-2 font-semibold items-center"
-            >
-              <FaRegUser size={20} />
-              <p className=" font-semibold cursor-pointer">Account</p>
-            </section>
+            {isLogedin ? (
+              <section
+                onClick={() => navigate("/profile")}
+                className="flex gap-2 font-semibold items-center"
+              >
+                <FaRegUser size={20} />
+                <p className="font-semibold cursor-pointer">Account</p>
+              </section>
+            ) : (
+              <>
+                <section
+                  onClick={() => navigate("/auth/login")}
+                  className="flex gap-2 font-semibold items-center"
+                >
+                  <p className="font-semibold cursor-pointer">Login</p>
+                </section>
+              </>
+            )}
+
             <section
               onClick={() => navigate("/cart")}
               className="flex gap-2 font-semibold items-center"

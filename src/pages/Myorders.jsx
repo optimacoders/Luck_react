@@ -42,7 +42,7 @@ const Myorders = () => {
                 className="rounded-lg flex gap-2 cursor-pointer"
               >
                 <img
-                  src={item?.productId?.image}
+                  src={item?.productId?.image?.[0]}
                   className="rounded-md h-[20vh] w-[15vh]"
                 />
                 <div className="p-2 gap-1">

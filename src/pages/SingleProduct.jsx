@@ -25,7 +25,7 @@ const SingleProduct = () => {
   const [qunatity, setquantity] = useState(1);
   const [Category, setcategory] = useState("");
   const [semilarproducts, setsemilarproducts] = useState([]);
-
+  const [preview, setpreview] = useState("");
   const add = () => {
     setquantity(qunatity + 1);
   };
@@ -91,16 +91,38 @@ const SingleProduct = () => {
     similarProducts();
   }, [Category]);
 
+  const see = (url) => {
+    setpreview(see);
+  };
   return (
     <div>
       <Mainlayout>
         <div className=" grid pb-5 grid-cols-1 md:grid-cols-2">
-          <div className=" p-4 flex justify-center w-full  grid-cols-2">
-            <img
-              src={product?.image}
-              alt="image"
-              className=" object-fill h-[500px] w-[500px] rounded-xl  "
-            />
+          <div>
+            <div className="   rounded-md p-4 flex justify-center w-full  grid-cols-2">
+              <img
+                src={preview ? preview : product?.image?.[0]}
+                alt="image"
+                className=" object-fill h-[500px] w-[500px] rounded-xl  "
+              />
+            </div>{" "}
+            <div className="w-full my-2 flex justify-center rounded-md p-2">
+              <div className="grid grid-cols-2 overflow-x-auto md:grid-cols-3 gap-2 w-full">
+                {product?.image?.map((image, index) => (
+                  <div
+                    onClick={() => setpreview(image)}
+                    key={index}
+                    className="flex justify-center"
+                  >
+                    <img
+                      src={image}
+                      alt={`Product image ${index + 1}`}
+                      className="object-fill w-[20vh] aspect-square rounded-lg"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
           <div className=" py-4 w-full px-10">
             <p className=" font-semibold text-xl md:text-2xl ">
@@ -195,7 +217,7 @@ const SingleProduct = () => {
           <div className="grid  grid-cols-1 md:grid-cols-4 px-3 md:px-20">
             {semilarproducts.map((product, index) => (
               <div key={index}>
-                <ProductCard data={product} />
+                <ProductCard data={product} fromsimilar={true} />
               </div>
             ))}
           </div>
