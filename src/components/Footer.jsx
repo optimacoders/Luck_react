@@ -8,7 +8,7 @@ function Footer() {
   return (
     <div className=" flex border-t mt-4 px-20 W-full">
       <section className=" W-[40%]">
-        <img src={logo} className=" aspect-square w-48 h-48" />
+        <img src={""} className=" aspect-square w-48 h-48" />
       </section>
       <section className=" w-[60%] flex flex-col items-center justify-center">
         <p className=" text-xl font-semibold">Social</p>

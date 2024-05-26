@@ -38,7 +38,7 @@ const Nav = () => {
           {nav ? <GiCancel size={23} /> : <GiHamburgerMenu size={23} />}
         </section>
         <div onClick={() => navigate("/")} className="sm:px-2 ">
-          <img src={logo} alt="logo" className="" width={130} />
+          <img src={""} alt="logo" className="" width={130} />
         </div>
         <div className="hidden md:block">
           <ul className="flex gap-4 font-semibold text-sm ">
