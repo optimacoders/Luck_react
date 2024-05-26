@@ -19,11 +19,11 @@ const Product = ({}) => {
     try {
       console.log(category);
       let link = "admin/product";
-      const { data } = await axios.get(
+      const response = await axios.get(
         category ? `${url}/${link}?category=${category}` : `${url}/${link}`
       );
-      console.log(data.products.data);
-      setProducts(data.products.data);
+      console.log(response.products.data);
+      setProducts(response.products.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -48,7 +48,7 @@ const Product = ({}) => {
             />
           </div>
           <div className="grid md:w-[85%] grid-cols-2 md:grid-cols-4 gap-2">
-            {products.map((product, index) => (
+            {products?.data?.map((product, index) => (
               <ProductCard key={index} data={product} />
             ))}
           </div>

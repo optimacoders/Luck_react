@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getRequest } from "../utils/Apihelpers";
 import { CiDeliveryTruck } from "react-icons/ci";
 import { TbPointFilled } from "react-icons/tb";
+import { format, parseISO, isValid } from "date-fns";
 import {
   PDFDownloadLink,
   Document,
@@ -15,20 +16,28 @@ import {
 const Singleorder = () => {
   const { id } = useParams();
   const [order, setOrder] = useState();
-  const [status, setstatus] = useState("");
+  const [status, setStatus] = useState("");
   const navigate = useNavigate();
-  const getorder = async () => {
+
+  const getOrder = async () => {
     try {
       const response = await getRequest(true, `/order/myorder/${id}`);
       setOrder(response.order);
-      setstatus(response.order?.status);
+      setStatus(response.order?.status);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
   };
+
   useEffect(() => {
-    getorder();
+    getOrder();
   }, [id]);
+
+  const formatDate = (dateString) => {
+    if (!dateString) return "Invalid date";
+    const date = parseISO(dateString);
+    return isValid(date) ? format(date, "EEEE, dd MMM") : "Invalid date";
+  };
 
   const styles = StyleSheet.create({
     page: {
@@ -61,7 +70,7 @@ const Singleorder = () => {
             <Text style={styles.header}>Order Invoice</Text>
             <Text style={styles.text}>Order ID: {order?._id}</Text>
             <Text style={styles.text}>
-              Purchase Date: {order?.orderDateTime}
+              Purchase Date: {formatDate(order?.orderDateTime)}
             </Text>
             <Text style={styles.text}>Order Value: {order?.orderValue}</Text>
             <Text style={styles.text}>By Inaya store.</Text>
@@ -74,8 +83,8 @@ const Singleorder = () => {
   return (
     <div className="h-full overflow-y-auto">
       <div className="p-4">
-        <p>Estimated</p>
-        <p className="font-bold text-2xl">Friday,15 sep</p>
+        <p>Estimated Delivery</p>
+        <p className="font-bold text-2xl">{formatDate(order?.Delivery)}</p>
         <div className="my-4">
           <p className="flex gap-1 items-center font-semibold">
             <CiDeliveryTruck size={24} /> Delivery by Lucknowi Arts
@@ -88,7 +97,6 @@ const Singleorder = () => {
                 }`}
                 size={24}
               />
-
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
@@ -108,11 +116,10 @@ const Singleorder = () => {
                 }`}
                 size={24}
               />
-
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
-                    status == "shipped"
+                    status === "Shipped"
                       ? "border-blue-500 border-l-2"
                       : "border-black border-l-2"
                   }`}
@@ -130,11 +137,10 @@ const Singleorder = () => {
                 }`}
                 size={24}
               />
-
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
-                    status == "out"
+                    status === "out"
                       ? "border-blue-500 border-l-2"
                       : "border-black border-l-2"
                   }`}
@@ -152,11 +158,10 @@ const Singleorder = () => {
                 }`}
                 size={24}
               />
-
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
-                    status == "Delivered"
+                    status === "Delivered"
                       ? "border-blue-500 border-l-2"
                       : "border-black border-l-2"
                   }`}
@@ -165,43 +170,40 @@ const Singleorder = () => {
             </section>
             <section className="font-semibold">Order Delivered</section>
           </div>
-          <div className="w-full my-2  border-b"></div>
+          <div className="w-full my-2 border-b"></div>
 
           <div onClick={() => navigate(`/product/${order?.productId?._id}`)}>
             <p className="font-bold my-2">Product</p>
             <div className="flex flex-col md:flex-row gap-4">
               <section className="w-[10vh]">
-                <img src={order?.productId?.image?.[0]} alt="sss" />
+                <img src={order?.productId?.image?.[0]} alt="Product" />
               </section>
               <section className="flex flex-col gap-2">
                 <p className="font-semibold">{order?.productId?.title}</p>
-                <p className=" line-clamp-3">{order?.productId?.description}</p>
+                <p className="line-clamp-3">{order?.productId?.description}</p>
                 <p className="font-bold">₹ {order?.productId?.selling_price}</p>
               </section>
             </div>
           </div>
-          <div className="w-full my-2  border-b"></div>
+          <div className="w-full my-2 border-b"></div>
 
           <div>
             <p className="font-bold my-2">Purchase Details</p>
-
             <div className="w-full md:w-[50%] border-b border-black"></div>
             <p className="font-semibold">Order ID</p>
             <p>{order?._id}</p>
             <div className="w-full md:w-[50%] border-b my-2 border-black"></div>
             <p className="font-semibold">Purchase Date</p>
-            <p>{order?.orderDateTime}</p>
+            <p>{formatDate(order?.orderDateTime)}</p>
           </div>
-          <div className="w-full my-2  border-b"></div>
+          <div className="w-full my-2 border-b"></div>
 
           <div className="my-4">
             <p className="font-bold my-2">Payment Details</p>
-
-            <div className="w-full md:w-[50%]border-b border-black"></div>
+            <div className="w-full md:w-[50%] border-b border-black"></div>
             <p className="font-semibold">Razorpay Payment ID</p>
             <p>{order?.razorpay_payment_id}</p>
             <div className="w-full md:w-[50%] my-2 border-b border-black"></div>
-
             <p className="font-semibold">Total</p>
             <p>₹ {order?.orderValue}</p>
             <div className="w-full md:w-[50%] border-b my-2 border-black"></div>
