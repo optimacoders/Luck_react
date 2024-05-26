@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../Assets/logo.png";
+//import logo from "../Assets/logo.png";
 import { GiHamburgerMenu, GiCancel } from "react-icons/gi";
 import { IoIosArrowDropright } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
