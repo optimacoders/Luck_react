@@ -11,7 +11,7 @@ import Info from "./pages/Info";
 import Myorders from "./pages/Myorders";
 import Singleorder from "./pages/Singleorder";
 import Login from "./components/Login";
-import Signup from "./components/Signup";
+import Signup from "./components/SignUp";
 import AuthHook, { AuthProvider } from "./context/AuthContext";
 
 const PrivateRoute = ({ element, ...rest }) => {
