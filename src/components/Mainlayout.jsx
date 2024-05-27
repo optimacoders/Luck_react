@@ -4,13 +4,12 @@ import Nav from "./Nav";
 const Mainlayout = ({ children, bg, isNogap }) => {
   return (
     <div className="h-[100svh]">
-      <div className="h-[10vh]">
+      <div className="h-[10vsh]">
         <Nav />
       </div>
       <div
-        className={`bg-${bg} ${
-          isNogap ? "md:px-0  md:py-0" : "md:px-16 md:py-5"
-        }  px-2 h-[90vh] overflow-y-auto `}
+        className={`bg-${bg} ${isNogap ? "md:px-0  md:py-0" : "md:px-16 md:py-5"
+          }  px-2  overflow-y-auto `}
       >
         {children}
       </div>

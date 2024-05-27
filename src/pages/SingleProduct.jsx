@@ -103,7 +103,7 @@ const SingleProduct = () => {
               <img
                 src={preview ? preview : product?.image?.[0]}
                 alt="image"
-                className=" object-fill h-[500px] w-[500px] rounded-xl  "
+                className=" object-fill h-[450px] w-[450px] aspect-square rounded-xl  "
               />
             </div>{" "}
             <div className="w-full my-2 flex justify-center rounded-md p-2">
@@ -141,9 +141,8 @@ const SingleProduct = () => {
                       onClick={() => setsize(item)}
                       onDoubleClick={() => setsize(null)}
                       key={index}
-                      className={`px-3 rounded-md py-1 border-2 ${
-                        size == item ? "border-blue-500" : ""
-                      }`}
+                      className={`px-3 rounded-md py-1 border-2 ${size == item ? "border-blue-500" : ""
+                        }`}
                     >
                       {item}
                     </div>
@@ -160,9 +159,8 @@ const SingleProduct = () => {
                     key={index}
                     onClick={() => setcolor(color)}
                     onDoubleClick={() => setcolor(null)}
-                    className={`${
-                      color == color ? "border-blue-500" : ""
-                    }px-2 w-8 h-8  py-2 border-2 rounded-full`}
+                    className={`${color == color ? "border-blue-500" : ""
+                      }px-2 w-8 h-8  py-2 border-2 rounded-full`}
                     style={{ backgroundColor: color }}
                   ></div>
                 ))}

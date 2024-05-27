@@ -25,18 +25,18 @@ const ProductCard = ({ data, fromsimilar }) => {
         />
       </div>
       <div>
-        <p className="w-[100%] font-semibold flex justify-start line-clamp-1 text-black mt-2">
+        <p className="w-[100%] text-sm font-semibold flex justify-start line-clamp-1 text-black mt-2">
           {data?.title}
         </p>
         <section className="flex my-1 justify-between items-center">
-          <p className="text-sm text-gray-800 font-semibold">
+          <p className="text-xs text-gray-700 font-semibold">
             ₹ {data?.selling_price}
           </p>
-          <p className=" text-sm text-gray-800 font-semibold">
+          <p className=" text-xs text-gray-700 font-semibold">
             {data?.category?.name}
           </p>
         </section>
-        <button className=" rounded-full px-4 py-[3px] font-semibold text-sm my-1 border border-gray-500 hover:bg-gold_dark hover:text-white hover:border-none">
+        <button className=" rounded-full px-4 py-[3px] font-semibold text-xs my-1 border border-gray-500 hover:bg-gold_dark hover:text-white hover:border-none">
           Buy Now
         </button>
       </div>

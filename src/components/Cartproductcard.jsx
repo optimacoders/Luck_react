@@ -37,7 +37,7 @@ const Cartproductcard = ({ data }) => {
         toast.success("updated");
         window.location.reload();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -81,15 +81,15 @@ const Cartproductcard = ({ data }) => {
             </select>
           </section>
           <section className="flex ">
-            <p className="flex gap-2 text text-[#5072A7]">
+            <p className="flex gap-1 cursor-pointer  text text-[#5072A7]">
               Save <CiHeart size={20} className="mt-1" /> |
             </p>
 
             <p
               onClick={() => removeProduct(data?.product?._id)}
-              className="flex gap-2 cursor-pointer text-[#5072A7]"
+              className="flex justify-center gap-1 items-center cursor-pointer text-[#5072A7]"
             >
-              Remove <IoMdRemoveCircleOutline size={20} className="" />
+              Remove <IoMdRemoveCircleOutline size={17} className="" />
             </p>
           </section>
         </div>

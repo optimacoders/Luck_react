@@ -103,20 +103,20 @@ const Cart = () => {
   };
 
   return (
-    <Mainlayout bg={"gray-200"}>
+    <Mainlayout >
       <script
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
-      <div className="md:px-20 bg-gray-200">
+      <div className="md:px-20 ">
         <p className="my-2 font-semibold">My Cart </p>
         <div className="flex flex-col  border-r-2 gap-3 md:flex-row">
-          <div className=" w-full md:w-2/3 rounded-md bg-white    ">
+          <div className=" w-full md:w-2/3 rounded-md bg-gray-50">
             {cart.map((item, index) => (
               <Cartproductcard key={index} data={item} />
             ))}
           </div>
-          <div className="w-full md:w-1/3 rounded-md bg-white p-4  ">
+          <div className="w-full md:w-1/3 rounded-md bg-gray-50 p-4  ">
             <p className="font-semibold my-2 pb-2 border-b-2 border-dashed">
               Delivery
             </p>
