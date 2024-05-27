@@ -108,10 +108,10 @@ const Cart = () => {
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
       />
-      <div className="md:px-20 ">
+      <div className="md:px-8">
         <p className="my-2 font-semibold">My Cart </p>
-        <div className="flex flex-col  border-r-2 gap-3 md:flex-row">
-          <div className=" w-full md:w-2/3 rounded-md bg-gray-50">
+        <div className="flex flex-col border-r-2 gap-3 md:flex-row ">
+          <div className=" w-full md:w-2/3 rounded-md md:h-[75vh] bg-gray-50 p-3 overflow-y-auto">
             {cart.map((item, index) => (
               <Cartproductcard key={index} data={item} />
             ))}

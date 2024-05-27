@@ -56,9 +56,9 @@ const Info = () => {
   };
 
   return (
-    <div className="">
+    <div className=" border">
       <div>
-        <p className="text-2xl font-bold mb-2">
+        <p className="text-xl font-bold mb-2">
           Persnol information {username}{" "}
         </p>
         <div className="w-full md:w-[60%] ">

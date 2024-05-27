@@ -13,39 +13,37 @@ const Profile = () => {
   const [orders, setOrders] = useState(false);
   const navigate = useNavigate();
   const path = location.pathname;
- 
+
   console.log(path);
   return (
     <Mainlayout isNogap={true}>
-      <div className="h-[100svh]">
-        <div className="md:p-4 p-2 h-full gap-2 bg-gray-100 flex flex-col md:flex-row gap-x-6">
-          <div className="w-full md:w-[15%] h-[10vh] md:h-full">
-            <p className="text-2xl hidden sm:block font-semibold p-2">
+      <div className="h-[90svh]">
+        <div className="md:p-4 p-2 h-full gap-2 bg-gray-100 flex flex-col md:flex-row gap-x-4">
+          <div className="w-full md:w-[12%] h-[10vh] md:h-full">
+            <p className="text-lg hidden sm:block font-semibold p-2">
               My Account
             </p>
             <div className="flex overflow-y-auto md:flex-col w-[90%] over">
               <p
                 onClick={() => navigate("/profile")}
-                className={`flex ${
-                  path === "/profile" ? "border-b-2 border-blue-500" : ""
-                } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
+                className={`flex ${path === "/profile" ? "bg-gold_primary text-white rounded-md" : ""
+                  } font-semibold gap-x-1 text-sm w-full items-center cursor-pointer p-[6px] select-none`}
               >
-                <CgProfile size={20} /> My details
+                <CgProfile size={15} /> My details
               </p>
               <p
                 onClick={() => navigate("/profile/orders")}
-                className={`flex ${
-                  path === "/profile/orders"
-                    ? "border-b-2  border-blue-500"
-                    : ""
-                } font-semibold rounded-lg gap-x-2 w-full items-center cursor-pointer p-2 select-none`}
+                className={`flex ${path === "/profile/orders"
+                  ? "border-b "
+                  : ""
+                  } font-semibold text-sm gap-x-1 w-full items-center cursor-pointer p-[6px] select-none`}
               >
-                <CiDeliveryTruck size={20} /> My orders
+                <CiDeliveryTruck size={17} /> My orders
               </p>
             </div>
-           
+
           </div>
-          <div className="w-full h-full md:w-[85%] md:p-4 rounded-md bg-white">
+          <div className="w-full h-[85vh] overflow-y-auto md:w-[85%] md:p-4 rounded-md bg-white border">
             <Outlet />
           </div>
         </div>

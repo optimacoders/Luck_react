@@ -41,14 +41,14 @@ const Cartproductcard = ({ data }) => {
   };
 
   return (
-    <div className="grid my-2 h-fit w-auto grid-cols-[150px,1fr] gap-x-3 p-2 border-b rounded-lg">
+    <div className="grid my-2 h-fit w-auto grid-cols-[130px,1fr] gap-x-3 p-2 border-b rounded-lg">
       <div
         onClick={() => router.push(`/product/${data?.product._id}`)}
-        className="rounded-lg"
+        className="rounded-lg w-full"
       >
         <img
           src={data?.product?.image?.[0]}
-          className="rounded-md h-[20vh] w-[15vh]"
+          className="rounded-md w-full aspect-square"
         />
       </div>
       <div className="p-2 gap-1 ">
@@ -67,11 +67,11 @@ const Cartproductcard = ({ data }) => {
         </div>
         <div className="flex w-full flex-col md:flex-row gap-2 items-center md:justify-between">
           <section className="flex w-full md:w-[30%]">
-            <p>Oty.</p>
+            <p className=" text-sm">Oty.</p>
             <select
               onChange={(e) => editCart(data?.product?._id, e.target.value)}
               value={quantity}
-              className="px-4 border rounded-md"
+              className="px-4 border rounded-md focus:outline-none focus:border-black"
             >
               {quantityOptions.map((value) => (
                 <option key={value} value={value}>
@@ -81,15 +81,15 @@ const Cartproductcard = ({ data }) => {
             </select>
           </section>
           <section className="flex ">
-            <p className="flex gap-1 cursor-pointer  text text-[#5072A7]">
-              Save <CiHeart size={20} className="mt-1" /> |
+            <p className="flex justify-center gap-1 items-end text text-[#5072A7]">
+              <span>Save</span> <span><CiHeart size={20} className="mt-1" /></span> |
             </p>
 
             <p
               onClick={() => removeProduct(data?.product?._id)}
-              className="flex justify-center gap-1 items-center cursor-pointer text-[#5072A7]"
+              className="flex justify-center gap-1 items-end cursor-pointer text-[#5072A7]"
             >
-              Remove <IoMdRemoveCircleOutline size={17} className="" />
+              <span>Remove</span> <span><IoMdRemoveCircleOutline size={17} className="" /></span>
             </p>
           </section>
         </div>
