@@ -100,7 +100,7 @@ const Singleorder = () => {
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
-                    status === "Pending" ? "border-blue-500 border-l-2" : ""
+                    status === "Pending" ? "border-blue-500 border-l-2" : "border-black border-l-2"
                   }`}
                 ></section>
               </div>

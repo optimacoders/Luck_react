@@ -17,7 +17,7 @@ const SingleProduct = () => {
   const navigate = useNavigate();
 
   console.log(id);
-  const [product, setProduct] = useState([]);
+  const [product, setProduct] = useState("");
   const [colors, setcolors] = useState([]);
   const [sizes, setsizes] = useState([]);
   const [size, setsize] = useState("");
@@ -57,17 +57,17 @@ const SingleProduct = () => {
     }
   };
 
-  const addtoCart = async (sign, pid) => {
+  const addtoCart = async (pid, sign) => {
     try {
       const response = await postRequest(true, "/cart", {
         productId: pid,
-        quantity: qunatity,
+        quantity: Number(1),
         size: size,
         color: color,
       });
       console.log(response);
       if (response.status) {
-        if (sign === "isbuy") {
+        if (sign === "is_buy") {
           navigate("/cart");
         } else {
           toast.success(response.message);
@@ -85,7 +85,7 @@ const SingleProduct = () => {
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     similarProducts();
@@ -181,7 +181,7 @@ const SingleProduct = () => {
               <div className="flex gap-2  ">
                 <div>
                   <button
-                    onClick={() => addtoCart("isbuy", product?._id)}
+                    onClick={() => addtoCart(product?._id, "is_buy")}
                     className="px-6 py-2 font-semibold rounded-full text-white bg-gold_medium"
                   >
                     Buy Now
