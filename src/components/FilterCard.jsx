@@ -7,8 +7,8 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
   const getCategories = async () => {
     try {
       const { data } = await axios.get(`${url}/admin/category`);
-      setcategory(data.categories);
-      console.log(data.categories);
+      setcategory(data.response.data);
+      console.log(data.response.data);
       mycategories(data.categories);
     } catch (error) {
       console.error("Error fetching :", error);
