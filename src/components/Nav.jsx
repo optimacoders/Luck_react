@@ -61,16 +61,16 @@ const Nav = () => {
             {isLogedin ? (
               <section
                 onClick={() => navigate("/profile")}
-                className="flex gap-2 font-semibold items-center"
+                className="flex gap-2 font-semibold items-center cursor-pointer"
               >
-                <FaRegUser size={20} />
-                <p className="font-semibold cursor-pointer">Account</p>
+                <FaRegUser size={18} />
+                <p className="font-semibold">Account</p>
               </section>
             ) : (
               <>
                 <section
                   onClick={() => navigate("/auth/login")}
-                  className="flex gap-2 font-semibold items-center"
+                  className="flex gap-2 font-semibold items-center bg-gold_medium text-white text-sm rounded-full px-3 py-[4px]"
                 >
                   <p className="font-semibold cursor-pointer">Login</p>
                 </section>
@@ -79,7 +79,7 @@ const Nav = () => {
 
             <section
               onClick={() => navigate("/cart")}
-              className="flex gap-2 font-semibold items-center"
+              className="flex gap-2 font-semibold items-center cursor-pointer"
             >
               <AiOutlineShoppingCart size={20} />
               <p className=" font-semibold">Cart</p>
@@ -93,9 +93,8 @@ const Nav = () => {
       <div className=" sm:mx-10 border-b"></div>
       <section className="z-10 sm:hidden">
         <ul
-          className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${
-            nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
-          } transition-all ease-linear duration-200`}
+          className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
+            } transition-all ease-linear duration-200`}
         >
           <li className="mx-2 flex justify-between my-1 font-semibold inline">
             MEN
