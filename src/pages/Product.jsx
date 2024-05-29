@@ -14,18 +14,28 @@ const Product = ({}) => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [Category, setcategory] = useState(null);
+  const [Categories, setcategories] = useState([]);
 
   const fetchProducts = async (category) => {
     try {
-      console.log(category);
       let link = "admin/product";
       const response = await axios.get(
         category ? `${url}/${link}?category=${category}` : `${url}/${link}`
       );
-      console.log(response.products.data);
-      setProducts(response.products.data);
+      console.log(response.data.products.data);
+      setProducts(response.data.products.data);
     } catch (error) {
       console.error("Error fetching products:", error);
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const { data } = await axios.get(`${url}/admin/category`);
+      setcategories(data.response.data);
+      console.log(data.response.data);
+    } catch (error) {
+      console.error("Error fetching :", error);
     }
   };
 
@@ -37,6 +47,9 @@ const Product = ({}) => {
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
 
+  useEffect(() => {
+    getCategories();
+  }, []);
   return (
     <div>
       <Mainlayout isNogap={true}>
@@ -48,7 +61,7 @@ const Product = ({}) => {
             />
           </div>
           <div className="grid md:w-[85%] grid-cols-2 md:grid-cols-4 gap-2">
-            {products?.data?.map((product, index) => (
+            {products?.map((product, index) => (
               <ProductCard key={index} data={product} />
             ))}
           </div>
@@ -56,16 +69,16 @@ const Product = ({}) => {
         {showPopup && (
           <div className=" w-full md:hidden  h-full sticky bottom-0 z-5">
             <FilterPopup iscancel={handleCancelPopup}>
-              <span className="p-2 font-semibold"> CATEGORIES</span>
-              <div className="p-2 flex gap-x-2 w-full overflow-scroll scrollbar-none">
-                {Category?.map((item, index) => (
+              <span className="p-2 font-bold"> CATEGORIES</span>
+              <div className="p-2 grid grid-cols-4 gap-2 ">
+                {Categories?.map((item, index) => (
                   <p
                     onClick={() => setSelectedCategory(item._id)}
                     className={`border-2 ${
                       selectedCategory == item._id
-                        ? "border-2 border-blue-500"
-                        : "border-2"
-                    } p-1 px-3 border-black rounded-md`}
+                        ? "border-2 border-gold_dark"
+                        : ""
+                    }  px-3  rounded-md w-full font-semibold bg-white`}
                   >
                     {item.name}
                   </p>
