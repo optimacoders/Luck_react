@@ -61,10 +61,10 @@ const Nav = () => {
             {isLogedin ? (
               <section
                 onClick={() => navigate("/profile")}
-                className="flex gap-2 font-semibold items-center"
+                className="flex gap-2 font-semibold items-center cursor-pointer"
               >
-                <FaRegUser size={20} />
-                <p className="font-semibold cursor-pointer">Account</p>
+                <FaRegUser size={18} />
+                <p className="font-semibold">Account</p>
               </section>
             ) : (
               <>
@@ -79,7 +79,7 @@ const Nav = () => {
 
             <section
               onClick={() => navigate("/cart")}
-              className="flex gap-2 font-semibold items-center"
+              className="flex gap-2 font-semibold items-center cursor-pointer"
             >
               <AiOutlineShoppingCart size={20} />
               <p className=" font-semibold">Cart</p>

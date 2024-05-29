@@ -3,7 +3,7 @@ import Nav from "./Nav";
 
 const Mainlayout = ({ children, bg, isNogap }) => {
   return (
-    <div className="h-[100svh]">
+    <div className="h-[100svh] w-[100svw]">
       <div className="h-[10svh]">
         <Nav />
       </div>
