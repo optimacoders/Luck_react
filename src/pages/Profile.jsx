@@ -4,6 +4,7 @@ import { MdOutlineLocationOn } from "react-icons/md";
 import { CiDeliveryTruck } from "react-icons/ci";
 import Mainlayout from "../components/Mainlayout";
 import { Outlet, useNavigate } from "react-router-dom";
+import { MdFavoriteBorder } from "react-icons/md";
 import { IoMdLogOut } from "react-icons/io";
 import Cookies from "js-cookie";
 import AuthHook from "../context/AuthContext";
@@ -39,6 +40,15 @@ const Profile = () => {
                   } font-semibold text-sm gap-x-1 w-full my-1 items-center cursor-pointer p-[6px] select-none`}
               >
                 <CiDeliveryTruck size={17} /> My orders
+              </p>
+              <p
+                onClick={() => navigate("/profile/favorites")}
+                className={`flex ${path === "/profile/favorites"
+                  ? "bg-white text-black shadow border-b-2 md:border-l-4 border-[#c9b156]"
+                  : ""
+                  } font-semibold text-sm gap-x-1 w-full my-1 items-center cursor-pointer p-[6px] select-none`}
+              >
+                <MdFavoriteBorder size={17} /> Favorites
               </p>
             </div>
 
