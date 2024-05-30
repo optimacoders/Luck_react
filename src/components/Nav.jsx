@@ -33,7 +33,7 @@ const Nav = () => {
   }, [token]);
 
   return (
-    <div className=" h-[10vh]">
+    <div className=" h-[10vh] min-h-[10vh]">
       <div className="bg-white px-2 sm:px-4 items-center w-full flex justify-between">
         <section onClick={handle} className="sm:hidden border">
           {nav ? <GiCancel size={23} /> : <GiHamburgerMenu size={23} />}

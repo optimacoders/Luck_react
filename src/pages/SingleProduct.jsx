@@ -107,7 +107,7 @@ const SingleProduct = () => {
               />
             </div>{" "}
             <div className="w-full my-2 flex justify-center rounded-md p-2">
-              <div className="grid grid-cols-2 overflow-x-auto md:grid-cols-3 gap-2 w-full">
+              <div className="grid grid-cols-3 overflow-x-auto md:grid-cols-3 gap-2 w-full">
                 {product?.image?.map((image, index) => (
                   <div
                     onClick={() => setpreview(image)}
@@ -124,7 +124,7 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
-          <div className=" py-4 w-full px-10">
+          <div className=" py-4 w-full px-3 md:px-10">
             <p className=" font-semibold text-xl md:text-2xl ">
               {product?.title}
             </p>

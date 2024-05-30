@@ -27,7 +27,7 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
       <p className="text-start font-semibold border-b pb-2">FILTERS</p>
       <div className="my-2">
         <p className="font-semibold">CATEGORIES</p>
-        <ul className="py-2 px-2">
+        <ul className="p-2 flex flex-col gap-2">
           {category.map((item, index) => (
             <li key={index} className="flex">
               <label className="flex items-center">
@@ -42,7 +42,7 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
                   type="checkbox"
                   className="p-2 "
                 />
-                <span className="ml-2">{item?.name}</span>
+                <span className="ml-2 text-sm">{item?.name}</span>
               </label>
             </li>
           ))}
