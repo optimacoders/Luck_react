@@ -107,7 +107,7 @@ const SingleProduct = () => {
               />
             </div>{" "}
             <div className="w-full my-2 flex justify-center rounded-md p-2">
-              <div className="grid grid-cols-2 overflow-x-auto md:grid-cols-3 gap-2 w-full">
+              <div className=" overflow-x-auto flex  gap-2 w-full">
                 {product?.image?.map((image, index) => (
                   <div
                     onClick={() => setpreview(image)}
@@ -117,7 +117,7 @@ const SingleProduct = () => {
                     <img
                       src={image}
                       alt={`Product image ${index + 1}`}
-                      className="object-fill w-[20vh] aspect-square rounded-lg"
+                      className="object-fill w-[10vh] md:w-[20vh] h-[10vh] md:h-[20vh] aspect-square rounded-lg"
                     />
                   </div>
                 ))}
@@ -141,8 +141,9 @@ const SingleProduct = () => {
                       onClick={() => setsize(item)}
                       onDoubleClick={() => setsize(null)}
                       key={index}
-                      className={`px-3 rounded-md py-1 border-2 ${size == item ? "border-blue-500" : ""
-                        }`}
+                      className={`px-3 rounded-md py-1 border-2 ${
+                        size == item ? "border-blue-500" : ""
+                      }`}
                     >
                       {item}
                     </div>
@@ -159,8 +160,9 @@ const SingleProduct = () => {
                     key={index}
                     onClick={() => setcolor(color)}
                     onDoubleClick={() => setcolor(null)}
-                    className={`${color == color ? "border-blue-500" : ""
-                      }px-2 w-8 h-8  py-2 border-2 rounded-full`}
+                    className={`${
+                      color == color ? "border-blue-500" : ""
+                    }px-2 w-8 h-8  py-2 border-2 rounded-full`}
                     style={{ backgroundColor: color }}
                   ></div>
                 ))}
