@@ -13,6 +13,7 @@ import Singleorder from "./pages/Singleorder";
 import Login from "./components/Login";
 import Signup from "./components/SignUp";
 import AuthHook, { AuthProvider } from "./context/AuthContext";
+import Favorites from "./pages/Favorites";
 
 const PrivateRoute = ({ element, ...rest }) => {
   const { isLogedin } = AuthHook();
@@ -39,6 +40,7 @@ const App = () => {
             <Route index element={<Info />} />
             <Route path="/profile/orders" element={<Myorders />} />
             <Route path="/profile/myorder/:id" element={<Singleorder />} />
+            <Route path="/profile/favorites" element={<Favorites />} />
           </Route>
         </Routes>
         <Toaster position="top-right" reverseOrder={true} />

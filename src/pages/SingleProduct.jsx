@@ -124,7 +124,7 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
-          <div className=" py-4 w-full px-10">
+          <div className=" py-4 w-full px-3 md:px-10">
             <p className=" font-semibold text-xl md:text-2xl ">
               {product?.title}
             </p>
