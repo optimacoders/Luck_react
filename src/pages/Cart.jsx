@@ -6,6 +6,7 @@ import Mainlayout from "../components/Mainlayout";
 import Cartproductcard from "../components/Cartproductcard";
 import { getRequest, postRequest } from "../utils/Apihelpers";
 import img from "../assets/logo.png";
+import CartCardSkeleton from "../skeletons/CartCardSkeleton";
 
 const Cart = () => {
   const key = import.meta.env.VITE_RAZORPAY_KEY;
@@ -14,11 +15,14 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(null);
   const [address, setaddress] = useState("");
   const url = import.meta.env.VITE_BACKEND;
+  const [cartLoader, setcartLoader] = useState(false)
 
   const getUserCart = async () => {
     try {
+      setcartLoader(true)
       const cart = await getRequest(true, "/cart");
       setCart(cart.cart);
+      // setcartLoader(false)
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -112,7 +116,11 @@ const Cart = () => {
         <p className="my-2 font-semibold">My Cart </p>
         <div className="flex flex-col border-r-2 gap-3 md:flex-row ">
           <div className=" w-full md:w-2/3 rounded-md md:h-[75vh] bg-gray-50 p-3 overflow-y-auto">
-            {cart.map((item, index) => (
+            {cartLoader ? <>
+              <CartCardSkeleton />
+              <CartCardSkeleton />
+              <CartCardSkeleton />
+            </> : cart.map((item, index) => (
               <Cartproductcard key={index} data={item} />
             ))}
           </div>
