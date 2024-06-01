@@ -6,50 +6,59 @@ import FilterCard from "../components/FilterCard";
 import ProductCard from "../components/ProductCard";
 import FilterPopup from "../components/FilterPopup";
 import Mainlayout from "../components/Mainlayout";
+import { useLocation } from "react-router-dom";
 
 const Product = ({}) => {
   const url = import.meta.env.VITE_BACKEND;
-
+  const location = useLocation();
+  const { categorys } = location.state || {};
+  console.log("dd", categorys);
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [Category, setcategory] = useState(null);
   const [Categories, setcategories] = useState([]);
 
-  const fetchProducts = async (category) => {
-    try {
-      let link = "admin/product";
-      const response = await axios.get(
-        category ? `${url}/${link}?category=${category}` : `${url}/${link}`
-      );
-      console.log(response.data.products.data);
-      setProducts(response.data.products.data);
-    } catch (error) {
-      console.error("Error fetching products:", error);
+  useEffect(() => {
+    if (categorys) {
+      setcategory(categorys);
+      setSelectedCategory(categorys);
     }
-  };
+  }, [categorys]);
 
-  const getCategories = async () => {
-    try {
-      const { data } = await axios.get(`${url}/admin/category`);
-      setcategories(data.response.data);
-      console.log(data.response.data);
-    } catch (error) {
-      console.error("Error fetching :", error);
-    }
-  };
+  useEffect(() => {
+    const fetchProducts = async (category) => {
+      try {
+        const link = "admin/product";
+        const response = await axios.get(
+          category ? `${url}/${link}?category=${category}` : `${url}/${link}`
+        );
+        setProducts(response.data.products.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts(selectedCategory);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const getCategories = async () => {
+      try {
+        const { data } = await axios.get(`${url}/admin/category`);
+        setcategories(data.response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    getCategories();
+  }, []);
 
   const handleCancelPopup = () => {
     setShowPopup(false);
   };
 
-  useEffect(() => {
-    fetchProducts(selectedCategory);
-  }, [selectedCategory]);
-
-  useEffect(() => {
-    getCategories();
-  }, []);
   return (
     <div>
       <Mainlayout isNogap={true}>

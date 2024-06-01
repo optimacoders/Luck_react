@@ -9,12 +9,16 @@ import moment from "moment/moment";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
+  const [status, setstatus] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const { orders } = await getRequest(true, "/order/myorders");
+        const { orders } = await getRequest(
+          true,
+          `/order/myorders?filter=${status}`
+        );
         setOrders(orders);
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -22,7 +26,7 @@ const Myorders = () => {
     };
 
     fetchUserData();
-  }, []);
+  }, [status]);
 
   const handleBestClick = (productId) => {
     console.log("Mark as best:", productId);
@@ -89,27 +93,85 @@ const Myorders = () => {
         </tbody>
       </table> */}
       <div className=" flex w-[100%] overflow-x-auto gap-2 my-2">
-        <section className=" border rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark">All</section>
-        <section className=" border rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark">In progress</section>
-        <section className=" border rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark">Pending</section>
-        <section className=" border rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark">Delivered</section>
+        <section
+          onClick={() => setstatus("")}
+          className={`border ${
+            status === "" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
+        >
+          All
+        </section>
+        <section
+          onClick={() => setstatus("Pending")}
+          className={`border ${
+            status === "Pending" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+        >
+          Pending
+        </section>
+        <section
+          onClick={() => setstatus("Shipped")}
+          className={`border ${
+            status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+        >
+          Shipped
+        </section>
+        <section
+          onClick={() => setstatus("out")}
+          className={`border ${
+            status === "out" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+        >
+          out for Delivery
+        </section>
+        <section
+          onClick={() => setstatus("Delivered")}
+          className={`border ${
+            status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+        >
+          Delivered
+        </section>
+        <section
+          onClick={() => setstatus("cancelled")}
+          className={`border ${
+            status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+        >
+          cancelled
+        </section>
       </div>
       <div>
-        {
-          orders?.map((item) => {
-            return <div key={item._id} className=" rounded-lg flex border pr-0 p-2 md:px-6 md:py-4">
+        {orders?.map((item) => {
+          return (
+            <div
+              key={item._id}
+              className=" rounded-lg flex border pr-0 p-2 md:px-6 md:py-4"
+            >
               <div className="w-[95%]">
                 <section className=" text-xs flex gap-2 mb-3 items-center">
                   <p className=" rounded-full border px-4 font-medium py-[2px]">
-                    {item?.status}</p> |
-                  <p className=" font-medium">{moment(item?.orderDateTime).format('D MMMM YYYY')}</p>
+                    {item?.status}
+                  </p>{" "}
+                  |
+                  <p className=" font-medium">
+                    {moment(item?.orderDateTime).format("D MMMM YYYY")}
+                  </p>
                 </section>
                 <section className=" flex items-center gap-2 md:gap-4">
-                  <img src={item?.productId?.image[0]} className=" w-20 h-20 rounded-lg" />
+                  <img
+                    src={item?.productId?.image[0]}
+                    className=" w-20 h-20 rounded-lg"
+                  />
                   <section className="">
-                    <p className=" font-semibold text-xs md:text-sm text-gold_dark my-1">Order ID:{item._id}</p>
+                    <p className=" font-semibold text-xs md:text-sm text-gold_dark my-1">
+                      Order ID:{item._id}
+                    </p>
                     <p className="text-xs">{item?.productId?.title}</p>
-                    <p className="text-xs md:text-sm font-medium">{item?.orderValue}</p>
+                    <p className="text-xs md:text-sm font-medium">
+                      {item?.orderValue}
+                    </p>
                   </section>
                 </section>
               </div>
@@ -121,8 +183,8 @@ const Myorders = () => {
                 </button>
               </div>
             </div>
-          })
-        }
+          );
+        })}
       </div>
     </div>
   );
