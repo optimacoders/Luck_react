@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [isLogedin, setisLogedin] = useState(Cookies.get("token") ? true : false)
     const [token, settoken] = useState(Cookies.get("token") ? Cookies.get("token") : "")
     const [userDetails, setuserDetails] = useState(null)
+    const [favourites, setfavourites] = useState([])
     const url = import.meta.env.VITE_BACKEND;
 
     const getUserDetails = async () => {
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }) => {
                     }
                 });
                 setuserDetails(res.data.userdetails)
+                setfavourites(res.data.favourites)
             } catch (err) {
                 if (err.response.status == 401) {
                     setuserDetails(null)
@@ -32,7 +34,9 @@ export const AuthProvider = ({ children }) => {
         setisLogedin,
         token,
         settoken,
-        getUserDetails
+        getUserDetails,
+        favourites,
+        setfavourites
     }
 
     return <AuthContext.Provider value={value}>
