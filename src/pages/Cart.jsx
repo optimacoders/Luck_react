@@ -22,7 +22,7 @@ const Cart = () => {
       setcartLoader(true)
       const cart = await getRequest(true, "/cart");
       setCart(cart.cart);
-      // setcartLoader(false)
+      setcartLoader(false)
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
