@@ -7,6 +7,7 @@ import Cartproductcard from "../components/Cartproductcard";
 import { getRequest, postRequest } from "../utils/Apihelpers";
 import img from "../assets/logo.png";
 import CartCardSkeleton from "../skeletons/CartCardSkeleton";
+import AuthHook from "../context/AuthContext";
 
 const Cart = () => {
   const key = import.meta.env.VITE_RAZORPAY_KEY;
@@ -15,14 +16,19 @@ const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(null);
   const [address, setaddress] = useState("");
   const url = import.meta.env.VITE_BACKEND;
-  const [cartLoader, setcartLoader] = useState(false)
+  const [cartLoader, setcartLoader] = useState(false);
 
+  const { userDetails ,getuser} = AuthHook();
+  useEffect(()=>{
+    getUserDetails
+  },[])
+  console.log("dd", userDetails);
   const getUserCart = async () => {
     try {
-      setcartLoader(true)
+      setcartLoader(true);
       const cart = await getRequest(true, "/cart");
       setCart(cart.cart);
-      setcartLoader(false)
+      setcartLoader(false);
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
@@ -107,7 +113,7 @@ const Cart = () => {
   };
 
   return (
-    <Mainlayout >
+    <Mainlayout>
       <script
         id="razorpay-checkout-js"
         src="https://checkout.razorpay.com/v1/checkout.js"
@@ -116,13 +122,17 @@ const Cart = () => {
         <p className="my-2 font-semibold">My Cart </p>
         <div className="flex flex-col border-r-2 gap-3 md:flex-row ">
           <div className=" w-full md:w-2/3 rounded-md md:h-[75vh] bg-gray-50 p-3 overflow-y-auto">
-            {cartLoader ? <>
-              <CartCardSkeleton />
-              <CartCardSkeleton />
-              <CartCardSkeleton />
-            </> : cart.map((item, index) => (
-              <Cartproductcard key={index} data={item} />
-            ))}
+            {cartLoader ? (
+              <>
+                <CartCardSkeleton />
+                <CartCardSkeleton />
+                <CartCardSkeleton />
+              </>
+            ) : (
+              cart.map((item, index) => (
+                <Cartproductcard key={index} data={item} />
+              ))
+            )}
           </div>
           <div className="w-full md:w-1/3 rounded-md bg-gray-50 p-4  ">
             <p className="font-semibold my-2 pb-2 border-b-2 border-dashed">
