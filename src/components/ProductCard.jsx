@@ -54,7 +54,7 @@ const ProductCard = ({ data, fromsimilar }) => {
           className="object-fill w-full aspect-square rounded-lg"
         />
         <section className=" bg-white rounded-full p-1 absolute top-4 right-5 md:right-2 md:top-2 hidden group-hover:block">
-          {favourites.includes(data._id) ? (
+          {favourites?.includes(data._id) ? (
             <MdFavorite
               size={20}
               onClick={(e) => {
