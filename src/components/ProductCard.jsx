@@ -14,7 +14,7 @@ const ProductCard = ({ data, fromsimilar }) => {
 
   return (
     <div
-      className="cursor-pointer h-full transition duration-300 ease-in-out opacity-90 p-2 hover:opacity-100 rounded-lg"
+      className="cursor-pointer h-full transition duration-300 ease-in-out opacity-90 p-2 hover:opacity-100 rounded-lg group"
       onClick={() => redirect()}
     >
       <div className="flex justify-center items-center">

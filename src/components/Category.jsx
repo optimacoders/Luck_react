@@ -26,7 +26,7 @@ const Category = () => {
           <div className="  w-24 h-24 aspect-square rounded-full relative overflow-hidden">
             <img src={item?.image} className="object-cover aspect-square rounded-md" />
           </div>
-          <p className="flex justify-center text-center text-black text-sm font-semibold">
+          <p className="flex justify-center text-center text-gray-700 text-xs font-semibold">
             {item?.name}
           </p>
         </div>

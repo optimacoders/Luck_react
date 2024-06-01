@@ -42,7 +42,7 @@ const Nav = () => {
           <img src={""} alt="logo" className="" width={130} />
         </div>
         <div className="hidden md:block">
-          <ul className="flex gap-4 font-semibold text-sm ">
+          <ul className="flex gap-4 font-semibold text-xs ">
             <li>MEN</li>
             <li>KIDS</li>
             <li>HOME</li>
@@ -53,7 +53,7 @@ const Nav = () => {
           <input
             type="text"
             placeholder="Search for products"
-            className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-sm"
+            className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-xs"
           />
         </div>
         <div className=" ">
@@ -63,8 +63,8 @@ const Nav = () => {
                 onClick={() => navigate("/profile")}
                 className="flex gap-2 font-semibold items-center cursor-pointer"
               >
-                <FaRegUser size={18} />
-                <p className="font-semibold">Account</p>
+                <FaRegUser size={16} />
+                <p className="font-semibold text-sm">Account</p>
               </section>
             ) : (
               <>
@@ -72,7 +72,7 @@ const Nav = () => {
                   onClick={() => navigate("/auth/login")}
                   className="flex gap-2 font-semibold items-center bg-gold_medium text-white text-sm rounded-full px-3 py-[4px]"
                 >
-                  <p className="font-semibold cursor-pointer">Login</p>
+                  <p className="font-semibold cursor-pointer text-sm">Login</p>
                 </section>
               </>
             )}
@@ -81,8 +81,8 @@ const Nav = () => {
               onClick={() => navigate("/cart")}
               className="flex gap-2 font-semibold items-center cursor-pointer"
             >
-              <AiOutlineShoppingCart size={20} />
-              <p className=" font-semibold">Cart</p>
+              <AiOutlineShoppingCart size={18} />
+              <p className=" font-semibold text-sm">Cart</p>
             </section>
             {/* <section>
               <FaRegHeart size={28} />
