@@ -11,7 +11,7 @@ const Side = () => {
   ];
 
   return (
-    <div className=" border border-black">
+    <div className=" ">
       <Carousel
         autoPlay
         infiniteLoop={true}
@@ -19,7 +19,7 @@ const Side = () => {
         showIndicators={false}
         showThumbs={false}
         interval={5000}
-        // centerMode
+      // centerMode
       >
         {images.map((img, index) => (
           <div key={index}>

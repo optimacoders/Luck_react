@@ -26,7 +26,7 @@ const Category = () => {
   };
 
   return (
-    <div className=" grid grid-cols-3 md:grid-cols-5 gap-3 md:gap-5 flex-wrap md:px-36 justify-center items-center">
+    <div className=" grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-5 flex-wrap md:px-36 justify-center items-center">
       {category?.map((item, index) => (
         <div
           onClick={() => click(item._id)}
@@ -39,7 +39,7 @@ const Category = () => {
               className="object-cover aspect-square rounded-md"
             />
           </div>
-          <p className="flex justify-center text-center text-black text-sm font-semibold">
+          <p className="flex justify-center text-center text-gray-700 text-xs font-semibold">
             {item?.name}
           </p>
         </div>
