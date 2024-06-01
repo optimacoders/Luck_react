@@ -6,20 +6,24 @@ import { RiVerifiedBadgeLine } from "react-icons/ri";
 import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import moment from "moment/moment";
+import MyorderCardSkeleton from "../skeletons/MyorderCardSkeleton";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
   const [status, setstatus] = useState("");
+  const [loader, setloader] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setloader(true)
       try {
         const { orders } = await getRequest(
           true,
           `/order/myorders?filter=${status}`
         );
         setOrders(orders);
+        setloader(false)
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -35,115 +39,58 @@ const Myorders = () => {
   return (
     <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0">
       <p className="font-semibold text-xl">Your orders</p>
-      {/* <table className="w-full overflow-x-auto my-2 border">
-        <thead>
-          <tr>
-            <th className="text-xs sm:text-md">Product Image</th>
-            <th className="text-xs md:text-md">Product Name</th>
-            <th className="hidden text-xs md:text-md md:block">
-              Payment Status
-            </th>
-            <th className="text-xs md:text-md">Actions</th>
-          </tr>
-        </thead>
-        <tbody className="border">
-          {orders.map((item, index) => (
-            <tr className="border p-2" key={index}>
-              <td className="">
-                <PhotoProvider>
-                  <PhotoView src={item?.productId?.image?.[0]}>
-                    <img
-                      src={item?.productId?.image?.[0]}
-                      className="rounded-md flex justify-center px-3 h-14 w-18 cursor-pointer"
-                      alt="Product"
-                    />
-                  </PhotoView>
-                </PhotoProvider>
-              </td>
-              <td className="md:text-center text-start">
-                {item?.productId?.title}
-              </td>
-              <td className="hidden md:block">
-                <div className="flex py-2 justify-center items-center">
-                  <p
-                    className={`${
-                      item.paymentStatus === "done"
-                        ? "bg-green-600 text-white"
-                        : "text-black"
-                    } text-center font-semibold rounded-2xl flex justify-center w-[50%]`}
-                  >
-                    {item.paymentStatus}
-                    <RiVerifiedBadgeLine
-                      className="mt-1 px-[2px]"
-                      size={20}
-                      color="white"
-                    />
-                  </p>
-                </div>
-              </td>
-              <td>
-                <button
-                  onClick={() => navigate(`/profile/myorder/${item._id}`)}
-                >
-                  <LuChevronRight size={24} />
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table> */}
+
       <div className=" flex w-[100%] overflow-x-auto gap-2 my-2">
         <section
           onClick={() => setstatus("")}
-          className={`border ${
-            status === "" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
+          className={`border ${status === "" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
         >
           All
         </section>
         <section
           onClick={() => setstatus("Pending")}
-          className={`border ${
-            status === "Pending" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Pending" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Pending
         </section>
         <section
           onClick={() => setstatus("Shipped")}
-          className={`border ${
-            status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Shipped
         </section>
         <section
           onClick={() => setstatus("out")}
-          className={`border ${
-            status === "out" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "out" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           out for Delivery
         </section>
         <section
           onClick={() => setstatus("Delivered")}
-          className={`border ${
-            status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Delivered
         </section>
         <section
           onClick={() => setstatus("cancelled")}
-          className={`border ${
-            status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           cancelled
         </section>
       </div>
       <div>
-        {orders?.map((item) => {
+        {loader ? <>
+          <MyorderCardSkeleton />
+          <MyorderCardSkeleton />
+          <MyorderCardSkeleton />
+          <MyorderCardSkeleton />
+        </> : orders?.map((item) => {
           return (
             <div
               key={item._id}
