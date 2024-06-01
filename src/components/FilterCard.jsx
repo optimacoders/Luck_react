@@ -1,32 +1,43 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { GrPowerReset } from "react-icons/gr";
 
 const FilterCard = ({ onCategorySelect, mycategories }) => {
   const url = import.meta.env.VITE_BACKEND;
-  const [category, setcategory] = useState([]);
+  const [category, setCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+
   const getCategories = async () => {
     try {
       const { data } = await axios.get(`${url}/admin/category`);
-      setcategory(data.response.data);
+      setCategory(data.response.data);
       console.log(data.response.data);
-      mycategories(data.categories);
+      mycategories(data.response.data); // Corrected to use response.data
     } catch (error) {
       console.error("Error fetching :", error);
     }
   };
 
   const handleCategorySelect = (selectedCategory) => {
+    setSelectedCategory(selectedCategory);
     onCategorySelect(selectedCategory);
   };
 
   useEffect(() => {
     getCategories();
   }, []);
+
   return (
     <div className="border-r-2 p-2 w-full h-full">
       <p className="text-start font-semibold border-b pb-2">FILTERS</p>
       <div className="my-2">
-        <p className="font-semibold">CATEGORIES</p>
+        <span className="flex justify-between">
+          <p className="font-semibold">CATEGORIES</p>
+          <span className="items-center flex px-1">
+            <GrPowerReset onClick={() => handleCategorySelect("")} size={20} />
+          </span>
+        </span>
+
         <ul className="p-2 flex flex-col gap-2">
           {category.map((item, index) => (
             <li key={index} className="flex">
@@ -40,7 +51,8 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
                     }
                   }}
                   type="checkbox"
-                  className="p-2 "
+                  checked={selectedCategory === item._id}
+                  className="p-2"
                 />
                 <span className="ml-2 text-sm">{item?.name}</span>
               </label>

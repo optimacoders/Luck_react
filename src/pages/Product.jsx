@@ -7,51 +7,48 @@ import ProductCard from "../components/ProductCard";
 import FilterPopup from "../components/FilterPopup";
 import Mainlayout from "../components/Mainlayout";
 import { useLocation } from "react-router-dom";
+import { GrPowerReset } from "react-icons/gr";
 
-const Product = ({}) => {
+const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
   const location = useLocation();
   const { categorys } = location.state || {};
-  console.log("dd", categorys);
+  console.log("Selected category:", categorys);
+
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [Category, setcategory] = useState(null);
-  const [Categories, setcategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(categorys || null);
+  const [Categories, setCategories] = useState([]);
 
-  useEffect(() => {
-    if (categorys) {
-      setcategory(categorys);
-      setSelectedCategory(categorys);
+  const fetchProducts = async (category) => {
+    try {
+      const link = "admin/product";
+      const response = await axios.get(
+        category ? `${url}/${link}?category=${category}` : `${url}/${link}`
+      );
+      console.log("Fetched products:", response.data.products.data);
+      setProducts(response.data.products.data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
     }
-  }, [categorys]);
+  };
+
+  // Fetch categories from the API
+  const getCategories = async () => {
+    try {
+      const { data } = await axios.get(`${url}/admin/category`);
+      setCategories(data.response.data);
+      console.log("Fetched categories:", data.response.data);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async (category) => {
-      try {
-        const link = "admin/product";
-        const response = await axios.get(
-          category ? `${url}/${link}?category=${category}` : `${url}/${link}`
-        );
-        setProducts(response.data.products.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
     fetchProducts(selectedCategory);
   }, [selectedCategory]);
 
   useEffect(() => {
-    const getCategories = async () => {
-      try {
-        const { data } = await axios.get(`${url}/admin/category`);
-        setcategories(data.response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-
     getCategories();
   }, []);
 
@@ -59,35 +56,47 @@ const Product = ({}) => {
     setShowPopup(false);
   };
 
+  const handleCategorySelect = (categoryId) => {
+    setSelectedCategory(categoryId);
+  };
+
   return (
     <div>
       <Mainlayout isNogap={true}>
         <div className="flex w-full gap-2 ">
           <div className="hidden md:block md:w-[15%]">
-            <FilterCard
-              onCategorySelect={setSelectedCategory}
-              mycategories={setcategory}
-            />
+            <FilterCard onCategorySelect={handleCategorySelect} />
           </div>
           <div className="grid md:w-[85%] grid-cols-2 md:grid-cols-4 gap-2">
-            {products?.map((product, index) => (
+            {products.map((product, index) => (
               <ProductCard key={index} data={product} />
             ))}
           </div>
         </div>
         {showPopup && (
-          <div className=" w-full md:hidden  h-full sticky bottom-0 z-5">
+          <div className="w-full md:hidden h-full sticky bottom-0 z-5">
             <FilterPopup iscancel={handleCancelPopup}>
-              <span className="p-2 font-bold"> CATEGORIES</span>
-              <div className="p-2 grid grid-cols-4 gap-2 ">
-                {Categories?.map((item, index) => (
+              <span className="flex justify-between">
+                <span className="p-2 font-bold">CATEGORIES</span>
+                <span className="items-center flex px-1">
+                  <GrPowerReset
+                    onClick={() => handleCategorySelect("")}
+                    size={20}
+                  />
+                </span>
+              </span>
+
+              <div className="p-2 flex gap-x-2 w-full overflow-scroll">
+                {Categories.map((item, index) => (
                   <p
-                    onClick={() => setSelectedCategory(item._id)}
+                    key={index}
+                    onClick={() => handleCategorySelect(item._id)}
+                    onDoubleClick={() => handleCategorySelect("")}
                     className={`border-2 ${
-                      selectedCategory == item._id
+                      selectedCategory === item._id
                         ? "border-2 border-gold_dark"
                         : ""
-                    }  px-3  rounded-md w-full font-semibold bg-white`}
+                    } px-3 text-xs rounded-md w-full font-semibold bg-white`}
                   >
                     {item.name}
                   </p>
@@ -97,8 +106,8 @@ const Product = ({}) => {
           </div>
         )}
       </Mainlayout>
-      <div className="md:hidden w-full sticky bottom-0 z-5 ">
-        <div className="flex w-full ">
+      <div className="md:hidden w-full sticky bottom-0 z-5">
+        <div className="flex w-full">
           <section className="border-r-2 bg-[#dacd7f] gap-x-2 font-semibold text-white py-4 w-[50%] flex items-center justify-center">
             <FaCartPlus size={25} />
             Add to cart
