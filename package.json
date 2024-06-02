@@ -24,6 +24,7 @@
     "react-photo-view": "^1.2.4",
     "react-responsive-carousel": "^3.2.23",
     "react-router-dom": "^6.23.1",
+    "react-spinners": "^0.13.8",
     "react-time-format": "^0.0.5",
     "react-use": "^17.5.0"
   },

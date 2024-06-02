@@ -27,7 +27,7 @@ const Profile = () => {
             <div className="flex overflow-y-auto md:flex-col w-[100%] over">
               <p
                 onClick={() => navigate("/profile")}
-                className={`flex ${path === "/profile" ? "bg-white text-black shadow border-b-2 md:border-l-4 border-[#c9b156]" : ""
+                className={`flex ${path === "/profile" ? "bg-white text-black shadow border-b-2 md:border-b-0 md:border-l-4 border-[#c9b156]" : ""
                   } font-semibold text-sm gap-x-2 w-full items-center my-1 cursor-pointer p-[7px] select-none`}
               >
                 <CgProfile size={15} /> My details
@@ -35,7 +35,7 @@ const Profile = () => {
               <p
                 onClick={() => navigate("/profile/orders")}
                 className={`flex ${path === "/profile/orders"
-                  ? "bg-white text-black shadow border-b-2 md:border-l-4 border-[#c9b156]"
+                  ? "bg-white text-black shadow border-b-2 md:border-b-0 md:border-l-4 border-[#c9b156]"
                   : ""
                   } font-semibold text-sm gap-x-1 w-full my-1 items-center cursor-pointer p-[6px] select-none`}
               >
@@ -44,7 +44,7 @@ const Profile = () => {
               <p
                 onClick={() => navigate("/profile/favorites")}
                 className={`flex ${path === "/profile/favorites"
-                  ? "bg-white text-black shadow border-b-2 md:border-l-4 border-[#c9b156]"
+                  ? "bg-white text-black shadow border-b-2 md:border-b-0 md:border-l-4 border-[#c9b156]"
                   : ""
                   } font-semibold text-sm gap-x-1 w-full my-1 items-center cursor-pointer p-[6px] select-none`}
               >
