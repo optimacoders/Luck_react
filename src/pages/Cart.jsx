@@ -8,6 +8,7 @@ import { getRequest, postRequest } from "../utils/Apihelpers";
 import img from "../assets/logo.png";
 import CartCardSkeleton from "../skeletons/CartCardSkeleton";
 import AuthHook from "../context/AuthContext";
+import NoCartData from "../components/NoCartData";
 
 const Cart = () => {
   const key = import.meta.env.VITE_RAZORPAY_KEY;
@@ -58,6 +59,10 @@ const Cart = () => {
   };
 
   const checkout = async () => {
+    if (cart?.length == 0) {
+      toast.error("cart is empty, nothing to buy.")
+      return
+    }
     try {
       const { data } = await axios.post(`${url}/payment/checkout`, {
         amount: totalPrice,
@@ -130,8 +135,9 @@ const Cart = () => {
                 <CartCardSkeleton />
                 <CartCardSkeleton />
               </>
-            ) : (
-              cart.map((item, index) => (
+            ) : cart?.length == 0 ? <NoCartData /> : (
+
+              cart?.map((item, index) => (
                 <Cartproductcard key={index} data={item} />
               ))
             )}

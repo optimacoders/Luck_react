@@ -10,6 +10,7 @@ import { useLocation } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nav from "../components/Nav";
+import Nodata from "../components/Nodata";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -80,7 +81,7 @@ const Product = () => {
             <ProductCardSkeleton />
             <ProductCardSkeleton />
             <ProductCardSkeleton />
-          </> : products.map((product, index) => (
+          </> : products.length == 0 ? <div className=" w-[80svw]"><Nodata /></div> : products.map((product, index) => (
             <ProductCard key={index} data={product} />
           ))}
         </div>

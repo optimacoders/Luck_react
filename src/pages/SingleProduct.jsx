@@ -225,8 +225,8 @@ const SingleProduct = () => {
             </div>
           )}
         </div>
-        <div className="">
-          <p className="font-bold text-center  text-2xl">Similar Products</p>
+        <div className="mt-4">
+          <p className="font-semibold text-center  text-xl">Similar Products</p>
           <div className="grid  grid-cols-1 md:grid-cols-4 px-3 md:px-20">
             {similarLoader ? (
               <ProductCardSkeleton />
