@@ -18,11 +18,8 @@ const Cart = () => {
   const url = import.meta.env.VITE_BACKEND;
   const [cartLoader, setcartLoader] = useState(false);
 
-  const { userDetails ,getuser} = AuthHook();
-  useEffect(()=>{
-    getUserDetails
-  },[])
-  console.log("dd", userDetails);
+  const { userDetails, getuser } = AuthHook();
+
   const getUserCart = async () => {
     try {
       setcartLoader(true);
@@ -167,7 +164,7 @@ const Cart = () => {
                 </p>
               </section>
               <section className="p-2 w-full border-2 rounded-md">
-                sdsf ada
+                {userDetails.address}
               </section>
             </div>
             <div>
