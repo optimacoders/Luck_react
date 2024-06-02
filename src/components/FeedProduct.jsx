@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
+import Nodata from "./Nodata";
 
 const FeedProduct = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -33,7 +34,7 @@ const FeedProduct = () => {
           <ProductCardSkeleton />
           <ProductCardSkeleton />
         </>
-      ) : (
+      ) : products.length == 0 ? <div className=" w-[80svw]"><Nodata /></div> : (
         products.map((product, index) => (
           <div key={index}>
             <ProductCard data={product} />

@@ -2,11 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getRequest } from "../utils/Apihelpers";
 import { LuChevronRight } from "react-icons/lu";
-import { RiVerifiedBadgeLine } from "react-icons/ri";
-import { PhotoProvider, PhotoView } from "react-photo-view";
 import "react-photo-view/dist/react-photo-view.css";
 import moment from "moment/moment";
 import MyorderCardSkeleton from "../skeletons/MyorderCardSkeleton";
+import Nodata from "../components/Nodata";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
@@ -91,7 +90,7 @@ const Myorders = () => {
           <MyorderCardSkeleton />
           <MyorderCardSkeleton />
           <MyorderCardSkeleton />
-        </> : orders?.map((item) => {
+        </> : orders?.length == 0 ? <div><Nodata /></div> : orders?.map((item) => {
           return (
             <div
               key={item._id}
