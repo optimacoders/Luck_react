@@ -218,17 +218,6 @@ const SingleProduct = () => {
                     </div>
                   </div>
                 </div>
-
-                <span className="py-4">
-                  <p className="text-lg my-4 ">Share</p>
-                  <FaLink size={23} color="pink" className=" cursor-pointer" />
-                </span>
-
-                <div className="mt-4">
-                  <p className="font-semibold ">PRODUCT DETAILS </p>
-                  <p>Mirror work detail</p>
-                  <p></p>
-                </div>
               </div>
             </>
           )}
