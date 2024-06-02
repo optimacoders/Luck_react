@@ -32,7 +32,7 @@ const Category = () => {
 
   return (
     <div className=" grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-5 flex-wrap md:px-36 justify-center items-center">
-      {loader ? <CategoryCardSkeleton /> :
+      {loader ? <><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /> </> :
         category?.map((item, index) => (
           <div
             onClick={() => click(item._id)}
