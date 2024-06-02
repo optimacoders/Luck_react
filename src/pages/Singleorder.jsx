@@ -34,9 +34,11 @@ const Singleorder = () => {
   }, [id]);
 
   const formatDate = (dateString) => {
-    if (!dateString) return "Invalid date";
+    if (!dateString) return "Delivery Date will update soon";
     const date = parseISO(dateString);
-    return isValid(date) ? format(date, "EEEE, dd MMM") : "Invalid date";
+    return isValid(date)
+      ? format(date, "EEEE, dd MMM")
+      : "Delivery Date will update soon";
   };
 
   const styles = StyleSheet.create({
@@ -100,7 +102,9 @@ const Singleorder = () => {
               <div className="px-[10px]">
                 <section
                   className={`h-[10vh] ${
-                    status === "Pending" ? "border-blue-500 border-l-2" : "border-black border-l-2"
+                    status === "Pending"
+                      ? "border-blue-500 border-l-2"
+                      : "border-black border-l-2"
                   }`}
                 ></section>
               </div>

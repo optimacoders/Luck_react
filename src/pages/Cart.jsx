@@ -67,7 +67,7 @@ const Cart = () => {
         key: key,
         amount: data.order.amount,
         currency: "INR",
-        name: "optima",
+        name: "Inaya",
         description: "Test Transaction",
         image: img,
         order_id: data.order.id,
@@ -91,12 +91,12 @@ const Cart = () => {
           }
         },
         prefill: {
-          name: "Gaurav Kumar",
-          email: "gaurav.kumar@example.com",
-          contact: "9000090000",
+          name: userDetails?.name,
+          email: userDetails?.email,
+          contact: userDetails?.mobileNo,
         },
         notes: {
-          address: "Razorpay Corporate Office",
+          address: userDetails?.address,
         },
         theme: {
           color: "#E30B5C",
@@ -140,14 +140,14 @@ const Cart = () => {
                 <p>Subtotal</p>
                 <p>₹ {totalPrice}</p>
               </section>
-              <section className="flex justify-between">
+              {/* <section className="flex justify-between">
                 <p>Delivery</p>
                 <p>₹ 000</p>
-              </section>
-              <section className="flex justify-between">
+              </section> */}
+              {/* <section className="flex justify-between">
                 <p>Tax</p>
                 <p>₹ 000</p>
-              </section>
+              </section> */}
             </div>
             <section className="flex my-2 justify-between">
               <p className="text-lg">Total</p>
@@ -164,7 +164,7 @@ const Cart = () => {
                 </p>
               </section>
               <section className="p-2 w-full border-2 rounded-md">
-                {userDetails.address}
+                {userDetails?.address}
               </section>
             </div>
             <div>
@@ -175,7 +175,7 @@ const Cart = () => {
                 Proceed to checkout
               </button>
               <button
-                onClick={() => router.push("/")}
+                onClick={() => navigate("/products")}
                 className=" mt-2 w-full border px-3 py-3 font-semibold rounded-lg"
               >
                 Continue shopping
