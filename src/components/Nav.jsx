@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
 //import logo from "../Assets/logo.png";
-import { GiHamburgerMenu, GiCancel } from "react-icons/gi";
+import { GiHamburgerMenu, GiCancel, GiArrowWings } from "react-icons/gi";
 import { IoIosArrowDropright } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import AuthHook from "../context/AuthContext";
 import { CiLogin } from "react-icons/ci";
+import axios from "axios";
 
 const Nav = () => {
   const [nav, setNav] = useState(false);
   const [men, setMen] = useState(false);
+  const url = import.meta.env.VITE_BACKEND;
   const [c2, setc2] = useState(false);
+  const [dropdown, setdropdown] = useState(false);
+  const [category, setcategory] = useState([]);
+  const getCategories = async () => {
+    try {
+      // setloader(true);
+      const { data } = await axios.get(`${url}/admin/category`);
+      setcategory(data.response.data);
+      // setloader(false);
+    } catch (error) {
+      console.error("Error fetching :", error);
+    }
+  };
 
+  useEffect(() => {
+    getCategories();
+  }, []);
   const { getUserDetails, token, isLogedin } = AuthHook();
 
   const navigate = useNavigate();
@@ -32,6 +49,13 @@ const Nav = () => {
     getUserDetails();
   }, []);
 
+  const handlemddrop = () => {
+    setdropdown(!dropdown);
+  };
+  const click = async (id) => {
+    navigate("/products", { state: { categorys: id } });
+  };
+
   return (
     <div className=" h-[10vh] min-h-[10vh]">
       <div className="bg-white px-2 sm:px-4 h-full items-center w-full flex justify-between">
@@ -42,12 +66,10 @@ const Nav = () => {
           <img src={""} alt="logo" className="" width={130} />
         </div>
         <div className="hidden md:block">
-          <ul className="flex gap-4 font-semibold text-xs ">
-            <li>MEN</li>
-            <li>KIDS</li>
-            <li>HOME</li>
-            <li>BEAUTY</li>
-          </ul>
+          <section onClick={() => handlemddrop()} className="flex gap-x-2 ">
+            <GiHamburgerMenu className="flex h-7  items-center" />
+            <p className="cursor-pointer flex items-center">Categories</p>
+          </section>
         </div>
         <div className="w-[30%] hidden md:block">
           <input
@@ -91,47 +113,50 @@ const Nav = () => {
         </div>
       </div>
       <div className=" sm:mx-10 border-b"></div>
-      <section className="z-10 sm:hidden">
+      <section className="z-10 sm:hidden h-[100svh]">
         <ul
-          className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
-            } transition-all ease-linear duration-200`}
+          className={`bg-gray-100 z-10 flex flex-col absolute left-0 gap-2 h-[100svh] shadow-sm ${
+            nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
+          } transition-all ease-linear duration-200`}
         >
-          <li className="mx-2 flex justify-between my-1 font-semibold">
-            MEN
-            <span>
-              <IoIosArrowDropright onClick={handlemen} size={23} />
-            </span>
-          </li>
-          {men && (
-            <div className="flex justify-start px-4 w-full">
-              <ul className="gap-2 flex flex-col">
-                <li>Men T-Shirts</li>
-                <li>Men T-Shirts</li>
-              </ul>
-            </div>
-          )}
-          <li className="mx-2 flex justify-between my-1 font-semibold hover:border-b-2">
-            WOMAN
-            <span>
-              <IoIosArrowDropright onClick={handlec2} size={23} />
-            </span>
-          </li>
-          {c2 && (
-            <div className="flex justify-start px-4 w-full">
-              <ul className="gap-2 flex flex-col">
-                <li>Kurtas</li>
-                <li>Tops</li>
-                <li>Dupattas</li>
-                <li>Bhotaras</li>
-                <li>Tunics</li>
-              </ul>
-            </div>
-          )}
-          <li className="mx-2 my-1 font-semibold hover:border-b-2 inline">
-            About
-          </li>
+          <p className="flex justify-center text-md font-semibold">
+            Browse Categories
+          </p>
+          {category?.map((item, index) => (
+            <ul key={index} className="text-md px-2 py-2 ">
+              <section className="flex justify-between items-center">
+                <li
+                  onClick={() => click(item._id)}
+                  className="hover:underline-offset-2 hover:border-b-[1.5px] border-gold_dark cursor-pointer "
+                >
+                  {item?.name}
+                </li>
+                <IoIosArrowDropright
+                  onClick={() => click(item._id)}
+                  size={20}
+                  className="items-center flex"
+                />
+              </section>
+            </ul>
+          ))}
         </ul>
       </section>
+      {dropdown && (
+        <div className="hidden md:block">
+          <div className="absolute top-15 z-10 left-0 h-[25vh] overflow-y-auto right-0 w-1/6 mx-[20%] bg-white p-4 rounded shadow-lg">
+            {category?.map((item, index) => (
+              <ul key={index} className="text-md">
+                <li
+                  onClick={() => click(item._id)}
+                  className="hover:underline-offset-2 hover:border-b-[1.5px] border-gold_dark cursor-pointer "
+                >
+                  {item?.name}
+                </li>
+              </ul>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
