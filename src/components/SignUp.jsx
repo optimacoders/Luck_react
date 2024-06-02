@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import Cookies from "js-cookie";
 import AuthHook from "../context/AuthContext";
+import { PulseLoader } from "react-spinners"
 
 function SignUp() {
   const {
@@ -15,11 +16,13 @@ function SignUp() {
   } = useForm();
   const navigate = useNavigate();
   const { setisLogedin, settoken, token, isLogedin } = AuthHook();
+  const [loader, setloader] = useState(false)
 
   const url = import.meta.env.VITE_BACKEND;
 
   const onSubmit = async (data) => {
     try {
+      setloader(true)
       const response = await axios.post(`${url}/auth/signup`, {
         name: data.name,
         email: data.email,
@@ -38,6 +41,7 @@ function SignUp() {
       console.log(error.response);
       toast.error(error?.response?.data?.message || "Something went wrong.");
     }
+    setloader(false)
   };
 
   return (
@@ -138,9 +142,11 @@ function SignUp() {
         </div>
         <button
           type="submit"
-          className=" bg-gold_medium hover:bg-gold_dark px-6 my-1 py-[6px] text-white rounded-full font-medium"
+          className="  bg-gold_medium hover:bg-gold_dark px-6 my-1 h-8 flex items-center text-white rounded-full font-medium"
         >
-          SignUp
+          {
+            loader ? <PulseLoader color="white" size={10} /> : "SignUp"
+          }
         </button>
       </form>
       <p className=" text-sm my-4 font-medium">
