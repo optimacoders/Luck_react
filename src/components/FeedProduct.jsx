@@ -27,7 +27,12 @@ const FeedProduct = () => {
   return (
     <div className="grid  grid-cols-2 md:grid-cols-4 px-3 md:px-20">
       {productLoader ? (
-        <ProductCardSkeleton />
+        <>
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+          <ProductCardSkeleton />
+        </>
       ) : (
         products.map((product, index) => (
           <div key={index}>

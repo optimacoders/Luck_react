@@ -8,6 +8,7 @@ import FilterPopup from "../components/FilterPopup";
 import Mainlayout from "../components/Mainlayout";
 import { useLocation } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
+import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -19,9 +20,11 @@ const Product = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(categorys || null);
   const [Categories, setCategories] = useState([]);
+  const [loader, setloader] = useState(false)
 
   const fetchProducts = async (category) => {
     try {
+      setloader(true)
       const link = "admin/product";
       const response = await axios.get(
         category ? `${url}/${link}?category=${category}` : `${url}/${link}`
@@ -31,9 +34,9 @@ const Product = () => {
     } catch (error) {
       console.error("Error fetching products:", error);
     }
+    setloader(false)
   };
 
-  // Fetch categories from the API
   const getCategories = async () => {
     try {
       const { data } = await axios.get(`${url}/admin/category`);
@@ -63,12 +66,21 @@ const Product = () => {
   return (
     <div>
       <Mainlayout isNogap={true}>
-        <div className="flex w-full gap-2 ">
+        <div className="flex w-full gap-2 h-full ">
           <div className="hidden md:block md:w-[15%]">
             <FilterCard onCategorySelect={handleCategorySelect} />
           </div>
-          <div className="grid md:w-[85%] grid-cols-2 md:grid-cols-4 gap-2">
-            {products.map((product, index) => (
+          <div className="grid md:w-[85%] h-full overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2">
+            {loader ? <>
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+              <ProductCardSkeleton />
+            </> : products.map((product, index) => (
               <ProductCard key={index} data={product} />
             ))}
           </div>
@@ -92,11 +104,10 @@ const Product = () => {
                     key={index}
                     onClick={() => handleCategorySelect(item._id)}
                     onDoubleClick={() => handleCategorySelect("")}
-                    className={`border-2 ${
-                      selectedCategory === item._id
-                        ? "border-2 border-gold_dark"
-                        : ""
-                    } px-3 text-xs rounded-md w-full font-semibold bg-white`}
+                    className={`border-2 ${selectedCategory === item._id
+                      ? "border-2 border-gold_dark"
+                      : ""
+                      } px-3 text-xs rounded-md w-full font-semibold bg-white`}
                   >
                     {item.name}
                   </p>

@@ -23,10 +23,11 @@ const Myorders = () => {
           `/order/myorders?filter=${status}`
         );
         setOrders(orders);
-        setloader(false)
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
+      setloader(false)
     };
 
     fetchUserData();

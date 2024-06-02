@@ -1,5 +1,6 @@
 import React from "react";
 import Nav from "./Nav";
+import Footer from "./Footer";
 
 const Mainlayout = ({ children, bg, isNogap }) => {
   return (
@@ -13,6 +14,7 @@ const Mainlayout = ({ children, bg, isNogap }) => {
       >
         {children}
       </div>
+      <Footer />
     </div>
   );
 };

@@ -30,7 +30,7 @@ const Nav = () => {
   };
   useEffect(() => {
     getUserDetails();
-  }, [token]);
+  }, []);
 
   return (
     <div className=" h-[10vh] min-h-[10vh]">
@@ -38,7 +38,7 @@ const Nav = () => {
         <section onClick={handle} className="sm:hidden border">
           {nav ? <GiCancel size={23} /> : <GiHamburgerMenu size={23} />}
         </section>
-        <div onClick={() => navigate("/")} className="sm:px-2 ">
+        <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer ">
           <img src={""} alt="logo" className="" width={130} />
         </div>
         <div className="hidden md:block">
@@ -96,7 +96,7 @@ const Nav = () => {
           className={`bg-gray-300 z-10 flex flex-col absolute left-0 gap-2 h-screen shadow-sm ${nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
             } transition-all ease-linear duration-200`}
         >
-          <li className="mx-2 flex justify-between my-1 font-semibold inline">
+          <li className="mx-2 flex justify-between my-1 font-semibold">
             MEN
             <span>
               <IoIosArrowDropright onClick={handlemen} size={23} />
@@ -110,7 +110,7 @@ const Nav = () => {
               </ul>
             </div>
           )}
-          <li className="mx-2 flex justify-between my-1 font-semibold hover:border-b-2 inline">
+          <li className="mx-2 flex justify-between my-1 font-semibold hover:border-b-2">
             WOMAN
             <span>
               <IoIosArrowDropright onClick={handlec2} size={23} />

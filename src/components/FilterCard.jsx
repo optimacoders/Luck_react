@@ -28,13 +28,13 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
   }, []);
 
   return (
-    <div className="border-r-2 p-2 w-full h-full">
-      <p className="text-start font-semibold border-b pb-2">FILTERS</p>
+    <div className="border-r p-2 w-full h-full">
+      <p className="text-start font-semibold border-b pb-2 text-sm">FILTERS</p>
       <div className="my-2">
         <span className="flex justify-between">
-          <p className="font-semibold">CATEGORIES</p>
-          <span className="items-center flex px-1">
-            <GrPowerReset onClick={() => handleCategorySelect("")} size={20} />
+          <p className="font-semibold text-sm font-mono">CATEGORIES</p>
+          <span className="items-center flex px-1 cursor-pointer">
+            <GrPowerReset onClick={() => handleCategorySelect("")} size={15} />
           </span>
         </span>
 
@@ -52,7 +52,7 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
                   }}
                   type="checkbox"
                   checked={selectedCategory === item._id}
-                  className="p-2"
+                  className="p-2 cursor-pointer"
                 />
                 <span className="ml-2 text-sm">{item?.name}</span>
               </label>
