@@ -25,7 +25,7 @@ const SingleProduct = () => {
   const [colors, setcolors] = useState([]);
   const [sizes, setsizes] = useState([]);
   const [size, setsize] = useState("");
-  const [color, setcolor] = useState("");
+  const [selectedColor, setSelectedColor] = useState(null);
   const [qunatity, setquantity] = useState(1);
   const [Category, setcategory] = useState("");
   const [semilarproducts, setsemilarproducts] = useState([]);
@@ -70,8 +70,8 @@ const SingleProduct = () => {
       const response = await postRequest(true, "/cart", {
         productId: pid,
         quantity: Number(1),
-        size: size,
-        color: color,
+        size: size ? size : product?.size[0],
+        color: selectedColor ? selectedColor : product?.color[0],
       });
       console.log(response);
       if (response.status) {
@@ -170,11 +170,11 @@ const SingleProduct = () => {
                     {colors?.map((color, index) => (
                       <div
                         key={index}
-                        onClick={() => setcolor(color)}
-                        onDoubleClick={() => setcolor(null)}
+                        onClick={() => setSelectedColor(color)}
+                        onDoubleClick={() => setSelectedColor(null)}
                         className={`${
-                          color == color ? "border-blue-500" : ""
-                        }px-2 w-8 h-8  py-2 border-2 rounded-full`}
+                          color === selectedColor ? "bg-green-500" : ""
+                        } px-2 w-8 h-8 py-2 border-2 rounded-full`}
                         style={{ backgroundColor: color }}
                       ></div>
                     ))}

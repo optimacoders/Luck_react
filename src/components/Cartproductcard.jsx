@@ -37,13 +37,13 @@ const Cartproductcard = ({ data }) => {
         toast.success("updated");
         window.location.reload();
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
     <div className="grid my-2 h-fit w-auto grid-cols-[130px,1fr] gap-x-3 p-2 border-b rounded-lg">
       <div
-        onClick={() => router.push(`/product/${data?.product._id}`)}
+        onClick={() => navigate(`/product/${data?.product._id}`)}
         className="rounded-lg w-full"
       >
         <img
@@ -82,14 +82,21 @@ const Cartproductcard = ({ data }) => {
           </section>
           <section className="flex ">
             <p className="flex justify-center gap-1 items-end text text-[#5072A7]">
-              <span>Save</span> <span><CiHeart size={20} className="mt-1" /></span> |
+              <span>Save</span>{" "}
+              <span>
+                <CiHeart size={20} className="mt-1" />
+              </span>{" "}
+              |
             </p>
 
             <p
               onClick={() => removeProduct(data?.product?._id)}
               className="flex justify-center gap-1 items-end cursor-pointer text-[#5072A7]"
             >
-              <span>Remove</span> <span><IoMdRemoveCircleOutline size={17} className="" /></span>
+              <span>Remove</span>{" "}
+              <span>
+                <IoMdRemoveCircleOutline size={17} className="" />
+              </span>
             </p>
           </section>
         </div>
