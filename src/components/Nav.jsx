@@ -30,8 +30,9 @@ const Nav = () => {
 
   useEffect(() => {
     getCategories();
-  }, []);  const [searchSuggest, setsearchSuggest] = useState([])
-  const [search, setsearch] = useState("")
+  }, []);
+  const [searchSuggest, setsearchSuggest] = useState([]);
+  const [search, setsearch] = useState("");
 
   const { getUserDetails, token, isLogedin } = AuthHook();
 
@@ -52,22 +53,26 @@ const Nav = () => {
   const handleSearch = (e) => {
     e.preventDefault();
     navigate("/products", { state: { q: search } });
-  }
+  };
 
   const handleSearchSuggest = async () => {
-    const res = await postRequest(false, `/admin/product/search?q=${search == "" ? null : search}`, {});
+    const res = await postRequest(
+      false,
+      `/admin/product/search?q=${search == "" ? null : search}`,
+      {}
+    );
     if (res.success) {
-      setsearchSuggest(res.products)
+      setsearchSuggest(res.products);
     }
-  }
+  };
 
   const click = async (id) => {
     navigate("/products", { state: { q: search } });
   };
 
   useEffect(() => {
-    handleSearchSuggest()
-  }, [search])
+    handleSearchSuggest();
+  }, [search]);
 
   useEffect(() => {
     getUserDetails();
@@ -75,9 +80,6 @@ const Nav = () => {
 
   const handlemddrop = () => {
     setdropdown(!dropdown);
-  };
-  const click = async (id) => {
-    navigate("/products", { state: { categorys: id } });
   };
 
   return (
@@ -101,15 +103,26 @@ const Nav = () => {
               type="text"
               placeholder="Search for products"
               value={search}
-              onChange={(e) => { setsearch(e.target.value) }}
+              onChange={(e) => {
+                setsearch(e.target.value);
+              }}
               className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-xs"
             />
           </form>
-          {searchSuggest.length > 0 && <section className="absolute max-h-48 duration-300 transition-all ease-in-out h-auto overflow-y-auto top-14 text-xs bg-[#f5f6f6] w-full z-10 rounded-md">
-            {searchSuggest?.map((item) => {
-              return <p onClick={click} className=" hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white">{item.title}</p>
-            })}
-          </section>}
+          {searchSuggest.length > 0 && (
+            <section className="absolute max-h-48 duration-300 transition-all ease-in-out h-auto overflow-y-auto top-14 text-xs bg-[#f5f6f6] w-full z-10 rounded-md">
+              {searchSuggest?.map((item) => {
+                return (
+                  <p
+                    onClick={click}
+                    className=" hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white"
+                  >
+                    {item.title}
+                  </p>
+                );
+              })}
+            </section>
+          )}
         </div>
         <div className=" ">
           <div className="flex gap-x-6">
@@ -176,12 +189,12 @@ const Nav = () => {
       </section>
       {dropdown && (
         <div className="hidden md:block">
-          <div className="absolute top-15 z-10 left-0 h-[25vh] overflow-y-auto right-0 w-1/6 mx-[20%] bg-white p-4 rounded shadow-lg">
+          <div className="absolute top-15 z-10 left-0 h-[25vh] transition-all ease-in-out overflow-y-auto right-0 w-1/6 mx-[20%] bg-white p-4 rounded shadow-lg">
             {category?.map((item, index) => (
               <ul key={index} className="text-md">
                 <li
                   onClick={() => click(item._id)}
-                  className="hover:underline-offset-2 hover:border-b-[1.5px] border-gold_dark cursor-pointer "
+                  className="hover:font-semibold text-gray-600  py-1 cursor-pointer capitalize hover:bg-white "
                 >
                   {item?.name}
                 </li>
