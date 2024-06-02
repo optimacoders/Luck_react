@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 const Mainlayout = ({ children, bg, isNogap }) => {
   return (
-    <div className="h-[100svh] w-[100svw]">
+    <div className="h-[100svh] w-[100svw] overflow-y-hidden">
       <div className="h-[10svh]">
         <Nav />
       </div>

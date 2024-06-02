@@ -9,6 +9,7 @@ import Mainlayout from "../components/Mainlayout";
 import { useLocation } from "react-router-dom";
 import { GrPowerReset } from "react-icons/gr";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
+import Nav from "../components/Nav";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -63,59 +64,59 @@ const Product = () => {
   };
 
   return (
-    <div>
-      <Mainlayout isNogap={true}>
-        <div className="flex w-full gap-2 h-full ">
-          <div className="hidden md:block md:w-[15%]">
-            <FilterCard onCategorySelect={handleCategorySelect} />
-          </div>
-          <div className="grid md:w-[85%] h-full overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2">
-            {loader ? <>
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-              <ProductCardSkeleton />
-            </> : products.map((product, index) => (
-              <ProductCard key={index} data={product} />
-            ))}
-          </div>
+    <div className=" h-[100svh] w-[100svw] overflow-y-hidden">
+      <Nav />
+      <div className="flex w-full gap-2 h-[90svh]">
+        <div className="hidden md:block md:w-[15%]">
+          <FilterCard onCategorySelect={handleCategorySelect} />
         </div>
-        {showPopup && (
-          <div className="w-full md:hidden h-full sticky bottom-0 z-5">
-            <FilterPopup iscancel={handleCancelPopup}>
-              <span className="flex justify-between">
-                <span className="p-2 font-bold">CATEGORIES</span>
-                <span className="items-center flex px-1">
-                  <GrPowerReset
-                    onClick={() => handleCategorySelect("")}
-                    size={20}
-                  />
-                </span>
+        <div className="grid md:w-[85%] h-full overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2">
+          {loader ? <>
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+          </> : products.map((product, index) => (
+            <ProductCard key={index} data={product} />
+          ))}
+        </div>
+      </div>
+      {showPopup && (
+        <div className="w-full md:hidden h-full sticky bottom-0 z-5">
+          <FilterPopup iscancel={handleCancelPopup}>
+            <span className="flex justify-between">
+              <span className="p-2 font-bold">CATEGORIES</span>
+              <span className="items-center flex px-1">
+                <GrPowerReset
+                  onClick={() => handleCategorySelect("")}
+                  size={20}
+                />
               </span>
+            </span>
 
-              <div className="p-2 flex gap-x-2 w-full overflow-scroll">
-                {Categories.map((item, index) => (
-                  <p
-                    key={index}
-                    onClick={() => handleCategorySelect(item._id)}
-                    onDoubleClick={() => handleCategorySelect("")}
-                    className={`border-2 ${selectedCategory === item._id
-                      ? "border-2 border-gold_dark"
-                      : ""
-                      } px-3 text-xs rounded-md w-full font-semibold bg-white`}
-                  >
-                    {item.name}
-                  </p>
-                ))}
-              </div>
-            </FilterPopup>
-          </div>
-        )}
-      </Mainlayout>
+            <div className="p-2 flex gap-x-2 w-full overflow-scroll">
+              {Categories.map((item, index) => (
+                <p
+                  key={index}
+                  onClick={() => handleCategorySelect(item._id)}
+                  onDoubleClick={() => handleCategorySelect("")}
+                  className={`border-2 ${selectedCategory === item._id
+                    ? "border-2 border-gold_dark"
+                    : ""
+                    } px-3 text-xs rounded-md w-full font-semibold bg-white`}
+                >
+                  {item.name}
+                </p>
+              ))}
+            </div>
+          </FilterPopup>
+        </div>
+      )}
+
       <div className="md:hidden w-full sticky bottom-0 z-5">
         <div className="flex w-full">
           <section className="border-r-2 bg-[#dacd7f] gap-x-2 font-semibold text-white py-4 w-[50%] flex items-center justify-center">
