@@ -9,7 +9,7 @@ const Mainlayout = ({ children, bg, isNogap }) => {
         <Nav />
       </div>
       <div
-        className={` h-[90svh] bg-${bg} ${isNogap ? "md:px-0  md:py-0" : " md:px-10"
+        className={`  h-[90svh] bg-${bg} ${isNogap ? "md:px-0  md:py-0" : " md:px-10"
           }  px-2 overflow-y-auto `}
       >
         {children}
