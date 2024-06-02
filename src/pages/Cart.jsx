@@ -18,7 +18,7 @@ const Cart = () => {
   const url = import.meta.env.VITE_BACKEND;
   const [cartLoader, setcartLoader] = useState(false);
 
-  const { userDetails, getuser } = AuthHook();
+  const { userDetails, getuser, isLogedin } = AuthHook();
 
   const getUserCart = async () => {
     try {
@@ -109,6 +109,11 @@ const Cart = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isLogedin) {
+      navigate("/loginred");
+    }
+  }, [isLogedin]);
   return (
     <Mainlayout>
       <script
