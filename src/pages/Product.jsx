@@ -13,8 +13,9 @@ import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
   const location = useLocation();
-  const { categorys } = location.state || {};
+  const { categorys, q } = location.state || {};
   console.log("Selected category:", categorys);
+  console.log("serach:", q);
 
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -27,9 +28,8 @@ const Product = () => {
       setloader(true)
       const link = "admin/product";
       const response = await axios.get(
-        category ? `${url}/${link}?category=${category}` : `${url}/${link}`
+        category ? `${url}/${link}?category=${category}&q=${q ? q : ""}` : `${url}/${link}?q=${q ? q : ""}`
       );
-      console.log("Fetched products:", response.data.products.data);
       setProducts(response.data.products.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -41,7 +41,6 @@ const Product = () => {
     try {
       const { data } = await axios.get(`${url}/admin/category`);
       setCategories(data.response.data);
-      console.log("Fetched categories:", data.response.data);
     } catch (error) {
       console.error("Error fetching categories:", error);
     }
