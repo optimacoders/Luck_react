@@ -120,7 +120,7 @@ const Info = () => {
                   value={address}
                   onChange={(e) => setaddress(e.target.value)}
                   placeholder="Enter Address"
-                  className="p-2 w-full rounded-md resize-none border my-1"
+                  className="p-2 w-full rounded-md resize-none border my-1 focus:outline-none focus:border-black"
                 ></textarea>
               </div>
               <div className=" w-20 flex gap-3">

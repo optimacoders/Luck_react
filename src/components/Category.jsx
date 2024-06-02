@@ -37,7 +37,7 @@ const Category = () => {
           <div
             onClick={() => click(item._id)}
             key={index}
-            className=" flex flex-col items-center rounded-md gap-2"
+            className=" flex flex-col items-center rounded-md gap-2 cursor-pointer"
           >
             <div className="  w-24 h-24 aspect-square rounded-full relative overflow-hidden">
               <img
