@@ -12,7 +12,6 @@ const ProductCard = ({ data, fromsimilar }) => {
 
   const redirect = () => {
     navigate(`/product/${data?._id}`);
-    window.location.reload();
   };
 
   const addToFavorite = async () => {
