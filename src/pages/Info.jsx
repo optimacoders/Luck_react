@@ -15,8 +15,8 @@ const Info = () => {
   const [address, setaddress] = useState();
   const { setisLogedin, settoken, token, isLogedin } = AuthHook();
   const navigate = useNavigate("");
+
   const handlelogout = () => {
-    console.log("ff");
     Cookies.remove("token");
     settoken("");
     setisLogedin(false);
@@ -120,18 +120,12 @@ const Info = () => {
             <button className="bg-gold_dark w-full text-sm px-2 rounded-md py-1 text-white">
               Save
             </button>
+            <button onClick={(e) => { e.preventDefault(); handlelogout() }} className="bg-gold_dark w-full font-semibold text-sm px-2 flex rounded-md py-1 text-white">
+              <IoMdLogOut size={20} /> Logout
+            </button>
           </div>
         </form>
       </div>
-      {/* <div className="flex justify-center py-2 items-end">
-          <p
-            onClick={() => handlelogout()}
-            className="flex items-center gap-2 font-semibold absolute bottom-2 cursor-pointer select-none"
-          >
-            {" "}
-            <IoMdLogOut size={20} /> Logout
-          </p>
-        </div> */}
     </div>
   );
 };
