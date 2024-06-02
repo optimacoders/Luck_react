@@ -4,7 +4,7 @@ import { IoMdRemoveCircleOutline } from "react-icons/io";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import { postRequest } from "../utils/Apihelpers";
+import { postRequest, putRequest } from "../utils/Apihelpers";
 
 const Cartproductcard = ({ data }) => {
   const url = import.meta.env.VITE_BACKEND;
@@ -30,9 +30,10 @@ const Cartproductcard = ({ data }) => {
 
   const editCart = async (pid, quantity) => {
     try {
-      const response = await postRequest(true, `/cart/${pid}`, {
+      const response = await putRequest(true, `/cart/${pid}`, {
         quantity: quantity,
       });
+      console.log(response);
       if (response.status) {
         toast.success("updated");
         window.location.reload();

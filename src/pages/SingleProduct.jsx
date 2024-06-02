@@ -30,12 +30,19 @@ const SingleProduct = () => {
   const [Category, setcategory] = useState("");
   const [semilarproducts, setsemilarproducts] = useState([]);
   const [preview, setpreview] = useState("");
+
   const add = () => {
-    setquantity(qunatity + 1);
+    if (qunatity < product?.quantity) {
+      setquantity((prevQuantity) => prevQuantity + 1);
+    } else {
+      toast.error(`only ${product?.quantity} Quantity available.`);
+    }
   };
+
   const remove = () => {
-    setquantity((quantity) => quantity - 1);
+    setquantity((prevQuantity) => Math.max(0, prevQuantity - 1));
   };
+
   const fetchProduct = async () => {
     try {
       setproductloader(true);
@@ -241,7 +248,7 @@ const SingleProduct = () => {
           </div>
         </div>
       </Mainlayout>
-      <div className=" md:hidden w-full sticky bottom-0 z-5 ">
+      <div className=" md:hidden w-full  bottom-0 z-5 ">
         <div className="flex w-full ">
           <section
             onClick={() => addtoCart(product?._id)}
