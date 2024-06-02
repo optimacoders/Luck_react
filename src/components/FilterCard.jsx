@@ -54,7 +54,7 @@ const FilterCard = ({ onCategorySelect, mycategories }) => {
                   checked={selectedCategory === item._id}
                   className="p-2 cursor-pointer"
                 />
-                <span className="ml-2 text-sm">{item?.name}</span>
+                <span className="ml-2 text-xs">{item?.name}</span>
               </label>
             </li>
           ))}

@@ -3,15 +3,18 @@ import React, { useEffect, useState } from "react";
 import { GiHamburgerMenu, GiCancel } from "react-icons/gi";
 import { IoIosArrowDropright } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { FaRegUser } from "react-icons/fa6";
+import { FaRegUser, FaS } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import AuthHook from "../context/AuthContext";
 import { CiLogin } from "react-icons/ci";
+import { postRequest } from "../utils/Apihelpers";
 
 const Nav = () => {
   const [nav, setNav] = useState(false);
   const [men, setMen] = useState(false);
   const [c2, setc2] = useState(false);
+  const [searchSuggest, setsearchSuggest] = useState([])
+  const [search, setsearch] = useState("")
 
   const { getUserDetails, token, isLogedin } = AuthHook();
 
@@ -28,6 +31,27 @@ const Nav = () => {
   const handlec2 = () => {
     setc2(!c2);
   };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate("/products", { state: { q: search } });
+  }
+
+  const handleSearchSuggest = async () => {
+    const res = await postRequest(false, `/admin/product/search?q=${search == "" ? null : search}`, {});
+    if (res.success) {
+      setsearchSuggest(res.products)
+    }
+  }
+
+  const click = async (id) => {
+    navigate("/products", { state: { q: search } });
+  };
+
+  useEffect(() => {
+    handleSearchSuggest()
+  }, [search])
+
   useEffect(() => {
     getUserDetails();
   }, []);
@@ -49,12 +73,21 @@ const Nav = () => {
             <li>BEAUTY</li>
           </ul>
         </div>
-        <div className="w-[30%] hidden md:block">
-          <input
-            type="text"
-            placeholder="Search for products"
-            className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-xs"
-          />
+        <div className="w-[30%] hidden h-full md:flex items-center relative">
+          <form onSubmit={handleSearch} className=" w-full">
+            <input
+              type="text"
+              placeholder="Search for products"
+              value={search}
+              onChange={(e) => { setsearch(e.target.value) }}
+              className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-xs"
+            />
+          </form>
+          {searchSuggest.length > 0 && <section className="absolute max-h-48 duration-300 transition-all ease-in-out h-auto overflow-y-auto top-14 text-xs bg-[#f5f6f6] w-full z-10 rounded-md">
+            {searchSuggest?.map((item) => {
+              return <p onClick={click} className=" hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white">{item.title}</p>
+            })}
+          </section>}
         </div>
         <div className=" ">
           <div className="flex gap-x-6">
