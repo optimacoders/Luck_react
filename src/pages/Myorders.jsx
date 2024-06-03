@@ -40,7 +40,7 @@ const Myorders = () => {
     <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0">
       <p className="font-semibold text-xl">Your orders</p>
 
-      <div className=" flex w-[100%] overflow-x-auto gap-2 my-2">
+      <div className=" flex w-[100%] text-nowrap overflow-x-auto gap-2 my-2">
         <section
           onClick={() => setstatus("")}
           className={`border ${status === "" ? "border-gold_dark text-gold_dark" : ""
@@ -94,7 +94,7 @@ const Myorders = () => {
           return (
             <div
               key={item._id}
-              className=" rounded-lg flex border pr-0 p-2 md:px-6 md:py-4"
+              className=" rounded-lg flex border pr-0 p-2 my-1 md:px-6 md:py-4"
             >
               <div className="w-[95%]">
                 <section className=" text-xs flex gap-2 mb-3 items-center">

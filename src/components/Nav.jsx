@@ -7,6 +7,7 @@ import { FaRegUser, FaS } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import AuthHook from "../context/AuthContext";
 import { CiLogin } from "react-icons/ci";
+import { BiSolidCategory } from "react-icons/bi";
 import axios from "axios";
 import { postRequest } from "../utils/Apihelpers";
 
@@ -71,6 +72,7 @@ const Nav = () => {
   };
 
   useEffect(() => {
+    setdropdown(false)
     handleSearchSuggest();
   }, [search]);
 
@@ -83,20 +85,36 @@ const Nav = () => {
   };
 
   return (
-    <div className=" h-[10vh] min-h-[10vh]">
+    <div className=" h-[10vh] min-h-[10vh] ">
       <div className="bg-white px-2 sm:px-4 h-full items-center w-full flex justify-between">
-        <section onClick={handle} className="sm:hidden border">
+        <section onClick={handle} className="sm:hidden">
           {nav ? <GiCancel size={23} /> : <GiHamburgerMenu size={23} />}
         </section>
-        <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer ">
-          <img src={""} alt="logo" className="" width={130} />
-        </div>
-        <div className="hidden md:block">
-          <section onClick={() => handlemddrop()} className="flex gap-x-2 ">
-            <GiHamburgerMenu className="flex h-7  items-center" />
-            <p className="cursor-pointer flex items-center">Categories</p>
-          </section>
-        </div>
+        <section className=" flex gap-2 h-full items-center">
+          <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer  ">
+            <img src={""} alt="logo" className="" width={100} />
+          </div>
+          <div className={`hidden relative h-full md:flex items-center ${dropdown ? " border-b-2 border-gold_dark" : ""}`}>
+            <section onClick={() => handlemddrop()} className="flex gap-x-1 items-center text-gray-700 ">
+              <BiSolidCategory className="flex h-7  items-center" />
+              <p className={`cursor-pointer flex items-center text-sm font-semibold`}>Categories</p>
+            </section>
+            {dropdown && (
+              <div onBlur={(e) => setdropdown(false)} className="absolute max-h-48 duration-300 w-[50vw] transition-all ease-in-out h-auto overflow-y-auto top-[59px] text-xs bg-[#f5f6f6]  z-10">
+                {category?.map((item, index) => (
+                  <ul key={index} className="text-md">
+                    <li
+                      onClick={() => click(item._id)}
+                      className="hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white"
+                    >
+                      {item?.name}
+                    </li>
+                  </ul>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
         <div className="w-[30%] hidden h-full md:flex items-center relative">
           <form onSubmit={handleSearch} className=" w-full">
             <input
@@ -129,10 +147,10 @@ const Nav = () => {
             {isLogedin ? (
               <section
                 onClick={() => navigate("/profile")}
-                className="flex gap-2 font-semibold items-center cursor-pointer"
+                className="flex flex-col font-semibold items-center cursor-pointer"
               >
-                <FaRegUser size={16} />
-                <p className="font-semibold text-sm">Account</p>
+                <FaRegUser size={18} />
+                <p className="font-bold text-xs">Account</p>
               </section>
             ) : (
               <>
@@ -147,10 +165,10 @@ const Nav = () => {
 
             <section
               onClick={() => navigate("/cart")}
-              className="flex gap-2 font-semibold items-center cursor-pointer"
+              className="flex flex-col font-semibold items-center cursor-pointer"
             >
               <AiOutlineShoppingCart size={18} />
-              <p className=" font-semibold text-sm">Cart</p>
+              <p className=" font-bold text-xs">Cart</p>
             </section>
             {/* <section>
               <FaRegHeart size={28} />
@@ -161,9 +179,8 @@ const Nav = () => {
       <div className=" sm:mx-10 border-b"></div>
       <section className="z-10 sm:hidden h-[100svh]">
         <ul
-          className={`bg-gray-100 z-10 flex flex-col absolute left-0 gap-2 h-[100svh] shadow-sm ${
-            nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
-          } transition-all ease-linear duration-200`}
+          className={`bg-gray-100 z-10 flex flex-col absolute left-0 gap-2 h-[100svh] shadow-sm ${nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
+            } transition-all ease-linear duration-200`}
         >
           <p className="flex justify-center text-md font-semibold">
             Browse Categories
@@ -187,22 +204,6 @@ const Nav = () => {
           ))}
         </ul>
       </section>
-      {dropdown && (
-        <div className="hidden md:block">
-          <div className="absolute top-15 z-10 left-0 h-[25vh] transition-all ease-in-out overflow-y-auto right-0 w-1/6 mx-[20%] bg-white p-4 rounded shadow-lg">
-            {category?.map((item, index) => (
-              <ul key={index} className="text-md">
-                <li
-                  onClick={() => click(item._id)}
-                  className="hover:font-semibold text-gray-600  py-1 cursor-pointer capitalize hover:bg-white "
-                >
-                  {item?.name}
-                </li>
-              </ul>
-            ))}
-          </div>
-        </div>
-      )}
     </div>
   );
 };
