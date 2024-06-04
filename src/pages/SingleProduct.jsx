@@ -13,6 +13,8 @@ import ProductCard from "../components/ProductCard";
 import SingleProductSkeleton from "../skeletons/SingleProductSkeleton";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nav from "../components/Nav";
+import { FaRegArrowAltCircleRight } from "react-icons/fa";
+import { FaRegArrowAltCircleLeft } from "react-icons/fa";
 
 const SingleProduct = () => {
   const id = useParams();
@@ -21,7 +23,6 @@ const SingleProduct = () => {
   const [productloader, setproductloader] = useState(false);
   const [similarLoader, setsimilarLoader] = useState(false);
 
-  console.log(id);
   const [product, setProduct] = useState("");
   const [colors, setcolors] = useState([]);
   const [sizes, setsizes] = useState([]);
@@ -31,6 +32,7 @@ const SingleProduct = () => {
   const [Category, setcategory] = useState("");
   const [semilarproducts, setsemilarproducts] = useState([]);
   const [preview, setpreview] = useState("");
+  const [imageIndex, setimageIndex] = useState(0)
 
   const add = () => {
     if (qunatity < product?.quantity) {
@@ -123,13 +125,22 @@ const SingleProduct = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 w-full border">
               <div >
-                <div className="   rounded-md p-4 flex justify-center w-full  grid-cols-2">
+                <div className="rounded-md p-4 flex justify-center items-center gap-3 w-full grid-cols-2">
+                  <button onClick={() => setimageIndex(prev => prev - 1)} disabled={imageIndex === 0}>
+                    <FaRegArrowAltCircleLeft size={25} className={`cursor-pointer ${imageIndex === 0 ? 'disabled' : ''}`} />
+                  </button>
+
                   <img
-                    src={preview ? preview : product?.image?.[0]}
+                    src={preview ? preview : product?.image?.[imageIndex]}
                     alt="image"
-                    className=" object-fill h-[450px] w-[450px] aspect-square rounded-xl  "
+                    className="object-fill h-[450px] w-[450px] aspect-square rounded-xl"
                   />
-                </div>{" "}
+
+                  <button onClick={() => setimageIndex(prev => prev + 1)} disabled={imageIndex === (product?.image?.length - 1)}>
+                    <FaRegArrowAltCircleRight size={25} className="cursor-pointer" />
+                  </button>
+                </div>
+                {" "}
                 <div className="w-full my-2 flex justify-center rounded-md p-2">
                   <div className=" overflow-x-auto flex  gap-2 w-full">
                     {product?.image?.map((image, index) => (
@@ -185,7 +196,7 @@ const SingleProduct = () => {
                         onDoubleClick={() => setSelectedColor(null)}
                         className={`${color === selectedColor ? "bg-green-500" : ""
                           } px-2 w-8 h-8 py-2 border-2 rounded-full`}
-                        style={{ backgroundColor: color }}
+                        style={{ backgroundColor: color.colorCode }}
                       ></div>
                     ))}
                   </div>
