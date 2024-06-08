@@ -205,8 +205,8 @@ const Singleorder = () => {
           <div className="my-4">
             <p className="font-bold my-2">Payment Details</p>
             <div className="w-full md:w-[50%] border-b border-black"></div>
-            <p className="font-semibold">Razorpay Payment ID</p>
-            <p>{order?.razorpay_payment_id}</p>
+            <p className="font-semibold">payu transaction id</p>
+            <p>{order?.payu_transaction_id}</p>
             <div className="w-full md:w-[50%] my-2 border-b border-black"></div>
             <p className="font-semibold">Total</p>
             <p>₹ {order?.orderValue}</p>

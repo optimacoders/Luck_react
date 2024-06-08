@@ -4,14 +4,15 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import Mainlayout from "../components/Mainlayout";
 import Cartproductcard from "../components/Cartproductcard";
-import { getRequest, postRequest } from "../utils/Apihelpers";
+import { getRequest } from "../utils/Apihelpers";
 import img from "../assets/logo.png";
 import CartCardSkeleton from "../skeletons/CartCardSkeleton";
 import AuthHook from "../context/AuthContext";
 import NoCartData from "../components/NoCartData";
 
 const Cart = () => {
-  const key = import.meta.env.VITE_RAZORPAY_KEY;
+  const key = import.meta.env.VITE_PAYU_KEY;
+  const backend = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(null);
@@ -19,8 +20,8 @@ const Cart = () => {
   const url = import.meta.env.VITE_BACKEND;
   const [cartLoader, setcartLoader] = useState(false);
 
-  const { userDetails, getuser, isLogedin } = AuthHook();
-
+  const { userDetails, getuser, isLogedin, token } = AuthHook();
+  console.log("tt", token);
   const getUserCart = async () => {
     try {
       setcartLoader(true);
@@ -33,16 +34,6 @@ const Cart = () => {
   };
 
   useEffect(() => {
-    const loadRazorpayScript = async () => {
-      const script = document.createElement("script");
-      script.src = "https://checkout.razorpay.com/v1/checkout.js";
-      script.async = true;
-      script.id = "razorpay-checkout-js";
-      document.body.appendChild(script);
-    };
-
-    loadRazorpayScript();
-
     getUserCart();
   }, []);
 
@@ -58,59 +49,41 @@ const Cart = () => {
     setTotalPrice(total);
   };
 
-  const checkout = async () => {
-    if (cart?.length == 0) {
-      toast.error("cart is empty, nothing to buy.")
-      return
+  const checkout = async (event) => {
+    event.preventDefault();
+    if (cart?.length === 0) {
+      toast.error("cart is empty, nothing to buy.");
+      return;
     }
     try {
-      const { data } = await axios.post(`${url}/payment/checkout`, {
-        amount: totalPrice,
-      });
-      console.log(data.order);
-      const options = {
+      const txnid = `txn_${Date.now()}`;
+      const formData = {
         key: key,
-        amount: data.order.amount,
-        currency: "INR",
-        name: "Inaya",
-        description: "Test Transaction",
-        image: img,
-        order_id: data.order.id,
-        handler: async function (response) {
-          const { razorpay_order_id, razorpay_payment_id } = response;
-          try {
-            const response = await postRequest(true, "/order/create", {
-              address: "dd",
-              phoneNo: "7894561234",
-              orderValue: totalPrice,
-              razorpay_order_id,
-              razorpay_payment_id,
-              paymentStatus: "done",
-            });
-            if (response.status) {
-              toast.success("Order successfully created");
-              getUserCart();
-            }
-          } catch (error) {
-            console.error("Error creating order:", error);
-          }
-        },
-        prefill: {
-          name: userDetails?.name,
-          email: userDetails?.email,
-          contact: userDetails?.mobileNo,
-        },
-        notes: {
-          address: userDetails?.address,
-        },
-        theme: {
-          color: "#E30B5C",
-        },
+        txnid: txnid,
+        amount: totalPrice,
+        productinfo: "Product Information",
+        firstname: userDetails?.name,
+        email: userDetails?.email,
+        phone: userDetails?.mobileNo,
+        surl: `${backend}/pay/payu_success`,
       };
-      const rzp1 = new Razorpay(options);
-      rzp1.open();
+      console.log("Success URL:", formData.surl);
+      const response = await axios.post(`${url}/pay/hash`, formData);
+      formData.hash = response.data.hash;
+
+      const form = document.getElementById("payuForm");
+      for (const key in formData) {
+        if (formData.hasOwnProperty(key)) {
+          const input = document.createElement("input");
+          input.type = "hidden";
+          input.name = key;
+          input.value = formData[key];
+          form.appendChild(input);
+        }
+      }
+      form.submit();
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.error("Error during checkout:", error);
     }
   };
 
@@ -119,13 +92,19 @@ const Cart = () => {
       navigate("/loginred");
     }
   }, [isLogedin]);
+
   return (
     <Mainlayout>
-      <script
-        id="razorpay-checkout-js"
-        src="https://checkout.razorpay.com/v1/checkout.js"
-      />
       <div className="md:px-8">
+        <form
+          id="payuForm"
+          action="https://test.payu.in/_payment"
+          method="post"
+          onSubmit={checkout}
+        >
+          <input type="submit" value="Submit" className="hidden" />
+        </form>
+
         <p className="my-2 font-semibold">My Cart </p>
         <div className="flex flex-col border-r-2 gap-3 md:flex-row ">
           <div className=" w-full md:w-2/3 rounded-md md:h-[75vh] bg-gray-50 p-3 overflow-y-auto">
@@ -135,8 +114,9 @@ const Cart = () => {
                 <CartCardSkeleton />
                 <CartCardSkeleton />
               </>
-            ) : cart?.length == 0 ? <NoCartData /> : (
-
+            ) : cart?.length == 0 ? (
+              <NoCartData />
+            ) : (
               cart?.map((item, index) => (
                 <Cartproductcard key={index} data={item} />
               ))
@@ -151,14 +131,6 @@ const Cart = () => {
                 <p>Subtotal</p>
                 <p>₹ {totalPrice}</p>
               </section>
-              {/* <section className="flex justify-between">
-                <p>Delivery</p>
-                <p>₹ 000</p>
-              </section> */}
-              {/* <section className="flex justify-between">
-                <p>Tax</p>
-                <p>₹ 000</p>
-              </section> */}
             </div>
             <section className="flex my-2 justify-between">
               <p className="text-lg">Total</p>

@@ -16,6 +16,8 @@ import AuthHook, { AuthProvider } from "./context/AuthContext";
 import Favorites from "./pages/Favorites";
 import PageNotFound from "./pages/PageNotFound";
 import Loginredirect from "./pages/Loginredirect";
+import Payu from "./pages/Payu";
+// import PayuSuccess from "./pages/PayuSuccess";
 
 const PrivateRoute = ({ element, ...rest }) => {
   const { isLogedin } = AuthHook();
@@ -37,8 +39,7 @@ const App = () => {
           <Route path="/product/:id" element={<SingleProduct />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/loginred" element={<Loginredirect />} />
-
-          {/* <Route path="/profile" element={<Profile />} /> */}
+          <Route path="/payu" element={<Payu />} />
 
           <Route path="/profile" element={<Profile />}>
             <Route index element={<Info />} />
