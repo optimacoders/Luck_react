@@ -1,39 +1,63 @@
 import React from "react";
-// import logo from "../Assets/logo.png";
-import { FaInstagram } from "react-icons/fa";
-import { FaTwitter } from "react-icons/fa";
-import { FaFacebook } from "react-icons/fa";
+import { FaInstagram, FaTwitter, FaFacebook, FaWhatsapp } from "react-icons/fa";
+import { MdLocationOn } from "react-icons/md";
+import { MdAttachEmail } from "react-icons/md";
+import { TbClock24 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
 
 function Footer() {
   const navigate = useNavigate();
+
   return (
-    <div className=" W-full bg-gray-50 px-10 py-2 mt-5">
-      <div className=" flex flex-col md:flex-row justify-between items-center border-b p-2 md:p-0 gap-2 md:gap-0">
-        <section onClick={() => navigate("/")} className=" cursor-pointer">
-          <img src={""} className="" width={100} alt="logo" />
-        </section>
-        <section className=" flex text-xs font-medium gap-3 items-center text-gray-600">
-          <p className=" hover:border-b-2 border-gold_dark px-2 py-[4px] cursor-pointer">MEN</p>
-          <p className=" hover:border-b-2 border-gold_dark px-2 py-[4px] cursor-pointer">KIDS</p>
-          <p className=" hover:border-b-2 border-gold_dark px-2 py-[4px] cursor-pointer">HOME</p>
-          <p className=" hover:border-b-2 border-gold_dark px-2 py-[4px] cursor-pointer">BEAUTY</p>
-        </section>
-        <section className=" flex gap-3">
-          <section className=" bg-gray-200 rounded-full p-[6px] cursor-pointer">
-            <FaInstagram size={17} color="gray" />
-          </section>
-          <section className=" bg-gray-200 rounded-full p-[6px] cursor-pointer">
-            <FaFacebook size={17} color="gray" />
-          </section>
-          <section className=" bg-gray-200 rounded-full p-[6px] cursor-pointer">
-            <FaTwitter size={17} color="gray" />
-          </section>
-        </section>
+    <div className=" bg-bg_back text-white py-8 mt-7">
+      <div className=" mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="flex flex-col items-center md:items-start">
+          {/* <img src="https://placehold.co/150x100" alt="Logo" className="mb-4" /> */}
+          <div className="flex space-x-4">
+            <a href="#" className="text-blue-500">
+              <FaFacebook size={24} />
+            </a>
+            <a href="#" className="text-pink-500">
+              <FaInstagram size={24} />
+            </a>
+            <a href="#" className="text-blue-400">
+              <FaTwitter size={24} />
+            </a>
+            <a href="#" className="text-green-500">
+              <FaWhatsapp size={24} />
+            </a>
+          </div>
+        </div>
+        <div className=" text-center md:text-left">
+          <h3 className="font-semibold mb-4">Categories</h3>
+          <ul>
+            <li><a href="#" className="hover:underline">Men</a></li>
+            <li><a href="#" className="hover:underline">Women</a></li>
+            <li><a href="#" className="hover:underline">BestSeller</a></li>
+            <li><a href="#" className="hover:underline">About Us</a></li>
+          </ul>
+        </div>
+        <div className=" text-center md:text-left">
+          <h3 className="font-semibold mb-4">Shopping</h3>
+          <ul>
+            <li><a href="#" className="hover:underline">Your Cart</a></li>
+            <li><a href="#" className="hover:underline">Your Orders</a></li>
+            <li><a href="#" className="hover:underline">Compared Items</a></li>
+            <li><a href="#" className="hover:underline">Wishlist</a></li>
+          </ul>
+        </div>
+        <div className=" text-center md:text-left">
+          <h3 className="font-semibold mb-4">Contact Us</h3>
+          <ul className=" ">
+            <li className="flex items-center justify-center md:justify-start gap-2"><MdLocationOn size={20} color="white" />Geetika Fashion, Lucknow, India</li>
+            <li className="flex items-center justify-center md:justify-start gap-2"><MdLocationOn size={20} color="white" />Lucknowi Handicrafts, Lucknow, India</li>
+            <li className="flex items-center justify-center md:justify-start gap-2"><MdAttachEmail size={18} color="white" />abc@gmail.com</li>
+            <li className="flex items-center justify-center md:justify-start gap-2"><TbClock24 size={18} color="white" />All Weeks 24/7</li>
+          </ul>
+        </div>
       </div>
-      <div className=" flex flex-col md:flex-row items-center justify-between gap-2 md:gap-0 py-2 px-5">
-        <p className=" text-xs text-gray-500 font-medium">&copy; 2024 INAYA, all rights are reserved</p>
-        <p className=" text-xs text-gray-500 font-medium">Terms and conditions, privacy policy</p>
+      <div className="text-center mt-8">
+        <p>Free Shipping, Easy Exchange & Returns</p>
       </div>
     </div>
   );

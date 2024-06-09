@@ -5,25 +5,46 @@ import Category from "../components/Category";
 import FeedProduct from "../components/FeedProduct";
 import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom"
+import NewArrivals from "../components/NewArrivals";
+import ReviewCard from "../components/ReviewCard";
 
 const Layout = () => {
   const navigate = useNavigate();
   return (
     <div className="h-[100vh]">
       <Nav />
-      <div className="h-[90vh] overflow-y-auto">
+      <div className="h-[90vh]">
         <Side />
-        <p className="p-4 font-semibold text-xl my-2 text-gray-600">Shop by Category</p>
-        <div className="w-full overflow-x-auto">
+        <div className="w-full">
           <Category />
         </div>
-        <section className=" flex justify-between items-center my-6 px-4">
-          <p className=" font-semibold text-xl text-gray-600">Shop Our Latest Styles!</p>
-          <p className=" text-xs font-semibold text-gray-600 cursor-pointer" onClick={() => navigate("/products")}>View all products</p>
+        <section className=" w-full">
+          <NewArrivals />
         </section>
-        <div>
+        <section className=" my-5">
+          <p className=" text-3xl font-bold text-center">Recently Viewed</p>
+          <p className=" text-center font-semibold mb-8">We saw you Liked it!</p>
           <FeedProduct />
-        </div>
+        </section>
+        <section className=" mb-5 mt-10">
+          <p className=" text-center text-3xl font-bold my-5">Testimonials</p>
+          <div className=" flex flex-col md:flex-row gap-5 px-2 md:px-20">
+            <ReviewCard />
+            <ReviewCard />
+          </div>
+        </section>
+        <section>
+
+          <div className="flex flex-col items-center justify-center py-8 px-4 sm:px-6 lg:px-8">
+            <h2 className="text-3xl font-bold text-center">Join Our Newsletter</h2>
+            <p className="mt-2 text-center">Sign up to get best deals, first look and more!</p>
+            <div className="mt-6 flex w-full max-w-md mx-auto">
+              <input type="email" placeholder="Enter Your Email" className="flex-grow px-3 py-2 rounded-l-lg border  focus:outline-none focus:ring-1 focus:ring-gold_medium" />
+              <button className="px-3 py-2 bg-gold_medium text-white rounded-r-lg hover:bg-gold_dark focus:outline-none focus:ring-1 focus:ring-gold_medium">Subscribe</button>
+            </div>
+          </div>
+
+        </section>
         <Footer />
       </div>
     </div>

@@ -5,13 +5,13 @@ import { Carousel } from "react-responsive-carousel";
 
 const Side = () => {
   const images = [
-    'https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/34372c33539333.56af37b23566f.jpg',
-    'https://mir-s3-cdn-cf.behance.net/project_modules/1400/264e3629894817.5609864fcd16d.png',
-    'https://i.pinimg.com/originals/3c/41/ab/3c41ab736bc52789af651115e4f0a980.jpg'
+    'https://as2.ftcdn.net/v2/jpg/07/46/79/55/1000_F_746795565_ccEv29AxtKxfrJhEu9bA5T0WhQ231JOE.jpg',
+    'https://www.shutterstock.com/shutterstock/photos/1951855213/display_1500/stock-vector-woman-shopaholic-flying-among-clothes-fast-fashion-consumerism-and-overconsumption-concept-young-1951855213.jpg',
+    'https://www.shutterstock.com/shutterstock/photos/1492939355/display_1500/stock-photo-promotional-sale-banner-with-smiling-cheerful-girl-running-and-holding-bags-1492939355.jpg'
   ];
 
   return (
-    <div className=" ">
+    <div className=" px-3 md:px-14 py-3">
       <Carousel
         autoPlay
         infiniteLoop={true}
@@ -25,7 +25,7 @@ const Side = () => {
           <div key={index}>
             <img
               src={img}
-              className="h-[25vh] md:h-[50vh] w-[100%]"
+              className="h-[25vh] md:h-[55vh] w-[100%] rounded-lg"
               alt={`Legend ${index + 1}`}
             />
           </div>

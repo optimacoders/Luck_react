@@ -43,50 +43,25 @@ const ProductCard = ({ data, fromsimilar }) => {
 
   return (
     <div
-      className="cursor-pointer h-full transition duration-300 ease-in-out opacity-90 p-2 hover:opacity-100 rounded-lg group"
+      className="cursor-pointer transition duration-300 ease-in-out opacity-90 p-2 hover:opacity-100 group"
       onClick={() => redirect()}
     >
-      <div className="flex justify-center items-center relative">
+      <div className="flex justify-center items-center">
         <img
           src={data?.image ? data?.image[0] : "/placeholder-image.jpg"}
           alt="Product Image"
-          className="object-fill w-full aspect-square rounded-lg"
+          className="object-fill w-full aspect-square rounded"
         />
-        <section className=" bg-white rounded-full p-1 absolute top-4 right-5 md:right-2 md:top-2 hidden group-hover:block">
-          {favourites?.includes(data._id) ? (
-            <MdFavorite
-              size={20}
-              onClick={(e) => {
-                e.stopPropagation();
-                removeToFavorite();
-              }}
-            />
-          ) : (
-            <MdFavoriteBorder
-              size={20}
-              onClick={(e) => {
-                e.stopPropagation();
-                addToFavorite();
-              }}
-            />
-          )}
-
-        </section>
       </div>
-      <div>
-        <p className="w-[100%] text-sm font-semibold flex justify-start line-clamp-1 text-black mt-2">
+      <div className=" flex flex-col justify-center items-center">
+        <p className="w-[100%] font-bold text-black text-center md:text-lg">
           {data?.title}
         </p>
-        <section className="flex my-1 justify-between items-center">
-          <p className="text-sm text-gray-700 font-semibold">
-            ₹ {data?.selling_price}
-          </p>
-          <p className=" text-xs text-gray-700 font-semibold">
-            {data?.category?.name}
-          </p>
-        </section>
-        <button className=" text-gray-600 rounded-full px-4 py-[3px] font-semibold text-xs my-1 border border-gray-500 hover:bg-gold_dark hover:text-white hover:border-none">
-          Buy Now
+        <p className="font-bold">
+          ₹ {data?.selling_price}
+        </p>
+        <button className=" text-gold_dark rounded-xl px-4 py-[3px] font-semibold text-sm my-1 border border-gold_dark hover:bg-gold_dark hover:text-white hover:border-none">
+          Add To Cart
         </button>
       </div>
     </div>
