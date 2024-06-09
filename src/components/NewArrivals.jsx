@@ -7,8 +7,9 @@ function NewArrivals() {
     const navigate = useNavigate()
 
     const getdata = async () => {
-        const { latestproducts } = await getRequest(false, "/admin/product/latestProducts");
-        setdata(latestproducts);
+        const { products } = await getRequest(false, "/admin/product/latestProducts");
+        setdata(products.data);
+        // console.log(response);
     }
 
     useEffect(() => {
