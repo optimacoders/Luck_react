@@ -15,9 +15,17 @@ import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nav from "../components/Nav";
 import { FaRegArrowAltCircleRight } from "react-icons/fa";
 import { FaRegArrowAltCircleLeft } from "react-icons/fa";
+import { IoIosArrowDown } from "react-icons/io";
+import { LuText } from "react-icons/lu";
+import { TbTruckDelivery } from "react-icons/tb";
+import { GiRolledCloth } from "react-icons/gi";
+import { FaExchangeAlt } from "react-icons/fa";
+import RelatedProductCard from "../components/RelatedProductCard";
+import Footer from "../components/Footer";
+import ReviewCard from "../components/ReviewCard";
 
 const SingleProduct = () => {
-  const id = useParams();
+  const { id } = useParams();
   const url = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
   const [productloader, setproductloader] = useState(false);
@@ -33,6 +41,8 @@ const SingleProduct = () => {
   const [semilarproducts, setsemilarproducts] = useState([]);
   const [preview, setpreview] = useState("");
   const [imageIndex, setimageIndex] = useState(0)
+  const [detailsOptions, setdetailsOptions] = useState("")
+  const [reviewData, setreviewData] = useState([])
 
   const add = () => {
     if (qunatity < product?.quantity) {
@@ -49,7 +59,7 @@ const SingleProduct = () => {
   const fetchProduct = async () => {
     try {
       setproductloader(true);
-      const { data } = await axios.get(`${url}/admin/product/${id.id}`);
+      const { data } = await axios.get(`${url}/admin/product/${id}`);
       setProduct(data.products);
       setcolors(data.products.color);
       setsizes(data.products.size);
@@ -60,12 +70,24 @@ const SingleProduct = () => {
     }
   };
 
+  const fetchreviews = async () => {
+    try {
+      setproductloader(true);
+      const { data } = await axios.get(`${url}/review/${id}`);
+      // console.log(data?.reviews);
+      setreviewData(data?.reviews)
+
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
   const similarProducts = async () => {
     try {
       setsimilarLoader(true);
       const response = await getRequest(
         true,
-        `/admin/product/getsimilarproducts/${Category}`
+        `/admin/product/getsimilarproducts/${product?.category}`
       );
       console.log(response);
       setsemilarproducts(response.products);
@@ -96,6 +118,13 @@ const SingleProduct = () => {
     }
   };
 
+  const watchHistory = async () => {
+    const response = await postRequest(true, "/watchHistory", {
+      productId: id,
+    });
+    console.log(response.success);
+  }
+
   const colorOptions = Array.from(
     { length: product.color },
     (_, index) => index + 1
@@ -103,15 +132,30 @@ const SingleProduct = () => {
 
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+    fetchreviews();
+  }, []);
 
   useEffect(() => {
     similarProducts();
-  }, [Category]);
+  }, [product]);
+
+  useEffect(() => {
+    watchHistory()
+  }, [])
+
 
   const see = (url) => {
     setpreview(see);
   };
+
+  const setDatilsDropdown = (text) => {
+    if (detailsOptions == text) {
+      setdetailsOptions("")
+    } else {
+      setdetailsOptions(text)
+    }
+  }
+
   return (
     // <Mainlayout>
     <div className="h-[100svh] w-[100svw] overflow-y-hidden">
@@ -123,60 +167,39 @@ const SingleProduct = () => {
               <SingleProductSkeleton />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full border">
-              <div >
-                <div className="rounded-md p-4 flex justify-center items-center gap-3 w-full grid-cols-2">
-                  <button onClick={() => setimageIndex(prev => prev - 1)} disabled={imageIndex === 0}>
-                    <FaRegArrowAltCircleLeft size={25} className={`cursor-pointer ${imageIndex === 0 ? 'disabled' : ''}`} />
-                  </button>
+            <div className="grid grid-cols-1 md:grid-cols-2 w-full">
+              <div className=" h-[85svh] border overflow-y-auto ">
 
-                  <img
-                    src={preview ? preview : product?.image?.[imageIndex]}
-                    alt="image"
-                    className="object-fill h-[450px] w-[450px] aspect-square rounded-xl"
-                  />
 
-                  <button onClick={() => setimageIndex(prev => prev + 1)} disabled={imageIndex === (product?.image?.length - 1)}>
-                    <FaRegArrowAltCircleRight size={25} className="cursor-pointer" />
-                  </button>
-                </div>
-                {" "}
-                <div className="w-full my-2 flex justify-center rounded-md p-2">
-                  <div className=" overflow-x-auto flex  gap-2 w-full">
-                    {product?.image?.map((image, index) => (
-                      <div
-                        onClick={() => setpreview(image)}
-                        key={index}
-                        className="flex justify-center"
-                      >
-                        <img
-                          src={image}
-                          alt={`Product image ${index + 1}`}
-                          className="object-fill w-[10vh] md:w-[20vh] h-[10vh] md:h-[20vh] aspect-square rounded-lg"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
+
+                {/* <img
+                  src={preview ? preview : product?.image?.[imageIndex]}
+                  alt="image"
+                  className="object-fill h-[450px] w-[450px] aspect-square rounded-xl"
+                /> */}
+
               </div>
-              <div className=" py-4 w-full px-3 md:px-10">
+              <div className=" py-4 w-full px-5 md:px-10">
                 <p className=" font-semibold text-xl md:text-2xl ">
                   {product?.title}
                 </p>
-                <p className="py-2 border-b-2  ">{product?.description}</p>
-                <p className="font-eemibold border-b-1 py-2 text-md font-semibold line-clamp-4">
-                  Rs. {product?.selling_price}
-                </p>
-                <div className=" py-4 border-b-2 ">
-                  <p className="font-semibold my-1 text-lg">Choose a Size</p>
-                  <div className="w-full border-b-1  gap-2 overflow-x-auto flex cursor-pointer">
+                <section className=" flex gap-2 items-center my-2">
+                  <p className="font-semibold">
+                    Rs. {product?.selling_price}
+                  </p>
+                  <p className="line-through text-gray-500 text-sm">Rs. {product?.original_price}</p>
+                  <p className=" text-red-500 text-sm">{Math.round(((product?.original_price - product?.selling_price) / product?.original_price) * 100)}% off</p>
+                </section>
+                <div className=" my-2">
+                  <p className="font-semibold my-1 text-lg">Available Sizes</p>
+                  <div className="w-full gap-2 overflow-x-auto flex cursor-pointer">
                     <div className="w-full gap-2 overflow-x-auto flex cursor-pointer">
                       {sizes?.map((item, index) => (
                         <div
                           onClick={() => setsize(item)}
                           onDoubleClick={() => setsize(null)}
                           key={index}
-                          className={`px-3 rounded-md py-1 border-2 ${size == item ? "border-blue-500" : ""
+                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${size == item ? " border-gold_dark bg-gold_dark text-white" : ""
                             }`}
                         >
                           {item}
@@ -185,96 +208,125 @@ const SingleProduct = () => {
                     </div>
                   </div>
                 </div>
+                <p className="font-semibold my-1 text-lg">Quantity</p>
+                <div className=" flex gap-10 justify-between md:justify-start">
+                  <div className="p-1 flex bg-gray-100 rounded-3xl my-1 items-center w-fit gap-5 px-4">
+                    <section className="">
+                      <GoPlus onClick={() => add()} size={24} color="#d1bf6a" />
+                    </section>
+                    <section>{qunatity}</section>
+                    <section>
+                      <FiMinus onClick={() => remove()} size={24} color="#d1bf6a" />
+                    </section>
+                  </div>
+                  <div className="p-1 flex bg-gold_medium rounded-3xl my-1 items-center w-fit gap-5 px-4">
+                    <button className=" px-3 py-1 text-white font-medium">Add to Wishlist</button>
+                  </div>
+                </div>
 
-                <div className="py-4 border-b-2">
-                  <p className="font-semibold  text-lg">Choose a Color</p>
+                <div className=" flex items-center gap-2 my-2">
+                  <p className="font-semibold  text-lg">Color:</p>
                   <div className="flex gap-x-3 w-full  gap-2 overflow-x-auto  cursor-pointer">
                     {colors?.map((color, index) => (
                       <div
                         key={index}
-                        onClick={() => setSelectedColor(color)}
+                        onClick={() => setSelectedColor(color.colorCode)}
                         onDoubleClick={() => setSelectedColor(null)}
-                        className={`${color === selectedColor ? "bg-green-500" : ""
-                          } px-2 w-8 h-8 py-2 border-2 rounded-full`}
+                        className={`${color.colorCode == selectedColor ? "bg-green-500" : ""
+                          } px-2 w-6 h-6 py-2 border-2 rounded-full`}
                         style={{ backgroundColor: color.colorCode }}
                       ></div>
                     ))}
                   </div>
                 </div>
-
-                <div className="p-2 flex bg-gray-100 rounded-3xl my-4 items-center w-fit gap-5 px-4">
-                  <section className="">
-                    <GoPlus onClick={() => add()} size={24} />
-                  </section>
-                  <section>{qunatity}</section>
-                  <section>
-                    <FiMinus onClick={() => remove()} size={24} />
-                  </section>
-                </div>
-
-                <div className="hidden md:block my-2 ">
-                  <div className="flex gap-2  ">
-                    <div>
-                      <button
-                        onClick={() => addtoCart(product?._id, "is_buy")}
-                        className="px-6 py-2 font-semibold rounded-full text-white bg-gold_medium"
-                      >
-                        Buy Now
-                      </button>
-                    </div>
+                <div className="block my-4 px-10">
+                  <div className="flex flex-col gap-2 w-full">
                     <div>
                       <button
                         onClick={() => addtoCart(product?._id)}
-                        className="px-6 py-2 font-semibold rounded-full text-gold_medium border"
+                        className="px-6 py-[6px] font-semibold rounded-full w-full text-gold_medium border"
                       >
                         Add to Cart
                       </button>
                     </div>
+                    <div>
+                      <button
+                        onClick={() => addtoCart(product?._id, "is_buy")}
+                        className="px-6 py-[6px] font-semibold rounded-full w-full text-white bg-gold_medium"
+                      >
+                        Buy Now
+                      </button>
+                    </div>
                   </div>
+                </div>
+                <div className=" flex flex-col gap-3">
+                  <section className=" flex items-end justify-between">
+                    <p className=" font-medium flex items-center gap-2"><LuText size={20} />Description </p>
+                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("description")}><IoIosArrowDown size={25} /></p>
+                  </section>
+                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "description" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                    <p> {product?.description}</p>
+                  </section>
+                  <section className=" flex items-end justify-between">
+                    <p className=" font-medium flex items-center gap-2"><TbTruckDelivery size={20} />Delivery </p>
+                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("delivery")}><IoIosArrowDown size={25} /></p>
+                  </section>
+                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "delivery" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                    <p>Free Delivery</p>
+                  </section>
+                  <section className=" flex items-end justify-between">
+                    <p className=" font-medium flex items-center gap-2"><GiRolledCloth size={20} />Material & Wash Type </p>
+                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("material")}><IoIosArrowDown size={25} /></p>
+                  </section>
+                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "material" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                    <p><span className=" font-medium">Material:</span> {product?.material}</p>
+                    <p><span className=" font-medium">Wash Type:</span> {product?.howToWash}</p>
+                  </section>
+                  <section className=" flex items-end  justify-between">
+                    <p className=" font-medium flex items-center gap-2"><FaExchangeAlt size={20} />Returns And Cancellations</p>
+                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("return")}><IoIosArrowDown size={25} /></p>
+                  </section>
+                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "return" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                    <p>Not available</p>
+                  </section>
                 </div>
               </div>
             </div>
           )}
         </div>
-        <div className="mt-4">
-          <p className="font-semibold text-center  text-xl">Similar Products</p>
-          <div className="grid  grid-cols-1 md:grid-cols-4 px-3 md:px-20">
+        <div className="mt-5 w-[100vsw]">
+          <p className="font-semibold text-center  text-3xl">You may also like!</p>
+          <div className=" flex px-3 w-[100svw] gap-5 overflow-x-auto md:px-20 my-8">
             {similarLoader ? (
-              <ProductCardSkeleton />
+              <>
+                <ProductCardSkeleton />
+                <ProductCardSkeleton />
+                <ProductCardSkeleton />
+                <ProductCardSkeleton />
+              </>
             ) : (
               semilarproducts.map((product, index) => (
-                <div key={index}>
-                  <ProductCard data={product} fromsimilar={true} />
+                <div key={index} className=" w-[50%] md:w-[20%]">
+                  <RelatedProductCard data={product} />
                 </div>
               ))
             )}
           </div>
         </div>
-
-
-        <div className=" md:hidden w-full sticky bottom-0 z-5 ">
-          <div className="flex w-full ">
-            <section
-              onClick={() => addtoCart(product?._id)}
-              className=" border-r-2 bg-[#dacd7f]  gap-x-2 font-semibold text-white  py-4 w-[50%] flex items-center justify-center"
-            >
-              <FaCartPlus size={25} />
-              Add to Cart
-            </section>
-            <section
-              onClick={() => addtoCart(product?._id, "isbuy")}
-              className=" border-r-2  bg-white font-semibold  gap-x-2  py-4 w-[50%] flex items-center justify-center"
-            >
-              {" "}
-              <FaRegHeart size={25} />
-              Buy Now
-            </section>
+        <div className=" md:px-20 px-4">
+          <p className=" font-semibold text-xl my-5">Product reviews (214)</p>
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
+            {
+              reviewData?.map((item) => {
+                return <ReviewCard key={item._id} data={item} />
+              })
+            }
           </div>
         </div>
-      </div >
+        <Footer />
+      </div>
     </div>
     // </Mainlayout>
-
   );
 };
 

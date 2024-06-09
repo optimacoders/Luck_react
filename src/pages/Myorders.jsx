@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getRequest } from "../utils/Apihelpers";
+import { getRequest, postRequest } from "../utils/Apihelpers";
 import { LuChevronRight } from "react-icons/lu";
 import "react-photo-view/dist/react-photo-view.css";
 import moment from "moment/moment";
 import MyorderCardSkeleton from "../skeletons/MyorderCardSkeleton";
 import Nodata from "../components/Nodata";
+import toast from "react-hot-toast";
+import axios from "axios";
+import { PulseLoader } from "react-spinners"
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
   const [status, setstatus] = useState("");
   const [loader, setloader] = useState(false)
   const navigate = useNavigate();
+
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [rating, setRating] = useState(1);
+  const [description, setDescription] = useState("");
+  const [comment, setComment] = useState("");
+  const [images, setImages] = useState([]);
+  const [reviewLoader, setreviewLoader] = useState(false)
+
+  const handleImageUpload = (e) => {
+    const files = e.target.files[0];
+    setImages(files);
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -32,9 +48,44 @@ const Myorders = () => {
     fetchUserData();
   }, [status]);
 
-  const handleBestClick = (productId) => {
-    console.log("Mark as best:", productId);
+  const handleAddReviewClick = (order) => {
+    setSelectedOrder(order);
+    setShowModal(true);
   };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedOrder(null);
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setreviewLoader(true)
+      const ImgData = new FormData();
+      ImgData.append("file", images);
+      ImgData.append("upload_preset", "Categorys");
+      const Res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`, ImgData);
+      const imgUrl = Res.data.secure_url;
+
+      const response = await postRequest(true, '/review', {
+        productId: selectedOrder?.productId?._id,
+        rating: rating,
+        comment: comment,
+        productImages: [imgUrl],
+        desc: description
+      })
+
+      if (response.status) {
+        toast.success("Review addded sucessfully..");
+        handleCloseModal()
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error(err)
+    }
+    setreviewLoader(false)
+  }
+
 
   return (
     <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0">
@@ -97,14 +148,17 @@ const Myorders = () => {
               className=" rounded-lg flex border pr-0 p-2 md:px-6 md:py-4"
             >
               <div className="w-[95%]">
-                <section className=" text-xs flex gap-2 mb-3 items-center">
-                  <p className=" rounded-full border px-4 font-medium py-[2px]">
-                    {item?.status}
-                  </p>{" "}
-                  |
-                  <p className=" font-medium">
-                    {moment(item?.orderDateTime).format("D MMMM YYYY")}
-                  </p>
+                <section className=" text-xs flex mb-3 items-center justify-between ">
+                  <section className=" text-xs flex gap-2 items-center h-full ">
+                    <p className=" rounded-full border px-4 font-medium py-[2px]">
+                      {item?.status}
+                    </p>{" "}
+                    |
+                    <p className=" font-medium">
+                      {moment(item?.orderDateTime).format("D MMMM YYYY")}
+                    </p>
+                  </section>
+                  <button onClick={() => handleAddReviewClick(item)} className=" bg-gold_dark text-white px-2 md:px-4 py-[6px] rounded-md text-semibold">Add Review</button>
                 </section>
                 <section className=" flex items-center gap-2 md:gap-4">
                   <img
@@ -133,6 +187,69 @@ const Myorders = () => {
           );
         })}
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-md w-full max-w-md">
+            <h2 className="font-semibold mb-2">Add Review</h2>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">Rating</label>
+              <select
+                value={rating}
+                onChange={(e) => setRating(e.target.value)}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              >
+                {[1, 2, 3, 4, 5].map((num) => (
+                  <option key={num} value={num}>{num}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">Description</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">Comment</label>
+              <textarea
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">Images</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleImageUpload}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={handleCloseModal}
+                className=" border bg-gray-100 font-medium text-sm px-3 py-[4px] rounded-md mr-2 "
+                disabled={reviewLoader}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSubmit}
+                className=" bg-gold_dark font-medium text-sm text-white px-3 py-[4px] rounded-md"
+              >
+                {
+                  reviewLoader ? <PulseLoader color="white" size={8} /> : "Submit"
+                }
+
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
