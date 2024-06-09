@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import Side from "../components/Corousel";
 import Category from "../components/Category";
@@ -7,9 +7,29 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom"
 import NewArrivals from "../components/NewArrivals";
 import ReviewCard from "../components/ReviewCard";
+import axios from "axios";
+import { getRequest } from "../utils/Apihelpers";
 
 const Layout = () => {
+  const [reviews, setreviews] = useState([])
   const navigate = useNavigate();
+
+  const fetchreviews = async () => {
+    try {
+      const response = await getRequest(false, "/review/websiteReviews");
+      // console.log(response);
+      setreviews(response)
+
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  }
+
+  useEffect(() => {
+    fetchreviews()
+  }, [])
+
+
   return (
     <div className="h-[100vh]">
       <Nav />
@@ -28,9 +48,12 @@ const Layout = () => {
         </section>
         <section className=" mb-5 mt-10">
           <p className=" text-center text-3xl font-bold my-5">Testimonials</p>
-          <div className=" flex flex-col md:flex-row gap-5 px-2 md:px-20">
-            <ReviewCard />
-            <ReviewCard />
+          <div className=" grid grid-cols-1 md:grid-cols-2 gap-5 px-2 md:px-20">
+            {
+              reviews?.map((item) => {
+                return <ReviewCard key={item._id} data={item} />
+              })
+            }
           </div>
         </section>
         <section>

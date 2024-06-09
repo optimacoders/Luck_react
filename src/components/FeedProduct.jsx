@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import RelatedProductCard from "./RelatedProductCard";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nodata from "./Nodata";
+import { getRequest } from "../utils/Apihelpers";
 
 const FeedProduct = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -13,8 +14,8 @@ const FeedProduct = () => {
   const fetchProducts = async () => {
     try {
       setproductLoader(true);
-      const { data } = await axios.get(`${url}/admin/product`);
-      setProducts(data.products.data);
+      const response = await getRequest(true, `/watchHistory`);
+      setProducts(response.data);
       setproductLoader(false);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -37,7 +38,7 @@ const FeedProduct = () => {
       ) : products.length == 0 ? <div className=" w-[80svw]"><Nodata /></div> : (
         products.map((product, index) => (
           <div key={index}>
-            <RelatedProductCard data={product} />
+            <RelatedProductCard data={product?.productId} />
           </div>
         ))
       )}
