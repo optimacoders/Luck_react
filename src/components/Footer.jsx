@@ -4,6 +4,7 @@ import { MdLocationOn } from "react-icons/md";
 import { MdAttachEmail } from "react-icons/md";
 import { TbClock24 } from "react-icons/tb";
 import { useNavigate } from "react-router-dom";
+import logo from "../assets/logo.png";
 
 function Footer() {
   const navigate = useNavigate();
@@ -11,9 +12,9 @@ function Footer() {
   return (
     <div className=" bg-bg_back text-white py-8 mt-7">
       <div className=" mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
-        <div className="flex flex-col items-center md:items-start">
-          {/* <img src="https://placehold.co/150x100" alt="Logo" className="mb-4" /> */}
-          <div className="flex space-x-4">
+        <div className="flex flex-col items-center">
+          <img src={logo} alt="Logo" className="mb-4 w-28 h-28 aspect-square" />
+          <div className="flex justify-center space-x-4">
             <a href="#" className="text-blue-500">
               <FaFacebook size={24} />
             </a>

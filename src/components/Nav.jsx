@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import logo from "../Assets/logo.png";
+import logo from "../assets/logo.png";
 import { GiHamburgerMenu, GiCancel, GiArrowWings } from "react-icons/gi";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { IoIosHeartEmpty } from "react-icons/io";
@@ -44,7 +44,7 @@ const Nav = () => {
   const [searchSuggest, setsearchSuggest] = useState([]);
   const [search, setsearch] = useState("");
 
-  const { getUserDetails, token, isLogedin } = AuthHook();
+  const { getUserDetails, token, isLogedin, getlocation } = AuthHook();
 
   const navigate = useNavigate();
 
@@ -85,6 +85,7 @@ const Nav = () => {
   }, [search]);
 
   useEffect(() => {
+    getlocation()
     getUserDetails();
   }, []);
 

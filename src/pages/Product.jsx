@@ -11,6 +11,7 @@ import { GrPowerReset } from "react-icons/gr";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nav from "../components/Nav";
 import Nodata from "../components/Nodata";
+import AuthHook from "../context/AuthContext";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -18,6 +19,7 @@ const Product = () => {
   const { categorys, q } = location.state || {};
   console.log("Selected category:", categorys);
   console.log("serach:", q);
+  const { currency } = AuthHook()
 
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
@@ -28,15 +30,17 @@ const Product = () => {
   const fetchProducts = async (category) => {
     try {
       setloader(true)
-      const link = "admin/product";
-      const response = await axios.get(
-        category ? `${url}/${link}?category=${category}&q=${q ? q : ""}` : `${url}/${link}?q=${q ? q : ""}`
-      );
-      setProducts(response.data.products.data);
+      if (currency !== null) {
+        const link = `admin/product/${currency ? currency : "INR"}`;
+        const response = await axios.get(
+          category ? `${url}/${link}?category=${category}&q=${q ? q : ""}` : `${url}/${link}?q=${q ? q : ""}`
+        );
+        setProducts(response.data.products.data);
+        setloader(false)
+      }
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-    setloader(false)
   };
 
   const getCategories = async () => {

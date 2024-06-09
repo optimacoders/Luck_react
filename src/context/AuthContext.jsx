@@ -13,6 +13,7 @@ export const AuthProvider = ({ children }) => {
   );
   const [userDetails, setuserDetails] = useState(null);
   const [favourites, setfavourites] = useState([]);
+  const [currency, setcurrency] = useState(null)
   const url = import.meta.env.VITE_BACKEND;
 
   const getUserDetails = async () => {
@@ -33,6 +34,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const getlocation = () => {
+    axios.get('https://ipapi.co/json/').then((response) => {
+      let data = response.data;
+      setcurrency(data.currency)
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
   const value = {
     isLogedin,
     setisLogedin,
@@ -42,6 +52,8 @@ export const AuthProvider = ({ children }) => {
     favourites,
     setfavourites,
     userDetails,
+    getlocation,
+    currency
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

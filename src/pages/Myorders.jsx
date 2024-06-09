@@ -9,12 +9,14 @@ import Nodata from "../components/Nodata";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { PulseLoader } from "react-spinners"
+import AuthHook from "../context/AuthContext";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
   const [status, setstatus] = useState("");
   const [loader, setloader] = useState(false)
   const navigate = useNavigate();
+  const { currency } = AuthHook()
 
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -33,16 +35,19 @@ const Myorders = () => {
     const fetchUserData = async () => {
       setloader(true)
       try {
-        const { orders } = await getRequest(
-          true,
-          `/order/myorders?filter=${status}`
-        );
-        setOrders(orders);
+        if (currency !== null) {
+          const { orders } = await getRequest(
+            true,
+            `/order/myorders/${currency ? currency : "INR"}?filter=${status}`
+          );
+          setOrders(orders);
+          setloader(false)
+        }
 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
-      setloader(false)
+
     };
 
     fetchUserData();
