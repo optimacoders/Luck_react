@@ -218,10 +218,11 @@ const SingleProduct = () => {
                 </p>
                 <section className=" flex gap-2 items-center my-2">
                   <p className="font-semibold">
-                    {currency} {product?.selling_price}
+                    {currency} {new Intl.NumberFormat().format(product?.selling_price)}
                   </p>
-                  <p className="line-through text-gray-500 text-sm">{currency} {product?.original_price}</p>
-                  <p className=" text-red-500 text-sm">{Math.round(product?.original_price - product?.selling_price)} {currency} off</p>
+                  <p className="line-through text-gray-500 text-sm">
+                    {currency} {new Intl.NumberFormat().format(product?.original_price)}</p>
+                  <p className=" text-red-500 text-sm">{new Intl.NumberFormat().format(product?.original_price - product?.selling_price)} {currency} off</p>
                 </section>
                 <div className=" my-2">
                   <p className="font-semibold my-1 text-lg">Available Sizes</p>

@@ -30,7 +30,7 @@ const ProductCard = ({ data, fromsimilar }) => {
           {data?.title}
         </p>
         <p className="font-bold">
-          {currency}{data?.selling_price}
+          {currency}{new Intl.NumberFormat().format(data?.selling_price)}
         </p>
         <button className=" text-gold_dark rounded-xl px-4 py-[3px] font-semibold text-sm my-1 border border-gold_dark hover:bg-gold_dark hover:text-white hover:border-none">
           Add To Cart

@@ -23,7 +23,9 @@ function RelatedProductCard({ data }) {
                 {data?.title}
             </p>
             <section className=' flex justify-between items-center'>
-                <p className=' font-bold'>{currency} {data?.selling_price}</p>
+                <p className="font-bold">
+                    {currency} {new Intl.NumberFormat().format(data?.selling_price)}
+                </p>
                 <span className=' text-white flex gap-1 items-center bg-gold_medium px-2 py-[1px] rounded-md'><IoBag size={15} color='white' /> +</span>
             </section>
         </div>

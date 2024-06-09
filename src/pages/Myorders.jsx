@@ -176,7 +176,7 @@ const Myorders = () => {
                     </p>
                     <p className="text-xs">{item?.productId?.title}</p>
                     <p className="text-xs md:text-sm font-medium">
-                      {item?.orderValue}
+                      {new Intl.NumberFormat().format(item?.orderValue)}
                     </p>
                   </section>
                 </section>
