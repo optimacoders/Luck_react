@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import ProductCard from "./ProductCard";
+import RelatedProductCard from "./RelatedProductCard";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nodata from "./Nodata";
 
@@ -26,7 +26,7 @@ const FeedProduct = () => {
   }, []);
 
   return (
-    <div className="grid  grid-cols-2 md:grid-cols-4 px-3 md:px-20">
+    <div className="grid  grid-cols-2 md:grid-cols-4 px-3 md:px-20 gap-5">
       {productLoader ? (
         <>
           <ProductCardSkeleton />
@@ -37,7 +37,7 @@ const FeedProduct = () => {
       ) : products.length == 0 ? <div className=" w-[80svw]"><Nodata /></div> : (
         products.map((product, index) => (
           <div key={index}>
-            <ProductCard data={product} />
+            <RelatedProductCard data={product} />
           </div>
         ))
       )}

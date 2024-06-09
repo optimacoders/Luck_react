@@ -31,21 +31,21 @@ const Category = () => {
   };
 
   return (
-    <div className=" grid grid-cols-3 md:grid-cols-6 gap-3 md:gap-5 flex-wrap md:px-36 justify-center items-center">
+    <div className=" flex flex-wrap justify-center gap-4 items-center my-7">
       {loader ? <><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /><CategoryCardSkeleton /> </> :
         category?.map((item, index) => (
           <div
             onClick={() => click(item._id)}
             key={index}
-            className=" flex flex-col items-center rounded-md gap-2 cursor-pointer"
+            className=" flex flex-col items-center rounded-md w-[40%] md:w-[20%]  gap-1 cursor-pointer"
           >
-            <div className="  w-24 h-24 aspect-square rounded-full relative overflow-hidden">
+            <div className=" w-28 h-28 md:w-32 md:h-32 aspect-square rounded-full relative">
               <img
                 src={item?.image}
-                className="object-cover aspect-square rounded-md"
+                className="object-cover aspect-square rounded-full border-2 border-gold_medium"
               />
             </div>
-            <p className="flex justify-center text-center text-gray-700 text-xs font-semibold">
+            <p className="flex justify-center text-center text-gray-700 text-sm font-bold">
               {item?.name}
             </p>
           </div>

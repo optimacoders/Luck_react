@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from "react";
-//import logo from "../Assets/logo.png";
+import logo from "../Assets/logo.png";
 import { GiHamburgerMenu, GiCancel, GiArrowWings } from "react-icons/gi";
-import { IoIosArrowDropright } from "react-icons/io";
 import { AiOutlineShoppingCart } from "react-icons/ai";
-import { FaRegUser, FaS } from "react-icons/fa6";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import AuthHook from "../context/AuthContext";
-import { CiLogin } from "react-icons/ci";
+import { IoMdSearch } from "react-icons/io";
 import axios from "axios";
 import { postRequest } from "../utils/Apihelpers";
+import { IoIosArrowDown } from "react-icons/io";
+import { RxCross2 } from "react-icons/rx";
+import { MdOutlineArrowForwardIos } from "react-icons/md";
+import { MdOutlineArrowBackIosNew } from "react-icons/md";
 
 const Nav = () => {
   const [nav, setNav] = useState(false);
-  const [men, setMen] = useState(false);
   const url = import.meta.env.VITE_BACKEND;
-  const [c2, setc2] = useState(false);
-  const [dropdown, setdropdown] = useState(false);
   const [category, setcategory] = useState([]);
+
+
+  const [women, setwomen] = useState(false)
+  const [man, setman] = useState(false)
+  const [bestseller, setbestseller] = useState(false)
+  const [about, setabout] = useState(false)
+
   const getCategories = async () => {
     try {
       // setloader(true);
@@ -31,6 +39,8 @@ const Nav = () => {
   useEffect(() => {
     getCategories();
   }, []);
+
+  const [showSearch, setshowSearch] = useState(false)
   const [searchSuggest, setsearchSuggest] = useState([]);
   const [search, setsearch] = useState("");
 
@@ -42,13 +52,17 @@ const Nav = () => {
     setNav(!nav);
   };
 
-  const handlemen = () => {
-    setMen(!men);
+  const clearHader = () => {
+    setman(false)
+    setwomen(false)
+    setbestseller(false)
+    setabout(false)
+  }
+
+  const click = async (id) => {
+    navigate("/products", { state: { q: search } });
   };
 
-  const handlec2 = () => {
-    setc2(!c2);
-  };
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -66,10 +80,6 @@ const Nav = () => {
     }
   };
 
-  const click = async (id) => {
-    navigate("/products", { state: { q: search } });
-  };
-
   useEffect(() => {
     handleSearchSuggest();
   }, [search]);
@@ -78,131 +88,224 @@ const Nav = () => {
     getUserDetails();
   }, []);
 
-  const handlemddrop = () => {
-    setdropdown(!dropdown);
-  };
 
   return (
     <div className=" h-[10vh] min-h-[10vh]">
-      <div className="bg-white px-2 sm:px-4 h-full items-center w-full flex justify-between">
-        <section onClick={handle} className="sm:hidden border">
-          {nav ? <GiCancel size={23} /> : <GiHamburgerMenu size={23} />}
-        </section>
-        <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer ">
-          <img src={""} alt="logo" className="" width={130} />
-        </div>
-        <div className="hidden md:block">
-          <section onClick={() => handlemddrop()} className="flex gap-x-2 ">
-            <GiHamburgerMenu className="flex h-7  items-center" />
-            <p className="cursor-pointer flex items-center">Categories</p>
+      <div className="bg-gray-100 px-2 sm:px-4 h-full items-center w-full flex justify-between shadow">
+        <div className={` ${showSearch ? " hidden md:flex" : ""} flex items-center gap-2 `}>
+          <section onClick={handle} className="sm:hidden ">
+            <GiHamburgerMenu size={23} />
           </section>
-        </div>
-        <div className="w-[30%] hidden h-full md:flex items-center relative">
-          <form onSubmit={handleSearch} className=" w-full">
-            <input
-              type="text"
-              placeholder="Search for products"
-              value={search}
-              onChange={(e) => {
-                setsearch(e.target.value);
-              }}
-              className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#f5f6f6] text-xs"
-            />
-          </form>
-          {searchSuggest.length > 0 && (
-            <section className="absolute max-h-48 duration-300 transition-all ease-in-out h-auto overflow-y-auto top-14 text-xs bg-[#f5f6f6] w-full z-10 rounded-md">
-              {searchSuggest?.map((item) => {
-                return (
-                  <p
-                    onClick={click}
-                    className=" hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white"
-                  >
-                    {item.title}
-                  </p>
-                );
-              })}
-            </section>
-          )}
-        </div>
-        <div className=" ">
-          <div className="flex gap-x-6">
-            {isLogedin ? (
-              <section
-                onClick={() => navigate("/profile")}
-                className="flex gap-2 font-semibold items-center cursor-pointer"
-              >
-                <FaRegUser size={16} />
-                <p className="font-semibold text-sm">Account</p>
-              </section>
-            ) : (
-              <>
-                <section
-                  onClick={() => navigate("/auth/login")}
-                  className="flex gap-2 font-semibold items-center bg-gold_medium text-white text-sm rounded-full px-3 py-[4px]"
-                >
-                  <p className="font-semibold cursor-pointer text-sm">Login</p>
-                </section>
-              </>
-            )}
-
-            <section
-              onClick={() => navigate("/cart")}
-              className="flex gap-2 font-semibold items-center cursor-pointer"
-            >
-              <AiOutlineShoppingCart size={18} />
-              <p className=" font-semibold text-sm">Cart</p>
-            </section>
-            {/* <section>
-              <FaRegHeart size={28} />
-            </section> */}
+          <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer  ">
+            <img src={logo} alt="logo" className="" width={80} />
           </div>
+        </div>
+        <div className={` ${showSearch ? "hidden" : "flex"} w-[70%] justify-end md:justify-between`}>
+          <div className={`  hidden md:flex gap-10 items-center`}>
+            <section className=" flex items-end relative">
+              <span className=" cursor-pointer flex items-end" onClick={() => {
+                setman(false)
+                setbestseller(false)
+                setabout(false)
+                setwomen(!women)
+              }}><p>Women</p><IoIosArrowDown size={20} /></span>
+              {women &&
+                <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
+                  {
+                    category?.map((item) => { return <p onClick={() => navigate("/products", { state: { categorys: item._id } })} className=" border-b p-1 hover:bg-gray-100">{item.name}</p> })
+                  }
+                </div>
+              }
+            </section>
+            <section className=" flex items-end relative">
+              <span className=" cursor-pointer flex items-end" onClick={() => {
+                setman(!man)
+                setbestseller(false)
+                setabout(false)
+                setwomen(false)
+              }}><p>Man</p><IoIosArrowDown size={20} /></span>
+              {man &&
+                <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
+                  {
+                    category?.map((item) => { return <p onClick={() => navigate("/products", { state: { categorys: item._id } })} className=" border-b p-1 hover:bg-gray-100">{item.name}</p> })
+                  }
+                </div>
+              }
+            </section>
+            <section className=" flex items-end relative">
+              <span className=" cursor-pointer flex items-end" onClick={() => {
+                setman(false)
+                setbestseller(!bestseller)
+                setabout(false)
+                setwomen(false)
+              }}><p>Best Seller</p><IoIosArrowDown size={20} /></span>
+              {bestseller &&
+                <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
+                  {
+                    category?.map((item) => { return <p onClick={() => navigate("/products", { state: { categorys: item._id } })} className=" border-b p-1 hover:bg-gray-100">{item.name}</p> })
+                  }
+                </div>
+              }
+            </section>
+            <section className=" flex items-end relative">
+              <span className=" cursor-pointer flex items-end" onClick={() => {
+                setman(false)
+                setbestseller(false)
+                setabout(!about)
+                setwomen(false)
+              }}><p>About us</p><IoIosArrowDown size={20} /></span>
+              {about &&
+                <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
+                  {
+                    category?.map((item) => { return <p onClick={() => navigate("/products", { state: { categorys: item._id } })} className=" border-b p-1 hover:bg-gray-100">{item.name}</p> })
+                  }
+                </div>
+              }
+            </section>
+          </div>
+
+          <div className=" ">
+            <div className="flex gap-x-6 items-center">
+              <section className=" cursor-pointer" onClick={() => { setshowSearch(!showSearch) }}>
+                <IoMdSearch size={23} />
+              </section>
+              <section
+                onClick={() => navigate("/profile/favorites")}
+                className="cursor-pointer"
+              >
+                <IoIosHeartEmpty size={23} />
+              </section>
+              {isLogedin ? (
+                <section
+                  onClick={() => navigate("/profile")}
+                  className="cursor-pointer"
+                >
+                  <FaUserCircle size={23} />
+                </section>
+              ) : (
+                <>
+                  <section
+                    onClick={() => navigate("/auth/login")}
+                    className="flex gap-2 font-semibold items-center bg-gold_medium text-white text-sm rounded-full px-3 py-[4px]"
+                  >
+                    <p className="font-semibold cursor-pointer text-sm">Login</p>
+                  </section>
+                </>
+              )}
+
+              <section
+                onClick={() => navigate("/cart")}
+                className="cursor-pointer"
+              >
+                <AiOutlineShoppingCart size={25} />
+              </section>
+            </div>
+          </div>
+        </div>
+        <div className={` ${showSearch ? "flex" : "hidden"} w-[100%] md:w-[70%] gap-4 items-center`}>
+          <div className=" w-full md:w-[70%] h-full flex items-center relative">
+            <form onSubmit={handleSearch} className=" w-full">
+              <input
+                type="text"
+                placeholder="Search for products"
+                value={search}
+                onChange={(e) => {
+                  setsearch(e.target.value);
+                }}
+                className="py-[8px] w-full outline-none px-5 rounded-3xl bg-[#ffffff] text-xs"
+              />
+            </form>
+            {searchSuggest.length > 0 && (
+              <section className="absolute max-h-48 duration-300 transition-all ease-in-out h-auto overflow-y-auto top-14 text-xs bg-[#f5f6f6] w-full z-10 rounded-md">
+                {searchSuggest?.map((item) => {
+                  return (
+                    <p
+                      onClick={click}
+                      className=" hover:font-semibold text-gray-600 px-4 py-2 cursor-pointer capitalize hover:bg-white"
+                    >
+                      {item.title}
+                    </p>
+                  );
+                })}
+              </section>
+            )}
+          </div>
+          <GiCancel className=" cursor-pointer" onClick={() => { setshowSearch(!showSearch) }} size={22} />
         </div>
       </div>
-      <div className=" sm:mx-10 border-b"></div>
-      <section className="z-10 sm:hidden h-[100svh]">
-        <ul
-          className={`bg-gray-100 z-10 flex flex-col absolute left-0 gap-2 h-[100svh] shadow-sm ${
-            nav ? "w-[90%] sm:w-17" : "w-0 overflow-hidden"
-          } transition-all ease-linear duration-200`}
-        >
-          <p className="flex justify-center text-md font-semibold">
-            Browse Categories
-          </p>
-          {category?.map((item, index) => (
-            <ul key={index} className="text-md px-2 py-2 ">
-              <section className="flex justify-between items-center">
-                <li
-                  onClick={() => click(item._id)}
-                  className="hover:underline-offset-2 hover:border-b-[1.5px] border-gold_dark cursor-pointer "
-                >
-                  {item?.name}
-                </li>
-                <IoIosArrowDropright
-                  onClick={() => click(item._id)}
-                  size={20}
-                  className="items-center flex"
-                />
-              </section>
-            </ul>
-          ))}
-        </ul>
-      </section>
-      {dropdown && (
-        <div className="hidden md:block">
-          <div className="absolute top-15 z-10 left-0 h-[25vh] transition-all ease-in-out overflow-y-auto right-0 w-1/6 mx-[20%] bg-white p-4 rounded shadow-lg">
-            {category?.map((item, index) => (
-              <ul key={index} className="text-md">
-                <li
-                  onClick={() => click(item._id)}
-                  className="hover:font-semibold text-gray-600  py-1 cursor-pointer capitalize hover:bg-white "
-                >
-                  {item?.name}
-                </li>
-              </ul>
-            ))}
-          </div>
+
+      {
+        <div className={` overflow-hidden absolute left-0 top-0 h-[100svh] ${nav ? "w-[90%]" : "w-0"} transition-all duration-300 ease-in-out bg-white z-40`}>
+          <section className="flex justify-between my-2 px-2">
+            <RxCross2 size={27} onClick={() => {
+              handle()
+              clearHader()
+            }} className=" cursor-pointer" />
+            <img src={logo} width={70} />
+          </section>
+          {
+            !man && !women && !bestseller && !about &&
+            <div className="flex flex-col gap-3 my-5">
+              <span className=" cursor-pointer flex items-end justify-between px-2 font-medium" onClick={() => {
+                setman(false)
+                setbestseller(false)
+                setabout(false)
+                setwomen(!women)
+              }}><p>Women</p><MdOutlineArrowForwardIos size={20} /></span>
+              <span className=" cursor-pointer flex items-end justify-between px-2 font-medium" onClick={() => {
+                setman(!man)
+                setbestseller(false)
+                setabout(false)
+                setwomen(false)
+              }}><p>Man</p><MdOutlineArrowForwardIos size={20} /></span>
+              <span className=" cursor-pointer flex items-end justify-between px-2 font-medium" onClick={() => {
+                setman(false)
+                setbestseller(!bestseller)
+                setabout(false)
+                setwomen(false)
+              }}><p>Best Seller</p><MdOutlineArrowForwardIos size={20} /></span>
+              <span className=" cursor-pointer flex items-end justify-between px-2 font-medium" onClick={() => {
+                setman(false)
+                setbestseller(false)
+                setabout(!about)
+                setwomen(false)
+              }}><p>About us</p><MdOutlineArrowForwardIos size={20} /></span>
+            </div>
+          }
+          {
+            man && <div className=" px-2">
+              <h1 className=" font-semibold text-xl flex gap-2 items-center" onClick={clearHader}><MdOutlineArrowBackIosNew size={20} />Man</h1>
+              {category?.map((item) => {
+                return <p key={item._id} className=" cursor-pointer my-[4px] hover:underline">{item.name}</p>
+              })}
+            </div>
+          }
+          {
+            women && <div className=" px-2">
+              <h1 className=" font-semibold text-xl flex gap-2 items-center" onClick={clearHader}><MdOutlineArrowBackIosNew size={20} />Women</h1>
+              {category?.map((item) => {
+                return <p key={item._id} className=" cursor-pointer my-[4px] hover:underline">{item.name}</p>
+              })}
+            </div>
+          }
+          {
+            bestseller && <div className=" px-2">
+              <h1 className=" font-semibold text-xl flex gap-2 items-center" onClick={clearHader}><MdOutlineArrowBackIosNew size={20} />Best Seller</h1>
+              {category?.map((item) => {
+                return <p key={item._id} className=" cursor-pointer my-[4px] hover:underline">{item.name}</p>
+              })}
+            </div>
+          }
+          {
+            about && <div className=" px-2">
+              <h1 className=" font-semibold text-xl flex gap-2 items-center" onClick={clearHader}><MdOutlineArrowBackIosNew size={20} />About</h1>
+              {category?.map((item) => {
+                return <p key={item._id} className=" cursor-pointer my-[4px] hover:underline">{item.name}</p>
+              })}
+            </div>
+          }
         </div>
-      )}
+      }
     </div>
   );
 };

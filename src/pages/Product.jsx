@@ -67,11 +67,12 @@ const Product = () => {
   return (
     <div className=" h-[100svh] w-[100svw] overflow-y-hidden">
       <Nav />
-      <div className="flex w-full gap-2 h-[90svh]">
-        <div className="hidden md:block md:w-[15%]">
+      <div className="flex flex-col w-full gap-2 h-[90svh]">
+        <div className="">
+          {/* <h1>{categorys}</h1> */}
           <FilterCard onCategorySelect={handleCategorySelect} />
         </div>
-        <div className="grid md:w-[85%] h-full overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2">
+        <div className="grid h-full overflow-y-auto grid-cols-2 md:grid-cols-4 gap-2 px-3 md:px-6 md:mb-5">
           {loader ? <>
             <ProductCardSkeleton />
             <ProductCardSkeleton />
@@ -81,44 +82,12 @@ const Product = () => {
             <ProductCardSkeleton />
             <ProductCardSkeleton />
             <ProductCardSkeleton />
-          </> : products.length == 0 ? <div className=" w-[80svw]"><Nodata /></div> : products.map((product, index) => (
+          </> : products.length == 0 ? <div className=" w-[100svw]"><Nodata /></div> : products.map((product, index) => (
             <ProductCard key={index} data={product} />
           ))}
         </div>
       </div>
-      {showPopup && (
-        <div className="w-full md:hidden h-full sticky bottom-0 z-5">
-          <FilterPopup iscancel={handleCancelPopup}>
-            <span className="flex justify-between">
-              <span className="p-2 font-bold">CATEGORIES</span>
-              <span className="items-center flex px-1">
-                <GrPowerReset
-                  onClick={() => handleCategorySelect("")}
-                  size={20}
-                />
-              </span>
-            </span>
-
-            <div className="p-2 flex gap-x-2 w-full overflow-scroll">
-              {Categories.map((item, index) => (
-                <p
-                  key={index}
-                  onClick={() => handleCategorySelect(item._id)}
-                  onDoubleClick={() => handleCategorySelect("")}
-                  className={`border-2 ${selectedCategory === item._id
-                    ? "border-2 border-gold_dark"
-                    : ""
-                    } px-3 text-xs rounded-md w-full font-semibold bg-white`}
-                >
-                  {item.name}
-                </p>
-              ))}
-            </div>
-          </FilterPopup>
-        </div>
-      )}
-
-      <div className="md:hidden w-full sticky bottom-0 z-5">
+      {/* <div className="md:hidden w-full h-[10svh] border">
         <div className="flex w-full">
           <section className="border-r-2 bg-[#dacd7f] gap-x-2 font-semibold text-white py-4 w-[50%] flex items-center justify-center">
             <FaCartPlus size={25} />
@@ -131,7 +100,7 @@ const Product = () => {
             <MdFilterList size={25} /> FILTERS
           </section>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

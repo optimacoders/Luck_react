@@ -11,7 +11,8 @@ export default {
         gold_primary: '#e3db94',
         gold_secondary: '#dacd7f',
         gold_medium: '#d1bf6a',
-        gold_dark: '#c9b156'
+        gold_dark: '#c9b156',
+        bg_back: '#263238'
       },
     },
   },
