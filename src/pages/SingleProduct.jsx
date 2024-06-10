@@ -24,6 +24,8 @@ import RelatedProductCard from "../components/RelatedProductCard";
 import Footer from "../components/Footer";
 import ReviewCard from "../components/ReviewCard";
 import AuthHook from "../context/AuthContext";
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 const SingleProduct = () => {
   const { id } = useParams();
@@ -201,10 +203,16 @@ const SingleProduct = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              <div className=" h-[85svh] border overflow-y-auto ">
-
-
-
+              <div className=" h-[75svh] md:h-[85svh] overflow-y-auto p-4 border">
+                <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2">
+                  {product?.image?.map((image, index) => (
+                    <div key={index} className={`${index % 2 === 0 ? '' : ''} m-2`}>
+                      <Zoom>
+                        <img src={image} alt={`Image ${index}`} className="w-full h-full object-cover" />
+                      </Zoom>
+                    </div>
+                  ))}
+                </div>
                 {/* <img
                   src={preview ? preview : product?.image?.[imageIndex]}
                   alt="image"
