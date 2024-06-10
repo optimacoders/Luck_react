@@ -10,8 +10,8 @@ function NewArrivals() {
 
     const getdata = async () => {
         setloader(true)
-        const { products } = await getRequest(false, "/admin/product/latestProducts");
-        setdata(products.data);
+        const { latestproducts } = await getRequest(false, "/admin/product/latest/Products");
+        setdata(latestproducts);
         // console.log(response);
         setloader(false)
     }
