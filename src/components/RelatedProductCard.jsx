@@ -2,9 +2,12 @@ import React from 'react'
 import { IoBag } from "react-icons/io5";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
+import AuthHook from '../context/AuthContext';
 
 function RelatedProductCard({ data }) {
     const navigate = useNavigate()
+    const { currency } = AuthHook()
+
     return (
         <div onClick={() => { navigate(`/product/${data?._id}`); }}>
             <div className='relative'>
@@ -20,7 +23,9 @@ function RelatedProductCard({ data }) {
                 {data?.title}
             </p>
             <section className=' flex justify-between items-center'>
-                <p className=' font-bold'>₹ {data?.selling_price}</p>
+                <p className="font-bold">
+                    {currency} {new Intl.NumberFormat().format(data?.selling_price)}
+                </p>
                 <span className=' text-white flex gap-1 items-center bg-gold_medium px-2 py-[1px] rounded-md'><IoBag size={15} color='white' /> +</span>
             </section>
         </div>

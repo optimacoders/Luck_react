@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-// //import logo from "../Assets/logo.png";
+import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -47,7 +47,7 @@ function SignUp() {
   return (
     <div className=" flex flex-col items-center justify-center h-full w-full px-5 sm:px-20">
       <section className=" flex justify-start w-full">
-        <img src={""} width={90} />
+        <img src={logo} width={90} />
       </section>
       <section className="w-full my-2">
         <h1 className=" text-3xl font-bold">Create Account !</h1>

@@ -11,6 +11,7 @@ import { GrPowerReset } from "react-icons/gr";
 import ProductCardSkeleton from "../skeletons/ProductCardSkeleton";
 import Nav from "../components/Nav";
 import Nodata from "../components/Nodata";
+import AuthHook from "../context/AuthContext";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -18,6 +19,7 @@ const Product = () => {
   const { categorys, q } = location.state || {};
   console.log("Selected category:", categorys);
   console.log("serach:", q);
+  const { currency } = AuthHook()
 
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);

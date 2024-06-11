@@ -23,11 +23,16 @@ import { FaExchangeAlt } from "react-icons/fa";
 import RelatedProductCard from "../components/RelatedProductCard";
 import Footer from "../components/Footer";
 import ReviewCard from "../components/ReviewCard";
+import AuthHook from "../context/AuthContext";
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 const SingleProduct = () => {
   const { id } = useParams();
   const url = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
+  const { currency, userDetails, favourites, setfavourites } = AuthHook()
+
   const [productloader, setproductloader] = useState(false);
   const [similarLoader, setsimilarLoader] = useState(false);
 
@@ -56,15 +61,45 @@ const SingleProduct = () => {
     setquantity((prevQuantity) => Math.max(0, prevQuantity - 1));
   };
 
+  const addToFavorite = async () => {
+    // console.log(data._id);
+    try {
+      const res = await postRequest(true, `/liked`, { productId: id });
+      if (res.status) {
+        setfavourites(prevFavourites => [...prevFavourites, id]);
+        toast.success(res.message)
+      }
+    }
+    catch (err) {
+      toast.error(err.response.data.message)
+    }
+  }
+
+  const removeToFavorite = async () => {
+    // console.log(data._id);
+    try {
+      const res = await postRequest(true, `/liked/remove`, { productId: id });
+      if (res.status) {
+        setfavourites(prevFavourites => prevFavourites.filter(eid => eid !== id));
+        toast.success(res.message)
+      }
+    }
+    catch (err) {
+      toast.error(err.response.data.message)
+    }
+  }
+
   const fetchProduct = async () => {
     try {
       setproductloader(true);
-      const { data } = await axios.get(`${url}/admin/product/${id}`);
-      setProduct(data.products);
-      setcolors(data.products.color);
-      setsizes(data.products.size);
-      setcategory(data.products.category);
-      setproductloader(false);
+      if (currency !== null) {
+        const { data } = await axios.get(`${url}/admin/product/${id}/${currency}`);
+        setProduct(data.products);
+        setcolors(data.products.color);
+        setsizes(data.products.size);
+        setcategory(data.products.category);
+        setproductloader(false);
+      }
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -168,10 +203,16 @@ const SingleProduct = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              <div className=" h-[85svh] border overflow-y-auto ">
-
-
-
+              <div className=" h-[75svh] md:h-[85svh] overflow-y-auto p-4 border">
+                <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2">
+                  {product?.image?.map((image, index) => (
+                    <div key={index} className={`${index % 2 === 0 ? '' : ''} m-2`}>
+                      <Zoom>
+                        <img src={image} alt={`Image ${index}`} className="w-full h-full object-cover" />
+                      </Zoom>
+                    </div>
+                  ))}
+                </div>
                 {/* <img
                   src={preview ? preview : product?.image?.[imageIndex]}
                   alt="image"
@@ -185,10 +226,11 @@ const SingleProduct = () => {
                 </p>
                 <section className=" flex gap-2 items-center my-2">
                   <p className="font-semibold">
-                    Rs. {product?.selling_price}
+                    {currency} {new Intl.NumberFormat().format(product?.selling_price)}
                   </p>
-                  <p className="line-through text-gray-500 text-sm">Rs. {product?.original_price}</p>
-                  <p className=" text-red-500 text-sm">{Math.round(((product?.original_price - product?.selling_price) / product?.original_price) * 100)}% off</p>
+                  <p className="line-through text-gray-500 text-sm">
+                    {currency} {new Intl.NumberFormat().format(product?.original_price)}</p>
+                  <p className=" text-red-500 text-sm">{new Intl.NumberFormat().format(product?.original_price - product?.selling_price)} {currency} off</p>
                 </section>
                 <div className=" my-2">
                   <p className="font-semibold my-1 text-lg">Available Sizes</p>
@@ -220,8 +262,13 @@ const SingleProduct = () => {
                     </section>
                   </div>
                   <div className="p-1 flex bg-gold_medium rounded-3xl my-1 items-center w-fit gap-5 px-4">
-                    <button className=" px-3 py-1 text-white font-medium">Add to Wishlist</button>
+                    {
+                      favourites?.includes(id) ?
+                        <button onClick={removeToFavorite} className="px-3 py-1 text-white font-medium">Remove from Wishlist</button> :
+                        <button onClick={addToFavorite} className="px-3 py-1 text-white font-medium">Add to Wishlist</button>
+                    }
                   </div>
+
                 </div>
 
                 <div className=" flex items-center gap-2 my-2">

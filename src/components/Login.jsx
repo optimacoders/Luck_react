@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-// //import logo from "../Assets/logo.png";
+import logo from "../assets/logo.png";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -45,7 +45,7 @@ function Login() {
   return (
     <div className=" flex flex-col items-center justify-center h-full w-full px-5 sm:px-20 border">
       <section className=" flex justify-start w-full">
-        <img src={""} width={120} alt="212" />
+        <img src={logo} width={120} alt="212" />
       </section>
       <section className="w-full my-5">
         <h1 className=" text-3xl font-bold">Welcome Back!</h1>
