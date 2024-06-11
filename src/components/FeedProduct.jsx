@@ -8,7 +8,7 @@ import AuthHook from "../context/AuthContext";
 
 const FeedProduct = () => {
   const url = import.meta.env.VITE_BACKEND;
-  const { currency, isLogedin, token } = AuthHook()
+  const { currency, isLogedin, token } = AuthHook();
 
   const [products, setProducts] = useState([]);
   const [productLoader, setproductLoader] = useState(false);
@@ -18,12 +18,18 @@ const FeedProduct = () => {
       setproductLoader(true);
       if (isLogedin && token) {
         if (currency !== null) {
-          const response = await getRequest(true, `/watchHistory/${currency ? currency : "INR"}`);
+          const response = await getRequest(
+            true,
+            `/watchHistory/${currency ? currency : "INR"}`
+          );
           setProducts(response.data);
           setproductLoader(false);
         }
       } else {
-        const { latestproducts } = await getRequest(false, "/admin/product/latest/Products");
+        const { latestproducts } = await getRequest(
+          false,
+          "/admin/product/latestProducts"
+        );
         setProducts(latestproducts);
         setproductLoader(false);
       }
@@ -33,7 +39,6 @@ const FeedProduct = () => {
   };
 
   useEffect(() => {
-
     fetchProducts();
   }, [currency, token]);
 
@@ -50,23 +55,20 @@ const FeedProduct = () => {
         <div className="w-[80svw]">
           <Nodata />
         </div>
+      ) : isLogedin ? (
+        products.map((product, index) => (
+          <div key={index}>
+            <RelatedProductCard data={product?.productId} />
+          </div>
+        ))
       ) : (
-        isLogedin ? (
-          products.map((product, index) => (
-            <div key={index}>
-              <RelatedProductCard data={product?.productId} />
-            </div>
-          ))
-        ) : (
-          products.map((product, index) => (
-            <div key={index}>
-              <RelatedProductCard data={product} />
-            </div>
-          ))
-        )
+        products.map((product, index) => (
+          <div key={index}>
+            <RelatedProductCard data={product} />
+          </div>
+        ))
       )}
     </div>
-
   );
 };
 

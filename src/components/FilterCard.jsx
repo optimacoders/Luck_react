@@ -256,20 +256,26 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
           {colorFilter && (
             <div className=" px-2">
               <h1
-                className=" font-semibold flex gap-2 items-center text-sm cursor-pointer"
+                className=" font-semibold flex gap-3 my-2 items-center text-sm cursor-pointer"
                 onClick={clearHader}
               >
                 <MdOutlineArrowBackIosNew size={18} />
                 Color
               </h1>
               {color?.map((item, index) => (
-                <div className="flex gap-x-3 p-2">
-                  <section
-                    className="h-4 w-4 my-1 flex "
-                    key={index}
-                    style={{ backgroundColor: item.colorCode }}
-                  ></section>
-                  <p>{item?.name}</p>
+                <div key={index} className="flex justify-between gap-x-3">
+                  <div className="flex gap-x-2">
+                    <section
+                      className="h-4 w-4 my-2 flex "
+                      style={{ backgroundColor: item?.colorCode }}
+                    ></section>
+                    <p>{item?.name}</p>
+                  </div>
+
+                  <input
+                    onChange={() => handlecolorselect(item?.name)}
+                    type="checkbox"
+                  />
                 </div>
               ))}
             </div>

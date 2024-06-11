@@ -19,7 +19,7 @@ const Product = () => {
   const { categorys, q } = location.state || {};
   console.log("Selected category:", categorys);
   console.log("serach:", q);
-  const { currency } = AuthHook()
+  const { currency } = AuthHook();
 
   const [products, setProducts] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
