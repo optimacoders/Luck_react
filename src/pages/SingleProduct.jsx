@@ -24,14 +24,14 @@ import RelatedProductCard from "../components/RelatedProductCard";
 import Footer from "../components/Footer";
 import ReviewCard from "../components/ReviewCard";
 import AuthHook from "../context/AuthContext";
-import Zoom from 'react-medium-image-zoom'
-import 'react-medium-image-zoom/dist/styles.css'
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const url = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
-  const { currency, userDetails, favourites, setfavourites } = AuthHook()
+  const { currency, userDetails, favourites, setfavourites } = AuthHook();
 
   const [productloader, setproductloader] = useState(false);
   const [similarLoader, setsimilarLoader] = useState(false);
@@ -45,9 +45,9 @@ const SingleProduct = () => {
   const [Category, setcategory] = useState("");
   const [semilarproducts, setsemilarproducts] = useState([]);
   const [preview, setpreview] = useState("");
-  const [imageIndex, setimageIndex] = useState(0)
-  const [detailsOptions, setdetailsOptions] = useState("")
-  const [reviewData, setreviewData] = useState([])
+  const [imageIndex, setimageIndex] = useState(0);
+  const [detailsOptions, setdetailsOptions] = useState("");
+  const [reviewData, setreviewData] = useState([]);
 
   const add = () => {
     if (qunatity < product?.quantity) {
@@ -66,34 +66,36 @@ const SingleProduct = () => {
     try {
       const res = await postRequest(true, `/liked`, { productId: id });
       if (res.status) {
-        setfavourites(prevFavourites => [...prevFavourites, id]);
-        toast.success(res.message)
+        setfavourites((prevFavourites) => [...prevFavourites, id]);
+        toast.success(res.message);
       }
+    } catch (err) {
+      toast.error(err.response.data.message);
     }
-    catch (err) {
-      toast.error(err.response.data.message)
-    }
-  }
+  };
 
   const removeToFavorite = async () => {
     // console.log(data._id);
     try {
       const res = await postRequest(true, `/liked/remove`, { productId: id });
       if (res.status) {
-        setfavourites(prevFavourites => prevFavourites.filter(eid => eid !== id));
-        toast.success(res.message)
+        setfavourites((prevFavourites) =>
+          prevFavourites.filter((eid) => eid !== id)
+        );
+        toast.success(res.message);
       }
+    } catch (err) {
+      toast.error(err.response.data.message);
     }
-    catch (err) {
-      toast.error(err.response.data.message)
-    }
-  }
+  };
 
   const fetchProduct = async () => {
     try {
       setproductloader(true);
       if (currency !== null) {
-        const { data } = await axios.get(`${url}/admin/product/${id}/${currency}`);
+        const { data } = await axios.get(
+          `${url}/admin/product/${id}/${currency}`
+        );
         setProduct(data.products);
         setcolors(data.products.color);
         setsizes(data.products.size);
@@ -110,19 +112,18 @@ const SingleProduct = () => {
       setproductloader(true);
       const { data } = await axios.get(`${url}/review/${id}`);
       // console.log(data?.reviews);
-      setreviewData(data?.reviews)
-
+      setreviewData(data?.reviews);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
-  }
+  };
 
   const similarProducts = async () => {
     try {
       setsimilarLoader(true);
       const response = await getRequest(
         true,
-        `/admin/product/getsimilarproducts/${product?.category}`
+        `/admin/product/getsimilarproducts?category=${product?.category}&productId=${product._id}`
       );
       console.log(response);
       setsemilarproducts(response.products);
@@ -158,7 +159,7 @@ const SingleProduct = () => {
       productId: id,
     });
     console.log(response.success);
-  }
+  };
 
   const colorOptions = Array.from(
     { length: product.color },
@@ -171,13 +172,14 @@ const SingleProduct = () => {
   }, []);
 
   useEffect(() => {
-    similarProducts();
+    if (product) {
+      similarProducts();
+    }
   }, [product]);
 
   useEffect(() => {
-    watchHistory()
-  }, [])
-
+    watchHistory();
+  }, []);
 
   const see = (url) => {
     setpreview(see);
@@ -185,11 +187,11 @@ const SingleProduct = () => {
 
   const setDatilsDropdown = (text) => {
     if (detailsOptions == text) {
-      setdetailsOptions("")
+      setdetailsOptions("");
     } else {
-      setdetailsOptions(text)
+      setdetailsOptions(text);
     }
-  }
+  };
 
   return (
     // <Mainlayout>
@@ -206,9 +208,16 @@ const SingleProduct = () => {
               <div className=" h-[75svh] md:h-[85svh] overflow-y-auto p-4 border">
                 <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2">
                   {product?.image?.map((image, index) => (
-                    <div key={index} className={`${index % 2 === 0 ? '' : ''} m-2`}>
+                    <div
+                      key={index}
+                      className={`${index % 2 === 0 ? "" : ""} m-2`}
+                    >
                       <Zoom>
-                        <img src={image} alt={`Image ${index}`} className="w-full h-full object-cover" />
+                        <img
+                          src={image}
+                          alt={`Image ${index}`}
+                          className="w-full h-full object-cover"
+                        />
                       </Zoom>
                     </div>
                   ))}
@@ -218,7 +227,6 @@ const SingleProduct = () => {
                   alt="image"
                   className="object-fill h-[450px] w-[450px] aspect-square rounded-xl"
                 /> */}
-
               </div>
               <div className=" py-4 w-full px-5 md:px-10">
                 <p className=" font-semibold text-xl md:text-2xl ">
@@ -226,11 +234,19 @@ const SingleProduct = () => {
                 </p>
                 <section className=" flex gap-2 items-center my-2">
                   <p className="font-semibold">
-                    {currency} {new Intl.NumberFormat().format(product?.selling_price)}
+                    {currency}{" "}
+                    {new Intl.NumberFormat().format(product?.selling_price)}
                   </p>
                   <p className="line-through text-gray-500 text-sm">
-                    {currency} {new Intl.NumberFormat().format(product?.original_price)}</p>
-                  <p className=" text-red-500 text-sm">{new Intl.NumberFormat().format(product?.original_price - product?.selling_price)} {currency} off</p>
+                    {currency}{" "}
+                    {new Intl.NumberFormat().format(product?.original_price)}
+                  </p>
+                  <p className=" text-red-500 text-sm">
+                    {new Intl.NumberFormat().format(
+                      product?.original_price - product?.selling_price
+                    )}{" "}
+                    {currency} off
+                  </p>
                 </section>
                 <div className=" my-2">
                   <p className="font-semibold my-1 text-lg">Available Sizes</p>
@@ -241,8 +257,11 @@ const SingleProduct = () => {
                           onClick={() => setsize(item)}
                           onDoubleClick={() => setsize(null)}
                           key={index}
-                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${size == item ? " border-gold_dark bg-gold_dark text-white" : ""
-                            }`}
+                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${
+                            size == item
+                              ? " border-gold_dark bg-gold_dark text-white"
+                              : ""
+                          }`}
                         >
                           {item}
                         </div>
@@ -258,17 +277,30 @@ const SingleProduct = () => {
                     </section>
                     <section>{qunatity}</section>
                     <section>
-                      <FiMinus onClick={() => remove()} size={24} color="#d1bf6a" />
+                      <FiMinus
+                        onClick={() => remove()}
+                        size={24}
+                        color="#d1bf6a"
+                      />
                     </section>
                   </div>
                   <div className="p-1 flex bg-gold_medium rounded-3xl my-1 items-center w-fit gap-5 px-4">
-                    {
-                      favourites?.includes(id) ?
-                        <button onClick={removeToFavorite} className="px-3 py-1 text-white font-medium">Remove from Wishlist</button> :
-                        <button onClick={addToFavorite} className="px-3 py-1 text-white font-medium">Add to Wishlist</button>
-                    }
+                    {favourites?.includes(id) ? (
+                      <button
+                        onClick={removeToFavorite}
+                        className="px-3 py-1 text-white font-medium"
+                      >
+                        Remove from Wishlist
+                      </button>
+                    ) : (
+                      <button
+                        onClick={addToFavorite}
+                        className="px-3 py-1 text-white font-medium"
+                      >
+                        Add to Wishlist
+                      </button>
+                    )}
                   </div>
-
                 </div>
 
                 <div className=" flex items-center gap-2 my-2">
@@ -279,8 +311,9 @@ const SingleProduct = () => {
                         key={index}
                         onClick={() => setSelectedColor(color.colorCode)}
                         onDoubleClick={() => setSelectedColor(null)}
-                        className={`${color.colorCode == selectedColor ? "bg-green-500" : ""
-                          } px-2 w-6 h-6 py-2 border-2 rounded-full`}
+                        className={`${
+                          color.colorCode == selectedColor ? "bg-green-500" : ""
+                        } px-2 w-6 h-6 py-2 border-2 rounded-full`}
                         style={{ backgroundColor: color.colorCode }}
                       ></div>
                     ))}
@@ -308,32 +341,92 @@ const SingleProduct = () => {
                 </div>
                 <div className=" flex flex-col gap-3">
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2"><LuText size={20} />Description </p>
-                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("description")}><IoIosArrowDown size={25} /></p>
+                    <p className=" font-medium flex items-center gap-2">
+                      <LuText size={20} />
+                      Description{" "}
+                    </p>
+                    <p
+                      className=" cursor-pointer"
+                      onClick={() => setDatilsDropdown("description")}
+                    >
+                      <IoIosArrowDown size={25} />
+                    </p>
                   </section>
-                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "description" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                  <section
+                    className={` p-2 text-sm overflow-hidden ${
+                      detailsOptions == "description"
+                        ? " h-auto w-auto"
+                        : " hidden"
+                    } transition-all duration-300 ease-in-out`}
+                  >
                     <p> {product?.description}</p>
                   </section>
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2"><TbTruckDelivery size={20} />Delivery </p>
-                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("delivery")}><IoIosArrowDown size={25} /></p>
+                    <p className=" font-medium flex items-center gap-2">
+                      <TbTruckDelivery size={20} />
+                      Delivery{" "}
+                    </p>
+                    <p
+                      className=" cursor-pointer"
+                      onClick={() => setDatilsDropdown("delivery")}
+                    >
+                      <IoIosArrowDown size={25} />
+                    </p>
                   </section>
-                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "delivery" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                  <section
+                    className={` p-2 text-sm overflow-hidden ${
+                      detailsOptions == "delivery"
+                        ? " h-auto w-auto"
+                        : " hidden"
+                    } transition-all duration-300 ease-in-out`}
+                  >
                     <p>Free Delivery</p>
                   </section>
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2"><GiRolledCloth size={20} />Material & Wash Type </p>
-                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("material")}><IoIosArrowDown size={25} /></p>
+                    <p className=" font-medium flex items-center gap-2">
+                      <GiRolledCloth size={20} />
+                      Material & Wash Type{" "}
+                    </p>
+                    <p
+                      className=" cursor-pointer"
+                      onClick={() => setDatilsDropdown("material")}
+                    >
+                      <IoIosArrowDown size={25} />
+                    </p>
                   </section>
-                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "material" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
-                    <p><span className=" font-medium">Material:</span> {product?.material}</p>
-                    <p><span className=" font-medium">Wash Type:</span> {product?.howToWash}</p>
+                  <section
+                    className={` p-2 text-sm overflow-hidden ${
+                      detailsOptions == "material"
+                        ? " h-auto w-auto"
+                        : " hidden"
+                    } transition-all duration-300 ease-in-out`}
+                  >
+                    <p>
+                      <span className=" font-medium">Material:</span>{" "}
+                      {product?.material}
+                    </p>
+                    <p>
+                      <span className=" font-medium">Wash Type:</span>{" "}
+                      {product?.howToWash}
+                    </p>
                   </section>
                   <section className=" flex items-end  justify-between">
-                    <p className=" font-medium flex items-center gap-2"><FaExchangeAlt size={20} />Returns And Cancellations</p>
-                    <p className=" cursor-pointer" onClick={() => setDatilsDropdown("return")}><IoIosArrowDown size={25} /></p>
+                    <p className=" font-medium flex items-center gap-2">
+                      <FaExchangeAlt size={20} />
+                      Returns And Cancellations
+                    </p>
+                    <p
+                      className=" cursor-pointer"
+                      onClick={() => setDatilsDropdown("return")}
+                    >
+                      <IoIosArrowDown size={25} />
+                    </p>
                   </section>
-                  <section className={` p-2 text-sm overflow-hidden ${detailsOptions == "return" ? " h-auto w-auto" : " hidden"} transition-all duration-300 ease-in-out`}>
+                  <section
+                    className={` p-2 text-sm overflow-hidden ${
+                      detailsOptions == "return" ? " h-auto w-auto" : " hidden"
+                    } transition-all duration-300 ease-in-out`}
+                  >
                     <p>Not available</p>
                   </section>
                 </div>
@@ -342,7 +435,9 @@ const SingleProduct = () => {
           )}
         </div>
         <div className="mt-5 w-[100vsw]">
-          <p className="font-semibold text-center  text-3xl">You may also like!</p>
+          <p className="font-semibold text-center  text-3xl">
+            You may also like!
+          </p>
           <div className=" flex px-3 w-[100svw] gap-5 overflow-x-auto md:px-20 my-8">
             {similarLoader ? (
               <>
@@ -363,11 +458,9 @@ const SingleProduct = () => {
         <div className=" md:px-20 px-4">
           <p className=" font-semibold text-xl my-5">Product reviews (214)</p>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
-            {
-              reviewData?.map((item) => {
-                return <ReviewCard key={item._id} data={item} />
-              })
-            }
+            {reviewData?.map((item) => {
+              return <ReviewCard key={item._id} data={item} />;
+            })}
           </div>
         </div>
         <Footer />
