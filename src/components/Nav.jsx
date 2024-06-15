@@ -98,7 +98,7 @@ const Nav = () => {
             <GiHamburgerMenu size={23} />
           </section>
           <div onClick={() => navigate("/")} className="sm:px-2 cursor-pointer  ">
-            <img src={logo} alt="logo" className="" width={80} />
+            <img src={logo} alt="logo" className="" width={110} />
           </div>
         </div>
         <div className={` ${showSearch ? "hidden" : "flex"} w-[70%] justify-end md:justify-between`}>

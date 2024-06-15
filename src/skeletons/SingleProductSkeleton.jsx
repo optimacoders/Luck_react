@@ -2,7 +2,7 @@ import React from 'react'
 
 function SingleProductSkeleton() {
     return (
-        <div className=' flex w-[100svw]'>
+        <div className=' grid grid-cols-1 md:grid-cols-2 w-[100svw]'>
             <div className=' '>
                 <div className="rounded-md p-4 flex justify-center w-full grid-cols-2 animate-pulse">
                     <div className="bg-gray-300 h-[450px] w-[450px] rounded-xl"></div>

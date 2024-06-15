@@ -26,12 +26,13 @@ import ReviewCard from "../components/ReviewCard";
 import AuthHook from "../context/AuthContext";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
+import { IoStar } from "react-icons/io5";
 
 const SingleProduct = () => {
   const { id } = useParams();
   const url = import.meta.env.VITE_BACKEND;
   const navigate = useNavigate();
-  const { currency, userDetails, favourites, setfavourites } = AuthHook();
+  const { currency, userDetails, favourites, setfavourites, isLogedin } = AuthHook();
 
   const [productloader, setproductloader] = useState(false);
   const [similarLoader, setsimilarLoader] = useState(false);
@@ -112,7 +113,7 @@ const SingleProduct = () => {
       setproductloader(true);
       const { data } = await axios.get(`${url}/review/${id}`);
       // console.log(data?.reviews);
-      setreviewData(data?.reviews);
+      setreviewData(data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -134,6 +135,10 @@ const SingleProduct = () => {
   };
 
   const addtoCart = async (pid, sign) => {
+    if (!isLogedin) {
+      toast.error('login to add in cart.....')
+      return
+    }
     try {
       const response = await postRequest(true, "/cart", {
         productId: pid,
@@ -155,10 +160,12 @@ const SingleProduct = () => {
   };
 
   const watchHistory = async () => {
-    const response = await postRequest(true, "/watchHistory", {
-      productId: id,
-    });
-    console.log(response.success);
+    if (isLogedin) {
+      const response = await postRequest(true, "/watchHistory", {
+        productId: id,
+      });
+      console.log(response.success);
+    }
   };
 
   const colorOptions = Array.from(
@@ -205,12 +212,12 @@ const SingleProduct = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 w-full">
-              <div className=" h-[75svh] md:h-[85svh] overflow-y-auto p-4 border">
+              <div className=" h-[75svh] md:h-[85svh] overflow-y-auto p-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 grid-rows-2">
                   {product?.image?.map((image, index) => (
                     <div
                       key={index}
-                      className={`${index % 2 === 0 ? "" : ""} m-2`}
+                      className='m-2'
                     >
                       <Zoom>
                         <img
@@ -232,16 +239,16 @@ const SingleProduct = () => {
                 <p className=" font-semibold text-xl md:text-2xl ">
                   {product?.title}
                 </p>
-                <section className=" flex gap-2 items-center my-2">
-                  <p className="font-semibold">
+                <section className=" flex gap-2 items-center my-2 text-xl font-bold">
+                  <p className="">
                     {currency}{" "}
                     {new Intl.NumberFormat().format(product?.selling_price)}
                   </p>
-                  <p className="line-through text-gray-500 text-sm">
+                  <p className="line-through text-gray-500 text-lg">
                     {currency}{" "}
                     {new Intl.NumberFormat().format(product?.original_price)}
                   </p>
-                  <p className=" text-red-500 text-sm">
+                  <p className=" text-green-600 font-semibold text-lg">
                     {new Intl.NumberFormat().format(
                       product?.original_price - product?.selling_price
                     )}{" "}
@@ -257,11 +264,10 @@ const SingleProduct = () => {
                           onClick={() => setsize(item)}
                           onDoubleClick={() => setsize(null)}
                           key={index}
-                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${
-                            size == item
-                              ? " border-gold_dark bg-gold_dark text-white"
-                              : ""
-                          }`}
+                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${size == item
+                            ? " border-gold_dark bg-gold_dark text-white"
+                            : ""
+                            }`}
                         >
                           {item}
                         </div>
@@ -311,9 +317,8 @@ const SingleProduct = () => {
                         key={index}
                         onClick={() => setSelectedColor(color.colorCode)}
                         onDoubleClick={() => setSelectedColor(null)}
-                        className={`${
-                          color.colorCode == selectedColor ? "bg-green-500" : ""
-                        } px-2 w-6 h-6 py-2 border-2 rounded-full`}
+                        className={`${color.colorCode === selectedColor ? " border-gray-500" : ""
+                          } px-2 w-6 h-6 py-2 border-2 rounded-full`}
                         style={{ backgroundColor: color.colorCode }}
                       ></div>
                     ))}
@@ -353,11 +358,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "description"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "description"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p> {product?.description}</p>
                   </section>
@@ -374,11 +378,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "delivery"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "delivery"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p>Free Delivery</p>
                   </section>
@@ -395,11 +398,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "material"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "material"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p>
                       <span className=" font-medium">Material:</span>{" "}
@@ -423,9 +425,8 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "return" ? " h-auto w-auto" : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "return" ? " h-auto w-auto" : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p>Not available</p>
                   </section>
@@ -434,32 +435,66 @@ const SingleProduct = () => {
             </div>
           )}
         </div>
-        <div className="mt-5 w-[100vsw]">
-          <p className="font-semibold text-center  text-3xl">
-            You may also like!
-          </p>
-          <div className=" flex px-3 w-[100svw] gap-5 overflow-x-auto md:px-20 my-8">
-            {similarLoader ? (
-              <>
-                <ProductCardSkeleton />
-                <ProductCardSkeleton />
-                <ProductCardSkeleton />
-                <ProductCardSkeleton />
-              </>
-            ) : (
-              semilarproducts.map((product, index) => (
-                <div key={index} className=" w-[50%] md:w-[20%]">
-                  <RelatedProductCard data={product} />
-                </div>
-              ))
-            )}
+        {
+          semilarproducts?.length > 0 && <div className="mt-5 w-[100vsw]">
+            <p className="font-semibold text-center  text-3xl">
+              You may also like!
+            </p>
+            <div className=" flex px-3 w-[100svw] gap-5 overflow-x-auto md:px-20 my-8">
+              {similarLoader ? (
+                <>
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                </>
+              ) : (
+                semilarproducts.map((product, index) => (
+                  <div key={index} className=" w-[50%] md:w-[20%]">
+                    <RelatedProductCard data={product} />
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
+        }
         <div className=" md:px-20 px-4">
-          <p className=" font-semibold text-xl my-5">Product reviews (214)</p>
+          <p className=" font-semibold text-xl my-5">Product reviews ({reviewData?.totalCount})</p>
+          <div className=" flex items-center mt-3 mb-7 justify-between">
+            <div>
+              <section className=" flex gap-2 text-[40px] items-center font-semibold text-center">
+                {reviewData?.averageRating}
+                <IoStar size={27} />
+              </section>
+              <section>
+                <h1 className=" text-xl">{reviewData?.totalCount} reviews</h1>
+              </section>
+            </div>
+            <div>
+              <p className=" flex gap-3 items-center">5 <IoStar color="#d1bf6a" size={20} />
+                {reviewData?.ratingDistribution?.five} reviews</p>
+              <p className=" flex gap-3 items-center">4 <IoStar color="#d1bf6a" size={20} />{reviewData?.ratingDistribution?.four} reviews</p>
+              <p className=" flex gap-3 items-center">3 <IoStar color="#d1bf6a" size={20} />{reviewData?.ratingDistribution?.three} reviews</p>
+              <p className=" flex gap-3 items-center">2 <IoStar color="#d1bf6a" size={20} />{reviewData?.ratingDistribution?.two} reviews</p>
+              <p className=" flex gap-3 items-center">1 <IoStar color="#d1bf6a" size={20} />{reviewData?.ratingDistribution?.one} reviews</p>
+            </div>
+          </div>
           <div className=" grid grid-cols-1 md:grid-cols-2 gap-4">
-            {reviewData?.map((item) => {
-              return <ReviewCard key={item._id} data={item} />;
+            {reviewData?.reviews?.map((item) => {
+              return <div className=" border p-2 shadow">
+                <section className=" text-white rounded flex w-10 items-center text-sm gap-1 bg-green-600 px-2">{item?.rating}<IoStar color="white" /></section>
+                <h1 className=" font-semibold">{item.comment}</h1>
+                <p className="text-sm">{item.desc}</p>
+                <div className=" grid grid-cols-4 my-2 gap-2">
+                  {
+                    item?.productImages?.map((i) => {
+                      return <Zoom>
+                        <img src={i} alt="review image" className=" h-20 md:h-24 aspect-square rounded" />
+                      </Zoom>
+                    })
+                  }
+                </div>
+              </div>
             })}
           </div>
         </div>
