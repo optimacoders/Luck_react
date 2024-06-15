@@ -7,7 +7,12 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIosNew } from "react-icons/md";
 import { MdFilterList } from "react-icons/md";
 
-const FilterCard = ({ oncolorselect, mycolor }) => {
+const FilterCard = ({
+  oncolorselect,
+  mycolor,
+  onPriceSelect,
+  onSort,
+}) => {
   const url = import.meta.env.VITE_BACKEND;
   const [color, setcolor] = useState([]);
   const [selectedcolor, setselectedcolor] = useState("");
@@ -15,7 +20,8 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
   const [colorFilter, setcolorFilter] = useState(false);
   const [fabricFilter, setfabricFilter] = useState(false);
   const [filternav, setfilternav] = useState(false);
-
+  const [priceFrom, setPriceFrom] = useState("");
+  const [priceTo, setPriceTo] = useState("");
   const dropdownRef = useRef(null);
 
   const handleClickOutside = (event) => {
@@ -50,13 +56,32 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
   };
 
   const handlecolorselect = (colorCode) => {
-    oncolorselect(colorCode);
-    setselectedcolor(colorCode);
+    if (selectedcolor === colorCode) {
+      setselectedcolor("");
+      oncolorselect("");
+    } else {
+      setselectedcolor(colorCode);
+      oncolorselect(colorCode);
+    }
   };
 
+  const applyPriceFilter = () => {
+    onPriceSelect(priceFrom, priceTo);
+  };
+  const clearPriceFilter = () => {
+    setPriceFrom("");
+    setPriceTo("");
+    onPriceSelect(priceFrom, priceTo);
+  };
+
+  const handleSortChange = (e) => {
+    onSort(e.target.value);
+    console.log("Selected sort option:", e.target.value);
+  };
   useEffect(() => {
     getcolors();
   }, []);
+
   return (
     <div className="border-r p-2 w-full h-full md:px-6" ref={dropdownRef}>
       <h1>uguygvuyv</h1>
@@ -87,20 +112,30 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                 <IoIosArrowDown size={20} />
               </span>
               {priceFilter && (
-                <div className=" absolute w-48 text-sm bg-gray-100 z-30 p-2 top-8">
-                  <h1 className=" border-b py-1">select price range</h1>
-                  <section className=" flex gap-1 my-2">
+                <div className="absolute w-48 text-sm bg-gray-100 z-30 p-2 top-8">
+                  <h1 className="border-b py-1">Select price range</h1>
+                  <section className="flex gap-1 my-2">
                     <input
                       type="number"
-                      placeholder=" from"
+                      value={priceFrom}
+                      onChange={(e) => setPriceFrom(e.target.value)}
+                      placeholder="From"
                       className="w-[50%] focus:outline-none focus:border p-1"
                     />
                     <input
                       type="number"
-                      placeholder=" to"
+                      value={priceTo}
+                      onChange={(e) => setPriceTo(e.target.value)}
+                      placeholder="To"
                       className="w-[50%] focus:outline-none focus:border p-1"
                     />
                   </section>
+                  <button
+                    onClick={applyPriceFilter}
+                    className="bg-blue-500 text-white py-1 px-2 mt-2 rounded"
+                  >
+                    Apply
+                  </button>
                 </div>
               )}
             </div>
@@ -132,6 +167,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                       </div>
 
                       <input
+                        checked={selectedcolor === item?.name}
                         onChange={() => handlecolorselect(item?.name)}
                         type="checkbox"
                       />
@@ -140,7 +176,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                 </div>
               )}
             </div>
-            <div className=" relative">
+            {/* <div className=" relative">
               <span
                 onClick={() => {
                   setcolorFilter(false);
@@ -159,17 +195,20 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                   <h1 className=" border-b py-1">select Fabric</h1>
                 </div>
               )}
-            </div>
+            </div> */}
           </div>
         </section>
         <section className=" flex gap-2 items-center">
-          <span className=" hidden md:flex  items-center gap-1">
+          <span className=" hidden md:flex rounded-md items-center gap-1">
             <FaFilter />
             Sort By:
-            <select className=" focus:outline-none focus:border-black border px-2 py-[4px]">
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
+            <select
+              className="focus:outline-none rounded-md focus:border-black border px-2 py-[4px]"
+              onChange={handleSortChange}
+            >
+              <option value="price_low_to_high">Price low to high</option>
+              <option value="price_high_to_low">Price high to low</option>
+              <option value="a_to_z">A to Z</option>
             </select>
           </span>
           <p className=" text-gray-600">244 products</p>
@@ -217,7 +256,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                 <p>Color</p>
                 <MdOutlineArrowForwardIos size={20} color="gray" />
               </span>
-              <span
+              {/* <span
                 className=" cursor-pointer flex items-end justify-between px-2 "
                 onClick={() => {
                   setcolorFilter(false);
@@ -227,7 +266,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
               >
                 <p>Fabric</p>
                 <MdOutlineArrowForwardIos size={20} color="gray" />
-              </span>
+              </span> */}
             </div>
           )}
           {priceFilter && (
@@ -242,15 +281,33 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
               <section className=" flex gap-1 my-2">
                 <input
                   type="number"
+                  value={priceFrom}
+                  onChange={(e) => setPriceFrom(e.target.value)}
                   placeholder=" from"
                   className="w-[50%] rounded focus:outline-none focus:border-black p-1 border"
                 />
                 <input
                   type="number"
+                  value={priceTo}
+                  onChange={(e) => setPriceTo(e.target.value)}
                   placeholder=" to"
                   className="w-[50%] rounded focus:outline-none focus:border-black p-1 border"
                 />
               </section>
+              <div className=" flex items-center sticky bottom-0 gap-6  p-2 ">
+                <button
+                  onClick={clearPriceFilter}
+                  className=" border border-gold_dark text-gold_dark px-6 py-1 text-sm rounded"
+                >
+                  Clear
+                </button>
+                <button
+                  onClick={applyPriceFilter}
+                  className=" bg-gold_dark text-white px-6 text-sm py-1 rounded"
+                >
+                  Apply
+                </button>
+              </div>
             </div>
           )}
           {colorFilter && (
@@ -260,7 +317,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                 onClick={clearHader}
               >
                 <MdOutlineArrowBackIosNew size={18} />
-                Color
+                Color {selectedcolor}
               </h1>
               {color?.map((item, index) => (
                 <div key={index} className="flex justify-between gap-x-3">
@@ -273,6 +330,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                   </div>
 
                   <input
+                    checked={selectedcolor === item?.name}
                     onChange={() => handlecolorselect(item?.name)}
                     type="checkbox"
                   />
@@ -280,7 +338,7 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
               ))}
             </div>
           )}
-          {fabricFilter && (
+          {/* {fabricFilter && (
             <div className=" px-2">
               <h1
                 className=" font-semibold flex gap-2 items-center text-sm cursor-pointer"
@@ -290,16 +348,16 @@ const FilterCard = ({ oncolorselect, mycolor }) => {
                 Fabric
               </h1>
             </div>
-          )}
+          )} */}
         </div>
-        <div className=" flex items-center justify-center gap-6 border-t p-2 ">
+        {/* <div className=" flex items-center justify-center gap-6 border-t p-2 ">
           <button className=" border border-gold_dark text-gold_dark px-6 py-1 text-sm rounded">
             Clear
           </button>
           <button className=" bg-gold_dark text-white px-6 text-sm py-1 rounded">
             Apply
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
