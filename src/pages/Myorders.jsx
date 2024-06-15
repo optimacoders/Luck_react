@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { PulseLoader } from "react-spinners"
 import AuthHook from "../context/AuthContext";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
@@ -25,6 +26,9 @@ const Myorders = () => {
   const [comment, setComment] = useState("");
   const [images, setImages] = useState([]);
   const [reviewLoader, setreviewLoader] = useState(false)
+  const [cureentPage, setcureentPage] = useState(1)
+  const [totalPages, settotalPages] = useState()
+  const [hasMore, sethasMore] = useState(false)
 
   const handleImageUpload = (e) => {
     const files = e.target.files[0];
@@ -40,18 +44,39 @@ const Myorders = () => {
             true,
             `/order/myorders/${currency ? currency : "INR"}?filter=${status}`
           );
-          setOrders(orders);
+          setOrders(orders?.data);
+          setcureentPage(orders?.currentPage);
+          settotalPages(orders?.totalPages);
+          sethasMore(orders?.moreData)
           setloader(false)
         }
 
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
-
     };
 
     fetchUserData();
   }, [status]);
+
+  const fetchMore = async () => {
+    try {
+      if (currency !== null) {
+        const { orders } = await getRequest(
+          true,
+          `/order/myorders/${currency ? currency : "INR"}?filter=${status}&page=${cureentPage + 1}`
+        );
+        setcureentPage(orders?.currentPage);
+        settotalPages(orders?.totalPages);
+        sethasMore(orders?.moreData)
+        setOrders(prev => [...prev, ...orders?.data]);
+        setloader(false)
+      }
+
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  }
 
   const handleAddReviewClick = (order) => {
     setSelectedOrder(order);
@@ -93,7 +118,7 @@ const Myorders = () => {
 
 
   return (
-    <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0">
+    <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0" id="scrollContainer">
       <p className="font-semibold text-xl">Your orders</p>
 
       <div className=" flex w-[100%] text-nowrap overflow-x-auto gap-2 my-2">
@@ -141,56 +166,65 @@ const Myorders = () => {
         </section>
       </div>
       <div>
-        {loader ? <>
-          <MyorderCardSkeleton />
-          <MyorderCardSkeleton />
-          <MyorderCardSkeleton />
-          <MyorderCardSkeleton />
-        </> : orders?.length == 0 ? <div><Nodata /></div> : orders?.map((item) => {
-          return (
-            <div
-              key={item._id}
-              className=" rounded-lg flex border pr-0 p-2 md:px-6 md:py-4"
-            >
-              <div className="w-[95%]">
-                <section className=" text-xs flex mb-3 items-center justify-between ">
-                  <section className=" text-xs flex gap-2 items-center h-full ">
-                    <p className=" rounded-full border px-4 font-medium py-[2px]">
-                      {item?.status}
-                    </p>{" "}
-                    |
-                    <p className=" font-medium">
-                      {moment(item?.orderDateTime).format("D MMMM YYYY")}
-                    </p>
+        {loader ? (
+          <>
+            <MyorderCardSkeleton />
+            <MyorderCardSkeleton />
+            <MyorderCardSkeleton />
+            <MyorderCardSkeleton />
+          </>
+        ) : orders?.length === 0 ? (
+          <div><Nodata /></div>
+        ) : (
+          <InfiniteScroll
+            dataLength={orders.length}
+            next={fetchMore}
+            hasMore={hasMore}
+            className="my-2 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3"
+            loader={<><MyorderCardSkeleton />
+              <MyorderCardSkeleton /></>}
+            scrollableTarget="scrollContainer"
+          >
+            {orders?.map((item) => (
+              <div
+                key={item._id}
+                className="rounded-lg flex border pr-0 p-2 md:px-6 md:py-4"
+              >
+                <div className="w-[95%]">
+                  <section className="text-xs flex mb-3 items-center justify-between">
+                    <section className="text-xs flex gap-2 items-center h-full">
+                      <p className="rounded-full border px-4 font-medium py-1">{item?.status}</p> |
+                      <p className="font-medium">{moment(item?.orderDateTime).format("D MMMM YYYY")}</p>
+                    </section>
+                    <button
+                      onClick={() => handleAddReviewClick(item)}
+                      className="bg-gold_dark text-white px-2 md:px-4 py-1 rounded-md text-semibold"
+                    >
+                      Add Review
+                    </button>
                   </section>
-                  <button onClick={() => handleAddReviewClick(item)} className=" bg-gold_dark text-white px-2 md:px-4 py-[6px] rounded-md text-semibold">Add Review</button>
-                </section>
-                <section className=" flex items-center gap-2 md:gap-4">
-                  <img
-                    src={item?.productId?.image[0]}
-                    className=" w-20 h-20 rounded-lg"
-                  />
-                  <section className="">
-                    <p className=" font-semibold text-xs md:text-sm text-gold_dark my-1">
-                      Order ID:{item._id}
-                    </p>
-                    <p className="text-xs">{item?.productId?.title}</p>
-                    <p className="text-xs md:text-sm font-medium">
-                      {new Intl.NumberFormat().format(item?.orderValue)}
-                    </p>
+                  <section className="flex items-center gap-2 md:gap-4">
+                    <img
+                      src={item?.productId?.image[0]}
+                      className="w-20 h-20 rounded-lg"
+                      alt={item?.productId?.title}
+                    />
+                    <section>
+                      <p className="font-semibold text-xs md:text-sm text-gold_dark my-1">Order ID: {item._id}</p>
+                      <p className="text-xs">{item?.productId?.title}</p>
+                      <p className="text-xs md:text-sm font-medium">{new Intl.NumberFormat().format(item?.orderValue)}</p>
+                    </section>
                   </section>
-                </section>
+                </div>
+                <div className="w-[5%] flex items-center justify-end">
+                  <button onClick={() => navigate(`/profile/myorder/${item._id}`)}>
+                    <LuChevronRight size={24} />
+                  </button>
+                </div>
               </div>
-              <div className="w-[5%] flex items-center justify-end">
-                <button
-                  onClick={() => navigate(`/profile/myorder/${item._id}`)}
-                >
-                  <LuChevronRight size={24} />
-                </button>
-              </div>
-            </div>
-          );
-        })}
+            ))}
+          </InfiniteScroll>
+        )}
       </div>
 
       {showModal && (
