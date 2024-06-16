@@ -29,7 +29,7 @@ const FeedProduct = () => {
         if (currency !== null) {
           const { latestproducts } = await getRequest(
             false,
-            `/admin/product/latestProducts/${currency ? currency : "INR"}`
+            `/admin/product/latestFullProducts?currency=${currency ? currency : "INR"}`
           );
           setProducts(latestproducts);
           setproductLoader(false);
