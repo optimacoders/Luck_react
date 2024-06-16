@@ -273,21 +273,21 @@ const Myorders = () => {
             </div>
             <div className="mb-2">
               <label className="block text-sm font-medium text-gray-600 mb-1">
-                Description
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
-              />
-            </div>
-            <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
                 Comment
               </label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Description
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
               />
             </div>
