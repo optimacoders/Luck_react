@@ -26,32 +26,34 @@ const PrivateRoute = ({ element, ...rest }) => {
 
 const App = () => {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Layout />} />
-          <Route path="/auth" element={<Auth />}>
-            <Route index element={<Login />} />
-            <Route path="login" element={<Login />} />
-            <Route path="signup" element={<Signup />} />
-          </Route>
-          <Route path="/products" element={<Product />} />
-          <Route path="/product/:id" element={<SingleProduct />} />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/loginred" element={<Loginredirect />} />
-          <Route path="/payu" element={<Payu />} />
+    <div className='App font-roboto'>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />} />
+            <Route path="/auth" element={<Auth />}>
+              <Route index element={<Login />} />
+              <Route path="login" element={<Login />} />
+              <Route path="signup" element={<Signup />} />
+            </Route>
+            <Route path="/products" element={<Product />} />
+            <Route path="/product/:id" element={<SingleProduct />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/loginred" element={<Loginredirect />} />
+            <Route path="/payu" element={<Payu />} />
 
-          <Route path="/profile" element={<Profile />}>
-            <Route index element={<Info />} />
-            <Route path="/profile/orders" element={<Myorders />} />
-            <Route path="/profile/myorder/:id" element={<Singleorder />} />
-            <Route path="/profile/favorites" element={<Favorites />} />
-          </Route>
-          <Route path="*" element={<PageNotFound />} />
-        </Routes>
-        <Toaster position="top-right" reverseOrder={true} />
-      </BrowserRouter>
-    </AuthProvider>
+            <Route path="/profile" element={<Profile />}>
+              <Route index element={<Info />} />
+              <Route path="/profile/orders" element={<Myorders />} />
+              <Route path="/profile/myorder/:id" element={<Singleorder />} />
+              <Route path="/profile/favorites" element={<Favorites />} />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+          </Routes>
+          <Toaster position="top-right" reverseOrder={true} />
+        </BrowserRouter>
+      </AuthProvider>
+    </div>
   );
 };
 

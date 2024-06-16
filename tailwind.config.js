@@ -6,6 +6,14 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        'poppins': ['Poppins', 'sans-serif'],
+        'roboto': ['Roboto', 'sans-serif'],
+        'lato': ['Lato', 'sans-serif'],
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'open_sans': ['"Open Sans"', 'sans-serif'],
+        'merriweather': ['Merriweather', 'serif'],
+      },
       colors: {
         bg_white: '#f9f9f1',
         gold_primary: '#e3db94',
