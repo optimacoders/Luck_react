@@ -37,42 +37,42 @@ function NewArrivals() {
             <img
               onClick={() => navigate(`/product/${data[0]?._id}`)}
               src={data[0]?.image[0]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover "
             />
           </div>
           <div className="bg-gold_medium aspect-square">
             <img
               onClick={() => navigate(`/product/${data[1]?._id}`)}
               src={data[1]?.image[0]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover"
             />
           </div>
           <div className="bg-gold_medium aspect-square">
             <img
               onClick={() => navigate(`/product/${data[2]?._id}`)}
               src={data[2]?.image[0]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover"
             />
           </div>
           <div className="bg-gold_medium aspect-square ">
             <img
               onClick={() => navigate(`/product/${data[3]?._id}`)}
               src={data[3]?.image[0]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover"
             />
           </div>
           <div className="row-span-2 col-span-2 bg-gold_medium aspect-square ">
             <img
               onClick={() => navigate(`/product/${data[0]?._id}`)}
               src={data[0]?.image[2]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover"
             />
           </div>
           <div className="bg-gold_medium aspect-square">
             <img
               onClick={() => navigate(`/product/${data[1]?._id}`)}
               src={data[1]?.image[3]}
-              className="cursor-pointer w-full h-auto aspect-square "
+              className="cursor-pointer w-full h-auto aspect-square object-cover"
             />
           </div>
         </div>

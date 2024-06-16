@@ -24,7 +24,7 @@ const Myorders = () => {
   const [rating, setRating] = useState(1);
   const [description, setDescription] = useState("");
   const [comment, setComment] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(null);
   const [reviewLoader, setreviewLoader] = useState(false);
   const [cureentPage, setcureentPage] = useState(1);
   const [totalPages, settotalPages] = useState();
@@ -63,8 +63,7 @@ const Myorders = () => {
       if (currency !== null) {
         const { orders } = await getRequest(
           true,
-          `/order/myorders/${
-            currency ? currency : "INR"
+          `/order/myorders/${currency ? currency : "INR"
           }?filter=${status}&page=${cureentPage + 1}`
         );
         setcureentPage(orders?.currentPage);
@@ -92,21 +91,22 @@ const Myorders = () => {
     try {
       setreviewLoader(true);
       const ImgData = new FormData();
-      ImgData.append("file", images);
-      ImgData.append("upload_preset", "Categorys");
-      const Res = await axios.post(
-        `https://api.cloudinary.com/v1_1/${
-          import.meta.env.VITE_CLOUD_NAME
-        }/image/upload`,
-        ImgData
-      );
-      const imgUrl = Res.data.secure_url;
+      if (images) {
+        ImgData.append("file", images);
+        ImgData.append("upload_preset", "Categorys");
+        const Res = await axios.post(
+          `https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME
+          }/image/upload`,
+          ImgData
+        );
+        const imgUrl = Res.data.secure_url;
+      }
 
       const response = await postRequest(true, "/review", {
         productId: selectedOrder?.productId?._id,
         rating: rating,
         comment: comment,
-        productImages: [imgUrl],
+        productImages: images ? [imgUrl] : [],
         desc: description,
       });
 
@@ -131,49 +131,43 @@ const Myorders = () => {
       <div className=" flex w-[100%] text-nowrap overflow-x-auto gap-2 my-2">
         <section
           onClick={() => setstatus("")}
-          className={`border ${
-            status === "" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
+          className={`border ${status === "" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
         >
           All
         </section>
         <section
           onClick={() => setstatus("Pending")}
-          className={`border ${
-            status === "Pending" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Pending" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Pending
         </section>
         <section
           onClick={() => setstatus("Shipped")}
-          className={`border ${
-            status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Shipped
         </section>
         <section
           onClick={() => setstatus("out")}
-          className={`border ${
-            status === "out" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "out" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           out for Delivery
         </section>
         <section
           onClick={() => setstatus("Delivered")}
-          className={`border ${
-            status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Delivered
         </section>
         <section
           onClick={() => setstatus("cancelled")}
-          className={`border ${
-            status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
-          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
+            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           cancelled
         </section>
@@ -195,7 +189,7 @@ const Myorders = () => {
             dataLength={orders.length}
             next={fetchMore}
             hasMore={hasMore}
-            className="my-2 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3"
+            className="my-2 mt-4 grid grid-cols-1 gap-3"
             loader={
               <>
                 <MyorderCardSkeleton />
@@ -230,7 +224,7 @@ const Myorders = () => {
                   <section className="flex items-center gap-2 md:gap-4">
                     <img
                       src={item?.productId?.image[0]}
-                      className="w-20 h-20 rounded-lg"
+                      className="w-20 h-20 rounded-lg object-cover"
                       alt={item?.productId?.title}
                     />
                     <section>
@@ -279,21 +273,21 @@ const Myorders = () => {
             </div>
             <div className="mb-2">
               <label className="block text-sm font-medium text-gray-600 mb-1">
-                Description
-              </label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
-              />
-            </div>
-            <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">
                 Comment
               </label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
+                className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
+              />
+            </div>
+            <div className="mb-2">
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Description
+              </label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
                 className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
               />
             </div>
