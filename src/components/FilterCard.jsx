@@ -12,6 +12,7 @@ const FilterCard = ({
   mycolor,
   onPriceSelect,
   onSort,
+  category
 }) => {
   const url = import.meta.env.VITE_BACKEND;
   const [color, setcolor] = useState([]);
@@ -84,7 +85,9 @@ const FilterCard = ({
 
   return (
     <div className="border-r p-2 w-full h-full md:px-6" ref={dropdownRef}>
-      <h1>uguygvuyv</h1>
+      {
+        category !== null && category !== undefined && category !== "" && <h1 className=" font-semibold">{category}</h1>
+      }
       <div className="flex items-center justify-between">
         <section className=" flex gap-4 items-end">
           <p className=" text-start font-semibold hidden md:block ">FILTER:</p>
@@ -104,9 +107,8 @@ const FilterCard = ({
                   setcolorFilter(false);
                   setfabricFilter(false);
                 }}
-                className={` cursor-pointer flex items-end text-sm ${
-                  priceFilter ? "text-black font-medium" : "text-gray-600"
-                }`}
+                className={` cursor-pointer flex items-end text-sm ${priceFilter ? "text-black font-medium" : "text-gray-600"
+                  }`}
               >
                 Price
                 <IoIosArrowDown size={20} />
@@ -146,9 +148,8 @@ const FilterCard = ({
                   setpriceFilter(false);
                   setfabricFilter(false);
                 }}
-                className={` cursor-pointer flex items-end text-sm ${
-                  colorFilter ? "text-black font-medium" : "text-gray-600"
-                }`}
+                className={` cursor-pointer flex items-end text-sm ${colorFilter ? "text-black font-medium" : "text-gray-600"
+                  }`}
               >
                 Colour
                 <IoIosArrowDown size={20} />
@@ -216,9 +217,8 @@ const FilterCard = ({
       </div>
 
       <div
-        className={` overflow-hidden absolute right-0 top-0 h-[100svh] ${
-          filternav ? "w-[90%]" : "w-0"
-        } transition-all duration-300 ease-in-out bg-white z-40`}
+        className={` overflow-hidden absolute right-0 top-0 h-[100svh] ${filternav ? "w-[90%]" : "w-0"
+          } transition-all duration-300 ease-in-out bg-white z-40`}
       >
         <section className="flex justify-between my-2 px-2 border-b py-2 h-[7svh]">
           <p className=" font-medium">Filter And Sorts</p>

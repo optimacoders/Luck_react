@@ -13,6 +13,7 @@ import Nav from "../components/Nav";
 import Nodata from "../components/Nodata";
 import AuthHook from "../context/AuthContext";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { getRequest } from "../utils/Apihelpers";
 
 const Product = () => {
   const url = import.meta.env.VITE_BACKEND;
@@ -42,34 +43,36 @@ const Product = () => {
     priceto,
     sortOption
   ) => {
-    try {
-      setLoader(true);
-      const link = "admin/product";
-      let queryParams = q ? `&q=${q}` : "";
+    if (currency !== null) {
+      try {
+        setLoader(true);
+        const link = "admin/product";
+        let queryParams = q ? `&q=${q}` : "";
 
-      if (color !== undefined && color !== null) {
-        queryParams += `&colour=${color}`;
+        if (color !== undefined && color !== null) {
+          queryParams += `&colour=${color}`;
+        }
+
+        if (pricefrom !== undefined && priceto !== undefined) {
+          queryParams += `&priceFrom=${pricefrom}&priceTo=${priceto}`;
+        }
+
+        if (sortOption !== undefined && sortOption !== undefined) {
+          queryParams += `&sort=${sortOption}`;
+        }
+
+        const response = await axios.get(
+          `${url}/${link}?category=${category}&currency=${currency}${queryParams}`
+        );
+        setProducts(response?.data?.products?.data);
+        setcureentPage(response?.data?.products?.currentPage)
+        settotalPages(response?.data?.products?.totalPages)
+        sethasMore(response?.data?.products?.moreData)
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      } finally {
+        setLoader(false);
       }
-
-      if (pricefrom !== undefined && priceto !== undefined) {
-        queryParams += `&priceFrom=${pricefrom}&priceTo=${priceto}`;
-      }
-
-      if (sortOption !== undefined && sortOption !== undefined) {
-        queryParams += `&sort=${sortOption}`;
-      }
-
-      const response = await axios.get(
-        `${url}/${link}?category=${category}&currency=${currency}${queryParams}`
-      );
-      setProducts(response?.data?.products?.data);
-      setcureentPage(response?.data?.products?.currentPage)
-      settotalPages(response?.data?.products?.totalPages)
-      sethasMore(response?.data?.products?.moreData)
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    } finally {
-      setLoader(false);
     }
   };
 
@@ -96,7 +99,7 @@ const Product = () => {
       }
 
       const response = await axios.get(
-        `${url}/${link}?category=${category}&currency=${currency}${queryParams}`
+        `${url}/${link}?category=${category}&currency=${currency}${queryParams}&page=${cureentPage + 1}`
       );
       setProducts(prev => [...prev, ...response?.data?.products?.data]);
       setcureentPage(response?.data?.products?.currentPage)
@@ -110,11 +113,15 @@ const Product = () => {
   }
 
   const getCategories = async () => {
-    try {
-      const { data } = await axios.get(`${url}/admin/category`);
-      setCategories(data.response.data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
+    if (categorys !== null && categorys !== undefined && categorys !== "") {
+      console.log("category api call");
+      try {
+        const data = await getRequest(true, `/admin/category/${categorys}`);
+        console.log(data.response, 808080080);
+        setCategories(data.response);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
     }
   };
 
@@ -126,7 +133,7 @@ const Product = () => {
       priceTo,
       sortOption
     );
-  }, [selectedCategory, selectedColor, priceFrom, priceTo, sortOption]);
+  }, [selectedCategory, selectedColor, priceFrom, priceTo, sortOption, currency]);
 
   useEffect(() => {
     getCategories();
@@ -161,6 +168,7 @@ const Product = () => {
             oncolorselect={handlecolorselect}
             onPriceSelect={handlepriceselect}
             onSort={handlesort}
+            category={categories?.name}
           />
         </div>
         <div className=" h-full overflow-y-auto">

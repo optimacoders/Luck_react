@@ -25,12 +25,12 @@ const ProductCard = ({ data, fromsimilar }) => {
           className="object-fill w-full aspect-square rounded"
         />
       </div>
-      <div className=" flex flex-col justify-center items-center">
-        <p className="w-[100%] font-bold text-black text-center text-sm md:text-lg">
+      <div className=" flex flex-col justify-center">
+        <p className="w-[100%] font-bold text-black mt-1 text-sm md:text-lg">
           {data?.title}
         </p>
-        <p className="font-bold">
-          {currency}{new Intl.NumberFormat().format(data?.selling_price)}
+        <p className="font-semibold text-sm">
+          {currency} {new Intl.NumberFormat().format(data?.selling_price)}
         </p>
         <button className=" text-gold_dark rounded-xl px-4 py-[3px] font-semibold text-sm my-1 border border-gold_dark hover:bg-gold_dark hover:text-white hover:border-none">
           Add To Cart

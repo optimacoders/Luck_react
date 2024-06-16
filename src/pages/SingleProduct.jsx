@@ -120,17 +120,19 @@ const SingleProduct = () => {
   };
 
   const similarProducts = async () => {
-    try {
-      setsimilarLoader(true);
-      const response = await getRequest(
-        true,
-        `/admin/product/getsimilarproducts?category=${product?.category}&productId=${product._id}`
-      );
-      console.log(response);
-      setsemilarproducts(response.products);
-      setsimilarLoader(false);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    if (currency !== null) {
+      try {
+        setsimilarLoader(true);
+        const response = await getRequest(
+          true,
+          `/admin/product/getsimilarproducts?category=${product?.category}&productId=${product._id}&currency=${currency ? currency : "INR"}`
+        );
+        console.log(response);
+        setsemilarproducts(response.products);
+        setsimilarLoader(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     }
   };
 
@@ -383,7 +385,7 @@ const SingleProduct = () => {
                       : " hidden"
                       } transition-all duration-300 ease-in-out`}
                   >
-                    <p>Free Delivery</p>
+                    <p className=" text-lg font-medium">{product?.delivery === 0 ? "Free Delivery" : <p>{currency} {product?.delivery}</p>}</p>
                   </section>
                   <section className=" flex items-end justify-between">
                     <p className=" font-medium flex items-center gap-2">
@@ -436,7 +438,7 @@ const SingleProduct = () => {
           )}
         </div>
         {
-          semilarproducts?.length > 0 && <div className="mt-5 w-[100vsw]">
+          semilarproducts?.data?.length > 0 && <div className="mt-5 w-[100vsw]">
             <p className="font-semibold text-center  text-3xl">
               You may also like!
             </p>
@@ -449,7 +451,7 @@ const SingleProduct = () => {
                   <ProductCardSkeleton />
                 </>
               ) : (
-                semilarproducts.map((product, index) => (
+                semilarproducts?.data?.map((product, index) => (
                   <div key={index} className=" w-[50%] md:w-[20%]">
                     <RelatedProductCard data={product} />
                   </div>

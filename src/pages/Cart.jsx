@@ -20,16 +20,17 @@ const Cart = () => {
   const url = import.meta.env.VITE_BACKEND;
   const [cartLoader, setcartLoader] = useState(false);
 
-  const { userDetails, getuser, isLogedin, token } = AuthHook();
-  console.log("tt", token);
+  const { userDetails, getuser, isLogedin, token, currency } = AuthHook();
   const getUserCart = async () => {
-    try {
-      setcartLoader(true);
-      const cart = await getRequest(true, "/cart");
-      setCart(cart.cart);
-      setcartLoader(false);
-    } catch (error) {
-      console.error("Error fetching user data:", error);
+    if (currency !== null) {
+      try {
+        setcartLoader(true);
+        const cart = await getRequest(true, `/cart?currency=${currency ? currency : "INR"}`);
+        setCart(cart.cart);
+        setcartLoader(false);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     }
   };
 
@@ -125,16 +126,17 @@ const Cart = () => {
           <div className="w-full md:w-1/3 rounded-md bg-gray-50 p-4  ">
             <p className="font-semibold my-2 pb-2 border-b-2 border-dashed">
               Delivery
+              <p>{currency} { }</p>
             </p>
             <div className="flex flex-col gap-y-2 pb-2 border-b-2 border-dashed">
               <section className="flex justify-between">
                 <p>Subtotal</p>
-                <p>₹ {totalPrice}</p>
+                <p>{currency} {totalPrice}</p>
               </section>
             </div>
             <section className="flex my-2 justify-between">
               <p className="text-lg">Total</p>
-              <p>₹ {totalPrice}</p>
+              <p>{currency} {totalPrice}</p>
             </section>
             <div className="py-2">
               <section className="flex justify-between">
