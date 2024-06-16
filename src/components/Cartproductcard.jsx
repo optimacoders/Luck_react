@@ -5,6 +5,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { postRequest, putRequest } from "../utils/Apihelpers";
+import AuthHook from "../context/AuthContext";
 
 const Cartproductcard = ({ data }) => {
   const url = import.meta.env.VITE_BACKEND;
@@ -15,6 +16,7 @@ const Cartproductcard = ({ data }) => {
     { length: data?.product?.quantity },
     (_, index) => index + 1
   );
+  const { currency } = AuthHook()
 
   const removeProduct = async (pid) => {
     try {
@@ -38,7 +40,7 @@ const Cartproductcard = ({ data }) => {
         toast.success("updated");
         window.location.reload();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (
@@ -55,7 +57,7 @@ const Cartproductcard = ({ data }) => {
       <div className="p-2 gap-1 ">
         <p className="text-sm ">{data?.product?.title}</p>
         <p className="text-sm font-semibold my-2  ">
-          ₹ {data?.product?.selling_price}
+          {currency} {data?.product?.selling_price}
         </p>
         <div className="flex gap-3">
           <span className="border my-2 rounded-md  px-2 py-1">

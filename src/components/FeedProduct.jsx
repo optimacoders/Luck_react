@@ -26,12 +26,14 @@ const FeedProduct = () => {
           setproductLoader(false);
         }
       } else {
-        const { latestproducts } = await getRequest(
-          false,
-          "/admin/product/latestProducts"
-        );
-        setProducts(latestproducts);
-        setproductLoader(false);
+        if (currency !== null) {
+          const { latestproducts } = await getRequest(
+            false,
+            `/admin/product/latestProducts/${currency ? currency : "INR"}`
+          );
+          setProducts(latestproducts);
+          setproductLoader(false);
+        }
       }
     } catch (error) {
       console.error("Error fetching products:", error);
