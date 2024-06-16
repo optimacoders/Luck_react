@@ -16,7 +16,7 @@ const Cartproductcard = ({ data }) => {
     { length: data?.product?.quantity },
     (_, index) => index + 1
   );
-  const { currency } = AuthHook()
+  const { currency } = AuthHook();
 
   const removeProduct = async (pid) => {
     try {
@@ -40,7 +40,7 @@ const Cartproductcard = ({ data }) => {
         toast.success("updated");
         window.location.reload();
       }
-    } catch (error) { }
+    } catch (error) {}
   };
 
   return (
@@ -84,21 +84,13 @@ const Cartproductcard = ({ data }) => {
             </select>
           </section>
           <section className="flex ">
-            <p className="flex justify-center gap-1 items-end text text-[#5072A7]">
-              <span>Save</span>{" "}
-              <span>
-                <CiHeart size={20} className="mt-1" />
-              </span>{" "}
-              |
-            </p>
-
             <p
               onClick={() => removeProduct(data?.product?._id)}
-              className="flex justify-center gap-1 items-end cursor-pointer text-[#5072A7]"
+              className="flex justify-center gap-1 items-center cursor-pointer text-[#5072A7]"
             >
-              <span>Remove</span>{" "}
+              <span className="font-semibold">Remove</span>{" "}
               <span>
-                <IoMdRemoveCircleOutline size={17} className="" />
+                <IoMdRemoveCircleOutline size={20} className="" />
               </span>
             </p>
           </section>

@@ -8,16 +8,16 @@ import MyorderCardSkeleton from "../skeletons/MyorderCardSkeleton";
 import Nodata from "../components/Nodata";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { PulseLoader } from "react-spinners"
+import { PulseLoader } from "react-spinners";
 import AuthHook from "../context/AuthContext";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const Myorders = () => {
   const [orders, setOrders] = useState([]);
   const [status, setstatus] = useState("");
-  const [loader, setloader] = useState(false)
+  const [loader, setloader] = useState(false);
   const navigate = useNavigate();
-  const { currency } = AuthHook()
+  const { currency } = AuthHook();
 
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -25,10 +25,10 @@ const Myorders = () => {
   const [description, setDescription] = useState("");
   const [comment, setComment] = useState("");
   const [images, setImages] = useState([]);
-  const [reviewLoader, setreviewLoader] = useState(false)
-  const [cureentPage, setcureentPage] = useState(1)
-  const [totalPages, settotalPages] = useState()
-  const [hasMore, sethasMore] = useState(false)
+  const [reviewLoader, setreviewLoader] = useState(false);
+  const [cureentPage, setcureentPage] = useState(1);
+  const [totalPages, settotalPages] = useState();
+  const [hasMore, sethasMore] = useState(false);
 
   const handleImageUpload = (e) => {
     const files = e.target.files[0];
@@ -37,7 +37,7 @@ const Myorders = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      setloader(true)
+      setloader(true);
       try {
         if (currency !== null) {
           const { orders } = await getRequest(
@@ -47,10 +47,9 @@ const Myorders = () => {
           setOrders(orders?.data);
           setcureentPage(orders?.currentPage);
           settotalPages(orders?.totalPages);
-          sethasMore(orders?.moreData)
-          setloader(false)
+          sethasMore(orders?.moreData);
+          setloader(false);
         }
-
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -64,19 +63,20 @@ const Myorders = () => {
       if (currency !== null) {
         const { orders } = await getRequest(
           true,
-          `/order/myorders/${currency ? currency : "INR"}?filter=${status}&page=${cureentPage + 1}`
+          `/order/myorders/${
+            currency ? currency : "INR"
+          }?filter=${status}&page=${cureentPage + 1}`
         );
         setcureentPage(orders?.currentPage);
         settotalPages(orders?.totalPages);
-        sethasMore(orders?.moreData)
-        setOrders(prev => [...prev, ...orders?.data]);
-        setloader(false)
+        sethasMore(orders?.moreData);
+        setOrders((prev) => [...prev, ...orders?.data]);
+        setloader(false);
       }
-
     } catch (error) {
       console.error("Error fetching user data:", error);
     }
-  }
+  };
 
   const handleAddReviewClick = (order) => {
     setSelectedOrder(order);
@@ -90,77 +90,90 @@ const Myorders = () => {
 
   const handleSubmit = async () => {
     try {
-      setreviewLoader(true)
+      setreviewLoader(true);
       const ImgData = new FormData();
       ImgData.append("file", images);
       ImgData.append("upload_preset", "Categorys");
-      const Res = await axios.post(`https://api.cloudinary.com/v1_1/${import.meta.env.VITE_CLOUD_NAME}/image/upload`, ImgData);
+      const Res = await axios.post(
+        `https://api.cloudinary.com/v1_1/${
+          import.meta.env.VITE_CLOUD_NAME
+        }/image/upload`,
+        ImgData
+      );
       const imgUrl = Res.data.secure_url;
 
-      const response = await postRequest(true, '/review', {
+      const response = await postRequest(true, "/review", {
         productId: selectedOrder?.productId?._id,
         rating: rating,
         comment: comment,
         productImages: [imgUrl],
-        desc: description
-      })
+        desc: description,
+      });
 
       if (response.status) {
         toast.success("Review addded sucessfully..");
-        handleCloseModal()
+        handleCloseModal();
       }
     } catch (err) {
       console.log(err);
-      toast.error(err)
+      toast.error(err);
     }
-    setreviewLoader(false)
-  }
-
+    setreviewLoader(false);
+  };
 
   return (
-    <div className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0" id="scrollContainer">
+    <div
+      className="h-full overflow-y-auto px-2 py-3 md:py-0 md:px-0"
+      id="scrollContainer"
+    >
       <p className="font-semibold text-xl">Your orders</p>
 
       <div className=" flex w-[100%] text-nowrap overflow-x-auto gap-2 my-2">
         <section
           onClick={() => setstatus("")}
-          className={`border ${status === "" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
+          className={`border ${
+            status === "" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer`}
         >
           All
         </section>
         <section
           onClick={() => setstatus("Pending")}
-          className={`border ${status === "Pending" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${
+            status === "Pending" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Pending
         </section>
         <section
           onClick={() => setstatus("Shipped")}
-          className={`border ${status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${
+            status === "Shipped" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Shipped
         </section>
         <section
           onClick={() => setstatus("out")}
-          className={`border ${status === "out" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${
+            status === "out" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           out for Delivery
         </section>
         <section
           onClick={() => setstatus("Delivered")}
-          className={`border ${status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${
+            status === "Delivered" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           Delivered
         </section>
         <section
           onClick={() => setstatus("cancelled")}
-          className={`border ${status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
-            } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
+          className={`border ${
+            status === "cancelled" ? "border-gold_dark text-gold_dark" : ""
+          } rounded-full px-2 md:px-4 font-medium py-[3px] text-xs cursor-pointer hover:border-gold_dark hover:text-gold_dark`}
         >
           cancelled
         </section>
@@ -174,15 +187,21 @@ const Myorders = () => {
             <MyorderCardSkeleton />
           </>
         ) : orders?.length === 0 ? (
-          <div><Nodata /></div>
+          <div>
+            <Nodata />
+          </div>
         ) : (
           <InfiniteScroll
             dataLength={orders.length}
             next={fetchMore}
             hasMore={hasMore}
             className="my-2 mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3"
-            loader={<><MyorderCardSkeleton />
-              <MyorderCardSkeleton /></>}
+            loader={
+              <>
+                <MyorderCardSkeleton />
+                <MyorderCardSkeleton />
+              </>
+            }
             scrollableTarget="scrollContainer"
           >
             {orders?.map((item) => (
@@ -193,8 +212,13 @@ const Myorders = () => {
                 <div className="w-[95%]">
                   <section className="text-xs flex mb-3 items-center justify-between">
                     <section className="text-xs flex gap-2 items-center h-full">
-                      <p className="rounded-full border px-4 font-medium py-1">{item?.status}</p> |
-                      <p className="font-medium">{moment(item?.orderDateTime).format("D MMMM YYYY")}</p>
+                      <p className="rounded-full border px-4 font-medium py-1">
+                        {item?.status}
+                      </p>{" "}
+                      |
+                      <p className="font-medium">
+                        {moment(item?.orderDateTime).format("D MMMM YYYY")}
+                      </p>
                     </section>
                     <button
                       onClick={() => handleAddReviewClick(item)}
@@ -210,14 +234,20 @@ const Myorders = () => {
                       alt={item?.productId?.title}
                     />
                     <section>
-                      <p className="font-semibold text-xs md:text-sm text-gold_dark my-1">Order ID: {item._id}</p>
+                      <p className="font-semibold text-xs md:text-sm text-gold_dark my-1">
+                        Order ID: {item._id}
+                      </p>
                       <p className="text-xs">{item?.productId?.title}</p>
-                      <p className="text-xs md:text-sm font-medium">{new Intl.NumberFormat().format(item?.orderValue)}</p>
+                      <p className="text-xs md:text-sm font-medium">
+                        {new Intl.NumberFormat().format(item?.orderValue)}
+                      </p>
                     </section>
                   </section>
                 </div>
                 <div className="w-[5%] flex items-center justify-end">
-                  <button onClick={() => navigate(`/profile/myorder/${item._id}`)}>
+                  <button
+                    onClick={() => navigate(`/profile/myorder/${item._id}`)}
+                  >
                     <LuChevronRight size={24} />
                   </button>
                 </div>
@@ -232,19 +262,25 @@ const Myorders = () => {
           <div className="bg-white p-6 rounded-md w-full max-w-md">
             <h2 className="font-semibold mb-2">Add Review</h2>
             <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">Rating</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Rating
+              </label>
               <select
                 value={rating}
                 onChange={(e) => setRating(e.target.value)}
                 className="w-full border px-3 py-[6px] rounded-md focus:outline-none focus:border-black"
               >
                 {[1, 2, 3, 4, 5].map((num) => (
-                  <option key={num} value={num}>{num}</option>
+                  <option key={num} value={num}>
+                    {num}
+                  </option>
                 ))}
               </select>
             </div>
             <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">Description</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Description
+              </label>
               <textarea
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
@@ -252,7 +288,9 @@ const Myorders = () => {
               />
             </div>
             <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">Comment</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Comment
+              </label>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -260,7 +298,9 @@ const Myorders = () => {
               />
             </div>
             <div className="mb-2">
-              <label className="block text-sm font-medium text-gray-600 mb-1">Images</label>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Images
+              </label>
               <input
                 type="file"
                 multiple
@@ -280,10 +320,11 @@ const Myorders = () => {
                 onClick={handleSubmit}
                 className=" bg-gold_dark font-medium text-sm text-white px-3 py-[4px] rounded-md"
               >
-                {
-                  reviewLoader ? <PulseLoader color="white" size={8} /> : "Submit"
-                }
-
+                {reviewLoader ? (
+                  <PulseLoader color="white" size={8} />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </div>
