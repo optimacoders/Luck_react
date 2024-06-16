@@ -103,6 +103,7 @@ const SingleProduct = () => {
         setproductloader(false);
       }
     } catch (error) {
+      setproductloader(false);
       console.error("Error fetching products:", error);
     }
   };
@@ -137,7 +138,7 @@ const SingleProduct = () => {
     try {
       const response = await postRequest(true, "/cart", {
         productId: pid,
-        quantity: Number(1),
+        quantity: Number(qunatity),
         size: size ? size : product?.size[0],
         color: selectedColor ? selectedColor : product?.color[0],
       });
@@ -168,6 +169,9 @@ const SingleProduct = () => {
 
   useEffect(() => {
     fetchProduct();
+  }, [id]);
+
+  useEffect(() => {
     fetchreviews();
   }, []);
 
