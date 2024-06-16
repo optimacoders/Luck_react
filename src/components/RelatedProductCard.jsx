@@ -14,7 +14,7 @@ function RelatedProductCard({ data }) {
                 <img src={data?.image ? data?.image[0] : "/placeholder-image.png"}
                     alt="Product Image"
                     style={{ mixBlendMode: 'multiply' }}
-                    className="object-fill w-full aspect-square rounded-lg" />
+                    className="object-cover w-full aspect-square rounded-lg" />
                 <section className='absolute top-0 right-0 bg-gold_medium rounded-tr-lg p-1'>
                     <IoIosHeartEmpty size={20} color='white' />
                 </section>

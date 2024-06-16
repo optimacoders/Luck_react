@@ -22,7 +22,7 @@ const ProductCard = ({ data, fromsimilar }) => {
         <img
           src={data?.image ? data?.image[0] : "/placeholder-image.jpg"}
           alt="Product Image"
-          className="object-fill w-full aspect-square rounded"
+          className="object-cover w-full aspect-square rounded"
         />
       </div>
       <div className=" flex flex-col justify-center">

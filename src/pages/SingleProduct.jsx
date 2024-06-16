@@ -127,8 +127,7 @@ const SingleProduct = () => {
         setsimilarLoader(true);
         const response = await getRequest(
           true,
-          `/admin/product/getsimilarproducts?category=${
-            product?.category
+          `/admin/product/getsimilarproducts?category=${product?.category
           }&productId=${product._id}&currency=${currency ? currency : "INR"}`
         );
         console.log(response);
@@ -228,7 +227,7 @@ const SingleProduct = () => {
                       <Zoom>
                         <img
                           src={image}
-                          alt={`Image ${index}`}
+                          alt={`Image`}
                           className="w-full h-full object-cover"
                         />
                       </Zoom>
@@ -270,11 +269,10 @@ const SingleProduct = () => {
                           onClick={() => setsize(item)}
                           onDoubleClick={() => setsize(null)}
                           key={index}
-                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${
-                            size == item
-                              ? " border-gold_dark bg-gold_dark text-white"
-                              : ""
-                          }`}
+                          className={`px-5 rounded-3xl py-[2px] text-sm border  border-gold_medium ${size == item
+                            ? " border-gold_dark bg-gold_dark text-white"
+                            : ""
+                            }`}
                         >
                           {item}
                         </div>
@@ -324,11 +322,10 @@ const SingleProduct = () => {
                         key={index}
                         onClick={() => setSelectedColor(color.colorCode)}
                         onDoubleClick={() => setSelectedColor(null)}
-                        className={`${
-                          color.colorCode === selectedColor
-                            ? " border-gray-500"
-                            : ""
-                        } px-2 w-6 h-6 py-2 border-2 rounded-full`}
+                        className={`${color.colorCode === selectedColor
+                          ? " border-gray-500"
+                          : ""
+                          } px-2 w-6 h-6 py-2 border-2 rounded-full`}
                         style={{ backgroundColor: color.colorCode }}
                       ></div>
                     ))}
@@ -368,11 +365,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "description"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "description"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p> {product?.description}</p>
                   </section>
@@ -389,11 +385,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "delivery"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "delivery"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p className=" text-lg font-medium">
                       {product?.delivery === 0 ? (
@@ -418,11 +413,10 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "material"
-                        ? " h-auto w-auto"
-                        : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "material"
+                      ? " h-auto w-auto"
+                      : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p>
                       <span className=" font-medium">Material:</span>{" "}
@@ -446,9 +440,8 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section
-                    className={` p-2 text-sm overflow-hidden ${
-                      detailsOptions == "return" ? " h-auto w-auto" : " hidden"
-                    } transition-all duration-300 ease-in-out`}
+                    className={` p-2 text-sm overflow-hidden ${detailsOptions == "return" ? " h-auto w-auto" : " hidden"
+                      } transition-all duration-300 ease-in-out`}
                   >
                     <p>Not available</p>
                   </section>
