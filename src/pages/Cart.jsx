@@ -19,13 +19,17 @@ const Cart = () => {
   const [address, setaddress] = useState("");
   const url = import.meta.env.VITE_BACKEND;
   const [cartLoader, setcartLoader] = useState(false);
-
+  const [deliverycharge, setdeliverycharge] = useState("");
   const { userDetails, getuser, isLogedin, token, currency } = AuthHook();
+  const [subtotalprice, setsubtotalprice] = useState("");
   const getUserCart = async () => {
     if (currency !== null) {
       try {
         setcartLoader(true);
-        const cart = await getRequest(true, `/cart?currency=${currency ? currency : "INR"}`);
+        const cart = await getRequest(
+          true,
+          `/cart?currency=${currency ? currency : "INR"}`
+        );
         setCart(cart.cart);
         setcartLoader(false);
       } catch (error) {
@@ -36,18 +40,32 @@ const Cart = () => {
 
   useEffect(() => {
     getUserCart();
-  }, []);
+  }, [url, userDetails]);
 
   useEffect(() => {
     calculateTotalPrice();
+    calculateDeliveryPrice();
   }, [cart]);
 
   const calculateTotalPrice = () => {
-    let total = 0;
+    let subtotal = 0;
     cart.forEach((item) => {
-      total += item?.product?.selling_price * item.quantity;
+      subtotal += item?.product?.selling_price * item.quantity;
     });
-    setTotalPrice(total);
+    setsubtotalprice(subtotal);
+    const totalPricedfinal = subtotal + deliverycharge;
+    console.log("Ff", totalPricedfinal);
+    setTotalPrice(totalPricedfinal);
+  };
+
+  const calculateDeliveryPrice = () => {
+    let totalDeliveryCharge = 0;
+
+    cart.forEach((item) => {
+      totalDeliveryCharge += item?.product?.delivery;
+    });
+
+    setdeliverycharge(totalDeliveryCharge);
   };
 
   const checkout = async (event) => {
@@ -126,17 +144,31 @@ const Cart = () => {
           <div className="w-full md:w-1/3 rounded-md bg-gray-50 p-4  ">
             <p className="font-semibold my-2 pb-2 border-b-2 border-dashed">
               Delivery
-              <p>{currency} { }</p>
+              <p>
+                {currency} {}
+              </p>
             </p>
             <div className="flex flex-col gap-y-2 pb-2 border-b-2 border-dashed">
-              <section className="flex justify-between">
+              <section className="flex border-b-2 border-dashed justify-between">
                 <p>Subtotal</p>
-                <p>{currency} {totalPrice}</p>
+                <p>
+                  {currency} {subtotalprice}
+                </p>
+              </section>
+              <section className="flex justify-between">
+                <p>Delivery</p>
+                <p>
+                  {deliverycharge
+                    ? `${currency} ${deliverycharge}`
+                    : `${currency} 0`}
+                </p>
               </section>
             </div>
             <section className="flex my-2 justify-between">
               <p className="text-lg">Total</p>
-              <p>{currency} {totalPrice}</p>
+              <p>
+                {currency} {totalPrice}
+              </p>
             </section>
             <div className="py-2">
               <section className="flex justify-between">
