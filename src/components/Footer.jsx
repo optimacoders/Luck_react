@@ -13,7 +13,7 @@ function Footer() {
     <div className=" bg-bg_back text-white py-8 mt-7">
       <div className=" mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <div className="flex flex-col items-center">
-          <img src={logo} alt="Logo" className="mb-4 w-28 h-28 aspect-square" />
+          <img src={logo} alt="Logo" className="mb-4 w-32 aspect-square" />
           <div className="flex justify-center space-x-4">
             <a href="#" className="text-blue-500">
               <FaFacebook size={24} />
@@ -31,7 +31,7 @@ function Footer() {
         </div>
         <div className=" text-center md:text-left">
           <h3 className="font-semibold mb-4">Categories</h3>
-          <ul>
+          <ul className=" cursor-pointer">
             <li><a href="#" className="hover:underline">Men</a></li>
             <li><a href="#" className="hover:underline">Women</a></li>
             <li><a href="#" className="hover:underline">BestSeller</a></li>
@@ -40,16 +40,16 @@ function Footer() {
         </div>
         <div className=" text-center md:text-left">
           <h3 className="font-semibold mb-4">Shopping</h3>
-          <ul>
-            <li><a href="#" className="hover:underline">Your Cart</a></li>
-            <li><a href="#" className="hover:underline">Your Orders</a></li>
-            <li><a href="#" className="hover:underline">Compared Items</a></li>
-            <li><a href="#" className="hover:underline">Wishlist</a></li>
+          <ul className=" cursor-pointer">
+            <li onClick={() => navigate('/cart')} className="hover:underline">Your Cart</li>
+            <li onClick={() => navigate('/profile/orders')} className="hover:underline">Your Orders</li>
+            {/* <li><a href="#" className="hover:underline">Compared Items</a></li> */}
+            <li onClick={() => navigate('/profile/favorites')} className="hover:underline">favourites</li>
           </ul>
         </div>
         <div className=" text-center md:text-left">
           <h3 className="font-semibold mb-4">Contact Us</h3>
-          <ul className=" ">
+          <ul className=" cursor-pointer ">
             <li className="flex items-center justify-center md:justify-start gap-2"><MdLocationOn size={20} color="white" />Geetika Fashion, Lucknow, India</li>
             <li className="flex items-center justify-center md:justify-start gap-2"><MdLocationOn size={20} color="white" />Lucknowi Handicrafts, Lucknow, India</li>
             <li className="flex items-center justify-center md:justify-start gap-2"><MdAttachEmail size={18} color="white" />abc@gmail.com</li>

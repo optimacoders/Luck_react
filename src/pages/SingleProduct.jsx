@@ -149,7 +149,7 @@ const SingleProduct = () => {
         productId: pid,
         quantity: Number(qunatity),
         size: size ? size : product?.size[0],
-        color: selectedColor ? selectedColor : product?.color[0],
+        color: selectedColor ? selectedColor : product?.color[0]?.colorCode,
       });
       console.log(response);
       if (response.status) {
@@ -353,7 +353,7 @@ const SingleProduct = () => {
                 </div>
                 <div className=" flex flex-col gap-3">
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2">
+                    <p className=" font-medium cursor-pointer flex items-center gap-2" onClick={() => setDatilsDropdown("description")}>
                       <LuText size={20} />
                       Description{" "}
                     </p>
@@ -373,7 +373,7 @@ const SingleProduct = () => {
                     <p> {product?.description}</p>
                   </section>
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2">
+                    <p className=" font-medium cursor-pointer flex items-center gap-2" onClick={() => setDatilsDropdown("delivery")}>
                       <TbTruckDelivery size={20} />
                       Delivery{" "}
                     </p>
@@ -401,7 +401,7 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section className=" flex items-end justify-between">
-                    <p className=" font-medium flex items-center gap-2">
+                    <p className=" font-medium cursor-pointer flex items-center gap-2" onClick={() => setDatilsDropdown("material")}>
                       <GiRolledCloth size={20} />
                       Material & Wash Type{" "}
                     </p>
@@ -428,7 +428,7 @@ const SingleProduct = () => {
                     </p>
                   </section>
                   <section className=" flex items-end  justify-between">
-                    <p className=" font-medium flex items-center gap-2">
+                    <p className=" font-medium cursor-pointer flex items-center gap-2" onClick={() => setDatilsDropdown("return")}>
                       <FaExchangeAlt size={20} />
                       Returns And Cancellations
                     </p>

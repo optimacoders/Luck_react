@@ -40,7 +40,7 @@ const Cartproductcard = ({ data }) => {
         toast.success("updated");
         window.location.reload();
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   return (

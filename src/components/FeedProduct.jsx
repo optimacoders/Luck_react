@@ -45,31 +45,32 @@ const FeedProduct = () => {
   }, [currency, token]);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 px-3 md:px-20 gap-3 md:gap-5">
-      {productLoader ? (
-        <>
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-          <ProductCardSkeleton />
-        </>
-      ) : products.length === 0 ? (
-        <div className="w-[80svw]">
-          <Nodata />
-        </div>
-      ) : isLogedin ? (
-        products.map((product, index) => (
-          <div key={index}>
-            <RelatedProductCard data={product?.productId} />
+    <div className={` ${products.length === 0 ? 'hidden' : ''} grid grid-cols-2 md:grid-cols-4 px-3 md:px-20 gap-3 md:gap-5`}>
+      {
+        productLoader ? (
+          <>
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+            <ProductCardSkeleton />
+          </>
+        ) : products.length === 0 ? (
+          <div className="w-[80svw]">
+            <Nodata />
           </div>
-        ))
-      ) : (
-        products.map((product, index) => (
-          <div key={index}>
-            <RelatedProductCard data={product} />
-          </div>
-        ))
-      )}
+        ) : isLogedin ? (
+          products.map((product, index) => (
+            <div key={index}>
+              <RelatedProductCard data={product?.productId} />
+            </div>
+          ))
+        ) : (
+          products.map((product, index) => (
+            <div key={index}>
+              <RelatedProductCard data={product} />
+            </div>
+          ))
+        )}
     </div>
   );
 };

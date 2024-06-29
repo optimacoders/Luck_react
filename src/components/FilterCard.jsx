@@ -212,7 +212,7 @@ const FilterCard = ({
               <option value="a_to_z">A to Z</option>
             </select>
           </span>
-          <p className=" text-gray-600">244 products</p>
+          {/* <p className=" text-gray-600">244 products</p> */}
         </section>
       </div>
 

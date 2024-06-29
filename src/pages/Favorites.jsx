@@ -10,30 +10,32 @@ import InfiniteScroll from "react-infinite-scroll-component";
 function Favorites() {
   const [data, setData] = useState([]);
   const [loader, setLoader] = useState(false);
-  const { currency } = AuthHook()
+  const { currency, isLogedin } = AuthHook()
   const [cureentPage, setcureentPage] = useState(1)
   const [totalPages, settotalPages] = useState()
   const [hasMore, sethasMore] = useState(false)
 
 
   const getData = async () => {
-    setLoader(true);
-    try {
-      if (currency !== null) {
-        const res = await getRequest(true, `/liked/${currency ? currency : "INR"}`);
-        if (res.status && res.favourites && res.favourites.data) {
-          setData(res.favourites.data);
-          setcureentPage(res?.favourites?.currentPage);
-          settotalPages(res?.favourites?.totalPages);
-          sethasMore(res?.favourites?.moreData)
-        } else {
-          setData([]);
+    if (isLogedin) {
+      setLoader(true);
+      try {
+        if (currency !== null) {
+          const res = await getRequest(true, `/liked/${currency ? currency : "INR"}`);
+          if (res.status && res.favourites && res.favourites.data) {
+            setData(res.favourites.data);
+            setcureentPage(res?.favourites?.currentPage);
+            settotalPages(res?.favourites?.totalPages);
+            sethasMore(res?.favourites?.moreData)
+          } else {
+            setData([]);
+          }
+          setLoader(false);
         }
-        setLoader(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+        setData([]);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      setData([]);
     }
   };
 
@@ -63,41 +65,46 @@ function Favorites() {
 
   return (
     <div className="p-3 overflow-y-auto h-full" id="scrollContainer">
-      <p className="text-lg font-medium my-2">Your Favorites</p>
-      <div className="">
-        {loader ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
-            <ProductCardSkeleton />
+      {
+        !isLogedin ? <div>login first</div> :
+          <div>
+            <p className="text-lg font-medium my-2">Your Favorites</p>
+            <div className="">
+              {loader ? (
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                  <ProductCardSkeleton />
+                </div>
+              ) : data.length === 0 ? (
+                <div className="col-span-2 md:col-span-4">
+                  <Nodata />
+                </div>
+              ) : (
+                <InfiniteScroll
+                  dataLength={data.length}
+                  next={fetchMore}
+                  hasMore={hasMore}
+                  className="grid grid-cols-2 md:grid-cols-4 gap-4"
+                  loader={
+                    <>
+                      <ProductCardSkeleton />
+                      <ProductCardSkeleton />
+                    </>
+                  }
+                  scrollableTarget="scrollContainer"
+                >
+                  {data.map((item) => (
+                    <div key={item._id}>
+                      <RelatedProductCard data={item.product} />
+                    </div>
+                  ))}
+                </InfiniteScroll>
+              )}
+            </div>
           </div>
-        ) : data.length === 0 ? (
-          <div className="col-span-2 md:col-span-4">
-            <Nodata />
-          </div>
-        ) : (
-          <InfiniteScroll
-            dataLength={data.length}
-            next={fetchMore}
-            hasMore={hasMore}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4"
-            loader={
-              <>
-                <ProductCardSkeleton />
-                <ProductCardSkeleton />
-              </>
-            }
-            scrollableTarget="scrollContainer"
-          >
-            {data.map((item) => (
-              <div key={item._id}>
-                <RelatedProductCard data={item.product} />
-              </div>
-            ))}
-          </InfiniteScroll>
-        )}
-      </div>
+      }
     </div>
   );
 }

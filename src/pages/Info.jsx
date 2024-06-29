@@ -81,122 +81,123 @@ const Info = () => {
 
     <div className=" w-full">
       {
-        loader ? <ProfileSkeleton /> : <div>
-          <section className=" flex gap-5 items-center bg-gradient-to-b from-[#d7e394] form-[30%] to-[#ffffff] p-4 rounded-md">
-            <p className=" rounded-full p-2 bg-gray-50 shadow">
-              <RiInformation2Line size={50} color="#d1bf6a" />
-            </p>
-            <section>
-              <p className=" text-md md:text-3xl font-bold">
-                Personal Information</p>
-              <span className="text-sm font-medium text-gray-700">
-                street sign, an arrangement of buildings on a city block, or styles of clothing.
-              </span>
+        !isLogedin ? <div> login first</div> :
+          loader ? <ProfileSkeleton /> : <div>
+            <section className=" flex gap-5 items-center bg-gradient-to-b from-[#d7e394] form-[30%] to-[#ffffff] p-4 rounded-md">
+              <p className=" rounded-full p-2 bg-gray-50 shadow">
+                <RiInformation2Line size={50} color="#d1bf6a" />
+              </p>
+              <section>
+                <p className=" text-md md:text-3xl font-bold">
+                  Personal Information</p>
+                <span className="text-sm font-medium text-gray-700">
+                  street sign, an arrangement of buildings on a city block, or styles of clothing.
+                </span>
+              </section>
             </section>
-          </section>
-          <div className="w-full my-1 px-2 md:px-0">
-            <form onSubmit={handlesubmit} className="flex flex-col gap-2 w-[100%]">
-              <div className="w-[100%] flex flex-col md:flex-row items-center gap-3">
-                <section className=" w-full md:w-[50%]">
-                  <label className=" text-sm text-gray-600 font-medium">Name:</label>
-                  <input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setusername(e.target.value)}
-                    className=" px-2 my-1 text-sm py-[4px] outline-none rounded border w-[100%]"
-                    placeholder="username"
-                  />
-                </section>
-                <section className=" w-full md:w-[50%]">
-                  <label className=" text-sm text-gray-600 font-medium">Email:</label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setemail(e.target.value)}
-                    className="outline-none text-sm my-1 border rounded w-[100%] px-2 py-[4px]"
-                    placeholder="Email"
-                  />
-                </section>
-              </div>
-              <div className="w-[100%] flex flex-col md:flex-row  items-center gap-3">
-                <section className=" w-full md:w-[50%]">
-                  <label className=" text-sm text-gray-600 font-medium">Mobile No:</label>
-                  <input
-                    value={mobileNo}
-                    onChange={(e) => setmobileNo(e.target.value)}
-                    type="mobie"
-                    className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
-                    placeholder="Mobile"
-                  />
-                </section>
-
-              </div>
-              <div>
-                <label className=" text-sm text-gray-600 font-medium">Address:</label>
-                <div className=" grid grid-cols-1 md:grid-cols-2 w-full gap-x-2">
-                  <section className="">
-                    <label className="text-xs">Room No, Building <span className=" text-red-600">*</span></label>
+            <div className="w-full my-1 px-2 md:px-0">
+              <form onSubmit={handlesubmit} className="flex flex-col gap-2 w-[100%]">
+                <div className="w-[100%] flex flex-col md:flex-row items-center gap-3">
+                  <section className=" w-full md:w-[50%]">
+                    <label className=" text-sm text-gray-600 font-medium">Name:</label>
                     <input
-                      value={roomNo}
-                      onChange={(e) => setRoomNo(e.target.value)}
                       type="text"
-                      className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
-                      placeholder="404, bulding name"
+                      value={username}
+                      onChange={(e) => setusername(e.target.value)}
+                      className=" px-2 my-1 text-sm py-[4px] outline-none rounded border w-[100%]"
+                      placeholder="username"
                     />
                   </section>
-                  <section className="">
-                    <label className="text-xs">Area, streat <span className=" text-red-600">*</span></label>
+                  <section className=" w-full md:w-[50%]">
+                    <label className=" text-sm text-gray-600 font-medium">Email:</label>
                     <input
-                      value={area}
-                      onChange={(e) => setArea(e.target.value)}
-                      type="text"
-                      className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
-                      placeholder="Ganesh Nager"
-                    />
-                  </section>
-                  <section className="">
-                    <label className="text-xs">City <span className=" text-red-600">*</span></label>
-                    <input
-                      value={city}
-                      onChange={(e) => setCity(e.target.value)}
-                      type="text"
-                      className="outline-none my-1text-sm border rounded w-[100%] px-2 py-[4px]"
-                      placeholder="Mumbai"
-                    />
-                  </section>
-                  <section className="">
-                    <label className="text-xs">State <span className=" text-red-600">*</span></label>
-                    <input
-                      value={state}
-                      onChange={(e) => setState(e.target.value)}
-                      type="text"
-                      className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
-                      placeholder="Maharastra"
-                    />
-                  </section>
-                  <section className="">
-                    <label className="text-xs">Pincode <span className=" text-red-600">*</span></label>
-                    <input
-                      value={pincode}
-                      onChange={(e) => setPincode(e.target.value)}
-                      type="number"
-                      className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
-                      placeholder="401209"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setemail(e.target.value)}
+                      className="outline-none text-sm my-1 border rounded w-[100%] px-2 py-[4px]"
+                      placeholder="Email"
                     />
                   </section>
                 </div>
-              </div>
-              <div className=" w-20 flex gap-3">
-                <button className="bg-gold_dark w-full text-sm px-5 rounded-md py-1 text-white">
-                  Save
-                </button>
-                <button onClick={(e) => { e.preventDefault(); handlelogout() }} className="bg-gold_dark w-full flex items-center font-semibold text-sm px-2  rounded-md py-1 text-white">
-                  <IoMdLogOut size={17} /> Logout
-                </button>
-              </div>
-            </form>
+                <div className="w-[100%] flex flex-col md:flex-row  items-center gap-3">
+                  <section className=" w-full md:w-[50%]">
+                    <label className=" text-sm text-gray-600 font-medium">Mobile No:</label>
+                    <input
+                      value={mobileNo}
+                      onChange={(e) => setmobileNo(e.target.value)}
+                      type="mobie"
+                      className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
+                      placeholder="Mobile"
+                    />
+                  </section>
+
+                </div>
+                <div>
+                  <label className=" text-sm text-gray-600 font-medium">Address:</label>
+                  <div className=" grid grid-cols-1 md:grid-cols-2 w-full gap-x-2">
+                    <section className="">
+                      <label className="text-xs">Room No, Building <span className=" text-red-600">*</span></label>
+                      <input
+                        value={roomNo}
+                        onChange={(e) => setRoomNo(e.target.value)}
+                        type="text"
+                        className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
+                        placeholder="404, bulding name"
+                      />
+                    </section>
+                    <section className="">
+                      <label className="text-xs">Area, streat <span className=" text-red-600">*</span></label>
+                      <input
+                        value={area}
+                        onChange={(e) => setArea(e.target.value)}
+                        type="text"
+                        className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
+                        placeholder="Ganesh Nager"
+                      />
+                    </section>
+                    <section className="">
+                      <label className="text-xs">City <span className=" text-red-600">*</span></label>
+                      <input
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        type="text"
+                        className="outline-none my-1text-sm border rounded w-[100%] px-2 py-[4px]"
+                        placeholder="Mumbai"
+                      />
+                    </section>
+                    <section className="">
+                      <label className="text-xs">State <span className=" text-red-600">*</span></label>
+                      <input
+                        value={state}
+                        onChange={(e) => setState(e.target.value)}
+                        type="text"
+                        className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
+                        placeholder="Maharastra"
+                      />
+                    </section>
+                    <section className="">
+                      <label className="text-xs">Pincode <span className=" text-red-600">*</span></label>
+                      <input
+                        value={pincode}
+                        onChange={(e) => setPincode(e.target.value)}
+                        type="number"
+                        className="outline-none my-1 text-sm border rounded w-[100%] px-2 py-[4px]"
+                        placeholder="401209"
+                      />
+                    </section>
+                  </div>
+                </div>
+                <div className=" w-20 flex gap-3">
+                  <button className="bg-gold_dark w-full text-sm px-5 rounded-md py-1 text-white">
+                    Save
+                  </button>
+                  <button onClick={(e) => { e.preventDefault(); handlelogout() }} className="bg-gold_dark w-full flex items-center font-semibold text-sm px-2  rounded-md py-1 text-white">
+                    <IoMdLogOut size={17} /> Logout
+                  </button>
+                </div>
+              </form>
+            </div>
           </div>
-        </div>
       }
     </div>
   );

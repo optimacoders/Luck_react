@@ -102,14 +102,14 @@ const Nav = () => {
           </div>
         </div>
         <div className={` ${showSearch ? "hidden" : "flex"} w-[70%] justify-end md:justify-between`}>
-          <div className={`  hidden md:flex gap-10 items-center`}>
+          <div className={`  hidden md:flex gap-10 text-lg items-center`}>
             <section className=" flex items-end relative">
-              <span className=" cursor-pointer flex items-end" onClick={() => {
+              <span className=" cursor-pointer flex items-center" onClick={() => {
                 setman(false)
                 setbestseller(false)
                 setabout(false)
                 setwomen(!women)
-              }}><p>Women</p><IoIosArrowDown size={20} /></span>
+              }}><p>Women</p></span>
               {women &&
                 <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
                   {
@@ -124,7 +124,7 @@ const Nav = () => {
                 setbestseller(false)
                 setabout(false)
                 setwomen(false)
-              }}><p>Man</p><IoIosArrowDown size={20} /></span>
+              }}><p>Man</p></span>
               {man &&
                 <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
                   {
@@ -139,7 +139,7 @@ const Nav = () => {
                 setbestseller(!bestseller)
                 setabout(false)
                 setwomen(false)
-              }}><p>Best Seller</p><IoIosArrowDown size={20} /></span>
+              }}><p>Best Seller</p></span>
               {bestseller &&
                 <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
                   {
@@ -154,7 +154,7 @@ const Nav = () => {
                 setbestseller(false)
                 setabout(!about)
                 setwomen(false)
-              }}><p>About us</p><IoIosArrowDown size={20} /></span>
+              }}><p>About us</p></span>
               {about &&
                 <div className=" absolute w-56 border h-auto max-h-44 top-8 z-20 bg-white shadow rounded-md text-sm cursor-pointer overflow-y-scroll">
                   {

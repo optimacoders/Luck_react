@@ -7,12 +7,13 @@ import Footer from "../components/Footer";
 import { useNavigate } from "react-router-dom"
 import NewArrivals from "../components/NewArrivals";
 import ReviewCard from "../components/ReviewCard";
-import axios from "axios";
 import { getRequest } from "../utils/Apihelpers";
+import AuthHook from "../context/AuthContext";
 
 const Layout = () => {
   const [reviews, setreviews] = useState([])
   const navigate = useNavigate();
+  const { isLogedin } = AuthHook()
 
   const fetchreviews = async () => {
     try {
@@ -42,8 +43,10 @@ const Layout = () => {
           <NewArrivals />
         </section>
         <section className=" my-5">
-          <p className=" text-3xl font-bold text-center">Recently Viewed</p>
-          <p className=" text-center font-semibold mb-8">We saw you Liked it!</p>
+          <p className={` ${isLogedin ? '' : 'hidden'} text-3xl font-bold text-center`}>Recently Viewed</p>
+          <p className={`  ${isLogedin ? '' : 'hidden'} text-center font-semibold mb-8`}>We saw you Liked it!</p>
+          <p className={` ${isLogedin ? 'hidden' : ''} text-3xl font-bold text-center`}>Latest collections</p>
+          <p className={`  ${isLogedin ? 'hidden' : ''} text-center font-semibold mb-8`}>We hope you wiil Like it!</p>
           <FeedProduct />
         </section>
         <section className=" mb-5 mt-10">

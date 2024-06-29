@@ -29,10 +29,11 @@ const ProductCard = ({ data, fromsimilar }) => {
         <p className="w-[100%] font-bold text-black mt-1 text-sm md:text-lg">
           {data?.title}
         </p>
-        <p className="font-semibold text-sm">
+        <p className="font-semibold flex items-center gap-2 text-sm">
+          <span className="line-through text-gray-700">{currency} {new Intl.NumberFormat().format(data?.original_price)}</span>
           {currency} {new Intl.NumberFormat().format(data?.selling_price)}
         </p>
-        <button className=" text-gold_dark rounded-xl px-4 py-[3px] font-semibold text-sm my-1 border border-gold_dark hover:bg-gold_dark hover:text-white hover:border-none">
+        <button className=" text-gold_dark rounded-md px-4 py-[3px] text-sm my-1 border border-gold_dark hover:bg-gold_dark hover:text-white hover:border-none">
           Add To Cart
         </button>
       </div>
